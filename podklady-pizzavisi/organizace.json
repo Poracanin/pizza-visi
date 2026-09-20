@@ -1,0 +1,216 @@
+{
+  "organization": {
+    "name": "PIZZA VISI",
+    "website": "https://pizzavisi.cz/",
+    "operator": "Antonín Visinger",
+    "ico": "05804981",
+    "dic": "CZ9610050032",
+    "registered_address_verbatim": "Riegrova 527/50, 252 19, Rudná",
+    "registration_text": "Fyzická osoba zapsaná v Živnostenském rejstříku od 13.02.2017. Úřad příslušný podle §71 odst.2 živnostenského zákona: Městský úřad Černošice.",
+    "copyright_text": "Copyright © 2024 Pizza Visi – Antonín Visinger. Všechna práva vyhrazena.",
+    "logo": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/Original-on-Transparent.png",
+      "original_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/Original-on-Transparent.png",
+      "local_path": "grafika/5edc242fcb-Original-on-Transparent.png",
+      "width": 3000,
+      "height": 1125
+    },
+    "social_links": [
+      {
+        "text": "Instagram",
+        "href": "https://www.instagram.com/pizza_visi_/"
+      },
+      {
+        "text": "Facebook",
+        "href": "https://www.facebook.com/PIZZAVISI"
+      }
+    ],
+    "email": null,
+    "source_url": "https://pizzavisi.cz/"
+  },
+  "branches": [
+    {
+      "id": "rudna",
+      "name": "Rudná (u Prahy)",
+      "address": "Riegerova 527/50, Rudná (u Prahy)",
+      "phone": "+420 606 918 942",
+      "phone_uri": "tel:+420606918942",
+      "delivery_areas": [
+        "Rudná (u Prahy)",
+        "Nučice",
+        "Chrášťany",
+        "Drahelčice",
+        "Úhonice",
+        "Tachlovice",
+        "Jinočany",
+        "Zbuzany",
+        "Vysoký Újezd",
+        "Praha-Zličín",
+        "Praha-Třebonice"
+      ],
+      "opening_hours_text": "Pondělí-Sobota: 11-21",
+      "opening_hours": {
+        "days": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "opens": "11:00",
+        "closes": "21:00",
+        "sunday": null
+      },
+      "map_embed_url": "https://www.google.com/maps/d/u/1/embed?mid=1DXi5GftFMRASLYRihN8_kZ1Xc4hwjS8&ehbc=2E312F&noprof=1",
+      "source_urls": [
+        "https://pizzavisi.cz/",
+        "https://pizzavisi.cz/rozvoz/"
+      ]
+    },
+    {
+      "id": "hostivice",
+      "name": "Hostivice",
+      "address": "Husovo náměstí 60, Hostivice",
+      "phone": "+420 606 518 565",
+      "phone_uri": "tel:+420606518565",
+      "delivery_areas": [
+        "Hostivice",
+        "Praha – Zličín",
+        "Praha – Řepy",
+        "Praha – Ruzyně",
+        "Jeneč",
+        "Hostouň",
+        "Dobrovíz",
+        "Kněževes",
+        "Středokluky",
+        "Svárov",
+        "Chýně",
+        "Červený Újezd",
+        "Praha – Sobín"
+      ],
+      "opening_hours_text": "Pondělí-Sobota: 11-21",
+      "opening_hours": {
+        "days": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "opens": "11:00",
+        "closes": "21:00",
+        "sunday": null
+      },
+      "map_embed_url": "https://www.google.com/maps/d/u/1/embed?mid=1hkCdCQFOTZqt6Fggz-c0Pkc5aAFfab4&ehbc=2E312F&noprof=1",
+      "source_urls": [
+        "https://pizzavisi.cz/",
+        "https://pizzavisi.cz/rozvoz/"
+      ]
+    },
+    {
+      "id": "beroun",
+      "name": "Beroun",
+      "address": "Pivovarská 105/11, Beroun",
+      "phone": "+420 737 857 493",
+      "phone_uri": "tel:+420737857493",
+      "delivery_areas": [
+        "Beroun",
+        "Králův dvůr",
+        "Vraž",
+        "Hýskov",
+        "Tetín",
+        "Popovice",
+        "Trubín"
+      ],
+      "opening_hours_text": "Pondělí-Sobota: 11-21",
+      "opening_hours": {
+        "days": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "opens": "11:00",
+        "closes": "21:00",
+        "sunday": null
+      },
+      "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d900.6727606116712!2d14.073101335196982!3d49.963052655829!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470ba56b4b7019d5%3A0x8189471e3c139363!2sPivovarsk%C3%A1%20105%2F11%2C%20266%2001%20Beroun%201-Centrum!5e1!3m2!1scs!2scz!4v1789646704839!5m2!1scs!2scz",
+      "source_urls": [
+        "https://pizzavisi.cz/",
+        "https://pizzavisi.cz/rozvoz/"
+      ]
+    }
+  ],
+  "delivery": {
+    "source_url": "https://pizzavisi.cz/rozvoz/",
+    "price_text": "Cena rozvozu uvnitř okruhu za 45 Kč.",
+    "price_czk": 45,
+    "delivery_preparation_minutes": {
+      "min": 30,
+      "max": 90
+    },
+    "pickup_preparation_minutes": {
+      "min": 10,
+      "max": 30
+    },
+    "timing_text": "Přibližná doba přípravy pizzy na rozvoz je 30 až 90 minut, při vyzvednutí osobně je 10 – 30 minut, záleží na aktuálním vytížení pizzerie.",
+    "timing_note": "Pokud potřebujete vědět přesný čas, zavolejte prosím dopředu.",
+    "areas_by_branch": {
+      "rudna": [
+        "Rudná (u Prahy)",
+        "Nučice",
+        "Chrášťany",
+        "Drahelčice",
+        "Úhonice",
+        "Tachlovice",
+        "Jinočany",
+        "Zbuzany",
+        "Vysoký Újezd",
+        "Praha-Zličín",
+        "Praha-Třebonice"
+      ],
+      "hostivice": [
+        "Hostivice",
+        "Praha – Zličín",
+        "Praha – Řepy",
+        "Praha – Ruzyně",
+        "Jeneč",
+        "Hostouň",
+        "Dobrovíz",
+        "Kněževes",
+        "Středokluky",
+        "Svárov",
+        "Chýně",
+        "Červený Újezd",
+        "Praha – Sobín"
+      ],
+      "beroun": [
+        "Beroun",
+        "Králův dvůr",
+        "Vraž",
+        "Hýskov",
+        "Tetín",
+        "Popovice",
+        "Trubín"
+      ]
+    },
+    "embeds": [
+      {
+        "src": "https://www.google.com/maps/d/u/1/embed?mid=1DXi5GftFMRASLYRihN8_kZ1Xc4hwjS8&ehbc=2E312F&noprof=1",
+        "title": null
+      },
+      {
+        "src": "https://www.google.com/maps/d/u/1/embed?mid=1hkCdCQFOTZqt6Fggz-c0Pkc5aAFfab4&ehbc=2E312F&noprof=1",
+        "title": null
+      },
+      {
+        "src": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d900.6727606116712!2d14.073101335196982!3d49.963052655829!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470ba56b4b7019d5%3A0x8189471e3c139363!2sPivovarsk%C3%A1%20105%2F11%2C%20266%2001%20Beroun%201-Centrum!5e1!3m2!1scs!2scz!4v1789646704839!5m2!1scs!2scz",
+        "title": null
+      }
+    ]
+  }
+}

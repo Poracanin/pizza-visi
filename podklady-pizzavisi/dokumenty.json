@@ -1,0 +1,271 @@
+[
+  {
+    "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/alergeny.pdf",
+    "local_path": "dokumenty/bd3fa8188a-alergeny.pdf",
+    "pages": [
+      {
+        "page": 1,
+        "text": " \n01. Margherita  - 1,5,6,7,9,10 \n \n \n02. Šunková - 1,5,6,7,9,10 \n \n \n03. Olivová-1,5,6,7,9,10 \n \n04. Žampionová-1,5,6,7,9,10 \n \n05. Hawai -1,5,6,7,9,10 \n \n06. Sýrová-1,5,6,7,9,10 \n \n07. Salámová-1,5,6,7,9,10 \n \n08. Slaninová-1,5,6,7,9,10 \n \n9. Tuňáková-1,4,5,6,7,9,10 \n \n10.Fantazie-1,5,6,7,9,10 \n \n11. Vegetariánská-1,5,6,7,9,10 \n \n12. Hermelínová-1,5,6,7,9,10, \n \n13. Mexická-1,5,6,7,9,10 \n \n14. Uzenářská -1,5,6,7,9,10 \n \n15. Tuňáková speciál -1,4,5,6,7,9,10 \n \n16. Visi-1,5,6,7,9,10 \n \n17. Ďábelská-1,5,6,7,9,10 \n \n18. Ohnivá -1,5,6,7,9,10 \n \n19. Zeleninová -1,5,6,7,9,10 \n \n20. Krkovička -1,5,6,7,9,10 \n \n21. Hovězí -1,5,6,7,9,10 \n"
+      }
+    ],
+    "full_text": " \n01. Margherita  - 1,5,6,7,9,10 \n \n \n02. Šunková - 1,5,6,7,9,10 \n \n \n03. Olivová-1,5,6,7,9,10 \n \n04. Žampionová-1,5,6,7,9,10 \n \n05. Hawai -1,5,6,7,9,10 \n \n06. Sýrová-1,5,6,7,9,10 \n \n07. Salámová-1,5,6,7,9,10 \n \n08. Slaninová-1,5,6,7,9,10 \n \n9. Tuňáková-1,4,5,6,7,9,10 \n \n10.Fantazie-1,5,6,7,9,10 \n \n11. Vegetariánská-1,5,6,7,9,10 \n \n12. Hermelínová-1,5,6,7,9,10, \n \n13. Mexická-1,5,6,7,9,10 \n \n14. Uzenářská -1,5,6,7,9,10 \n \n15. Tuňáková speciál -1,4,5,6,7,9,10 \n \n16. Visi-1,5,6,7,9,10 \n \n17. Ďábelská-1,5,6,7,9,10 \n \n18. Ohnivá -1,5,6,7,9,10 \n \n19. Zeleninová -1,5,6,7,9,10 \n \n20. Krkovička -1,5,6,7,9,10 \n \n21. Hovězí -1,5,6,7,9,10 \n",
+    "allergen_entries": [
+      {
+        "number": 1,
+        "name_verbatim": "Margherita",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 2,
+        "name_verbatim": "Šunková",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 3,
+        "name_verbatim": "Olivová",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 4,
+        "name_verbatim": "Žampionová",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 5,
+        "name_verbatim": "Hawai",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 6,
+        "name_verbatim": "Sýrová",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 7,
+        "name_verbatim": "Salámová",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 8,
+        "name_verbatim": "Slaninová",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 9,
+        "name_verbatim": "Tuňáková",
+        "allergen_numbers_verbatim": [
+          1,
+          4,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 10,
+        "name_verbatim": "Fantazie",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 11,
+        "name_verbatim": "Vegetariánská",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 12,
+        "name_verbatim": "Hermelínová",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 13,
+        "name_verbatim": "Mexická",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 14,
+        "name_verbatim": "Uzenářská",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 15,
+        "name_verbatim": "Tuňáková speciál",
+        "allergen_numbers_verbatim": [
+          1,
+          4,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 16,
+        "name_verbatim": "Visi",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 17,
+        "name_verbatim": "Ďábelská",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 18,
+        "name_verbatim": "Ohnivá",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 19,
+        "name_verbatim": "Zeleninová",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 20,
+        "name_verbatim": "Krkovička",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      },
+      {
+        "number": 21,
+        "name_verbatim": "Hovězí",
+        "allergen_numbers_verbatim": [
+          1,
+          5,
+          6,
+          7,
+          9,
+          10
+        ]
+      }
+    ],
+    "status": "historical_names_require_client_review",
+    "review_note": "PDF obsahuje jen 21 pizz; používá názvy Hawai, Fantazie a Krkovička, zatímco aktuální menu má Ananasová, Symfonie a Z komína. Položky 22–24 v PDF chybí."
+  }
+]

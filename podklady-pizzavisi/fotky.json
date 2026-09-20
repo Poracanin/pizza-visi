@@ -1,0 +1,1772 @@
+[
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/genovese.jpg",
+    "used_on_primary_pages": false,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/genovese-100x100.jpg",
+        "local_path": "fotky/f6c590f811-genovese-100x100.jpg",
+        "width": 100,
+        "height": 100,
+        "bytes": 3787,
+        "sha256": "8a50f725a771984b6bc82349c418f2cd448b62253be959c5fac8fd2c004eb4a7"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/genovese-150x150.jpg",
+        "local_path": "fotky/390eff6d48-genovese-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 7157,
+        "sha256": "20dc3ebf792b489d618f8f949cf00db1fff757ac3b25b2ed07eb51f69c0cabc5"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/genovese-300x300.jpg",
+        "local_path": "fotky/38f477a750-genovese-300x300.jpg",
+        "width": 300,
+        "height": 300,
+        "bytes": 21597,
+        "sha256": "9b997c4060940177fb49288ee69dc595c72952ad0afd040362af4ee1ef17aef8"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/genovese-600x600.jpg",
+        "local_path": "fotky/575d2ae64a-genovese-600x600.jpg",
+        "width": 600,
+        "height": 600,
+        "bytes": 66817,
+        "sha256": "139546afd8c9ea619d00ccdcfddff219ecb0bb8d26fc9068eda192478bf8f249"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/genovese.jpg",
+        "local_path": "fotky/52c3e1c937-genovese.jpg",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 317983,
+        "sha256": "cdc01d16e04eadfb176a65a2a1e4fe5bcd98a68a0e5d7327d67f0437b4115350"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/genovese.jpg",
+      "local_path": "fotky/52c3e1c937-genovese.jpg",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 317983,
+      "sha256": "cdc01d16e04eadfb176a65a2a1e4fe5bcd98a68a0e5d7327d67f0437b4115350"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/hand-taking-slice-of-pizza-from-wooden-board-2022-03-29-08-01-02-utc.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/hand-taking-slice-of-pizza-from-wooden-board-2022-03-29-08-01-02-utc.jpg",
+        "local_path": "fotky/9765880209-hand-taking-slice-of-pizza-from-wooden-board-2022-03-29-08-01-02-utc.jpg",
+        "width": 1440,
+        "height": 960,
+        "bytes": 209320,
+        "sha256": "b3499e5c4ee0dedeef7509bc0c29cb68c00c02fae40f5bfd8efa6602104c654f"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/hand-taking-slice-of-pizza-from-wooden-board-2022-03-29-08-01-02-utc.jpg",
+      "local_path": "fotky/9765880209-hand-taking-slice-of-pizza-from-wooden-board-2022-03-29-08-01-02-utc.jpg",
+      "width": 1440,
+      "height": 960,
+      "bytes": 209320,
+      "sha256": "b3499e5c4ee0dedeef7509bc0c29cb68c00c02fae40f5bfd8efa6602104c654f"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/mediterranean-pizza-with-olives-and-cheese-in-card-2022-01-11-01-13-47-utc.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/mediterranean-pizza-with-olives-and-cheese-in-card-2022-01-11-01-13-47-utc.jpg",
+        "local_path": "fotky/89023e188c-mediterranean-pizza-with-olives-and-cheese-in-card-2022-01-11-01-13-47-utc.jpg",
+        "width": 1440,
+        "height": 960,
+        "bytes": 180064,
+        "sha256": "f3dbc887bedd4f143f5ffb7ecee82ddc4400386ff206b12b20741381cf5c6d0d"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/mediterranean-pizza-with-olives-and-cheese-in-card-2022-01-11-01-13-47-utc.jpg",
+      "local_path": "fotky/89023e188c-mediterranean-pizza-with-olives-and-cheese-in-card-2022-01-11-01-13-47-utc.jpg",
+      "width": 1440,
+      "height": 960,
+      "bytes": 180064,
+      "sha256": "f3dbc887bedd4f143f5ffb7ecee82ddc4400386ff206b12b20741381cf5c6d0d"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/pizza-bg.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/pizza-bg.png",
+        "local_path": "fotky/dd1745f5e9-pizza-bg.png",
+        "width": 1024,
+        "height": 845,
+        "bytes": 107555,
+        "sha256": "8738119bf2ceb2d06c2335efe53b5e6600651c52e0dcd22752523e3b310ea67e"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2022/10/pizza-bg.png",
+      "local_path": "fotky/dd1745f5e9-pizza-bg.png",
+      "width": 1024,
+      "height": 845,
+      "bytes": 107555,
+      "sha256": "8738119bf2ceb2d06c2335efe53b5e6600651c52e0dcd22752523e3b310ea67e"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_2736.jpeg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_2736.jpeg",
+        "local_path": "fotky/66927c3546-IMG_2736.jpeg",
+        "width": 1000,
+        "height": 1500,
+        "bytes": 391765,
+        "sha256": "ede60d3ae846f5828715f35b40374bace270efbaa7ca89f68e77973232527dd1"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_2736.jpeg",
+      "local_path": "fotky/66927c3546-IMG_2736.jpeg",
+      "width": 1000,
+      "height": 1500,
+      "bytes": 391765,
+      "sha256": "ede60d3ae846f5828715f35b40374bace270efbaa7ca89f68e77973232527dd1"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_2738.jpeg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_2738.jpeg",
+        "local_path": "fotky/46bd603f26-IMG_2738.jpeg",
+        "width": 626,
+        "height": 939,
+        "bytes": 248857,
+        "sha256": "2ffb9d9e9d77e2f1263cc1c5a22a0a2e7014b7e566a54112a4a97a62f7e38fa4"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_2738.jpeg",
+      "local_path": "fotky/46bd603f26-IMG_2738.jpeg",
+      "width": 626,
+      "height": 939,
+      "bytes": 248857,
+      "sha256": "2ffb9d9e9d77e2f1263cc1c5a22a0a2e7014b7e566a54112a4a97a62f7e38fa4"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_3043.jpeg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_3043.jpeg",
+        "local_path": "fotky/afe81d7c5e-IMG_3043.jpeg",
+        "width": 325,
+        "height": 455,
+        "bytes": 96409,
+        "sha256": "c5c20971a4af84109d660a27e491d271cb5fb0b27a406a01074b275fbb47012d"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_3043.jpeg",
+      "local_path": "fotky/afe81d7c5e-IMG_3043.jpeg",
+      "width": 325,
+      "height": 455,
+      "bytes": 96409,
+      "sha256": "c5c20971a4af84109d660a27e491d271cb5fb0b27a406a01074b275fbb47012d"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_3044.jpeg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_3044.jpeg",
+        "local_path": "fotky/0ffd5c2eab-IMG_3044.jpeg",
+        "width": 408,
+        "height": 728,
+        "bytes": 78356,
+        "sha256": "84920e436427edb806ae99bc81da3174a668796feb49bd74aa7a5fdd24ede6ca"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/IMG_3044.jpeg",
+      "local_path": "fotky/0ffd5c2eab-IMG_3044.jpeg",
+      "width": 408,
+      "height": 728,
+      "bytes": 78356,
+      "sha256": "84920e436427edb806ae99bc81da3174a668796feb49bd74aa7a5fdd24ede6ca"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/pul_syrova.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/pul_syrova.png",
+        "local_path": "fotky/a7cd274538-pul_syrova.png",
+        "width": 1062,
+        "height": 546,
+        "bytes": 1323191,
+        "sha256": "10f7eb7a2b6e4906a518ead8ba24735dec51b20ee72cb7fea6754c2359cb98ab"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/pul_syrova.png",
+      "local_path": "fotky/a7cd274538-pul_syrova.png",
+      "width": 1062,
+      "height": 546,
+      "bytes": 1323191,
+      "sha256": "10f7eb7a2b6e4906a518ead8ba24735dec51b20ee72cb7fea6754c2359cb98ab"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/1.-Margherita-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/1.-Margherita--150x150.jpg",
+        "local_path": "fotky/e6f5bb4a8d-1.-Margherita--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9062,
+        "sha256": "25b85b2c30b42d7b951d6c7a76080b8608eed44def2ebc1c388f8cd9692ddf76"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/1.-Margherita--480x302.jpg",
+        "local_path": "fotky/0850e33f3a-1.-Margherita--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 43710,
+        "sha256": "9eaed4f12fe5f2839d3b8c50c6bdfa7afa9c2a092838436a457679b51835bb8d"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/1.-Margherita-.jpg",
+        "local_path": "fotky/2d9abebb21-1.-Margherita-.jpg",
+        "width": 1024,
+        "height": 1016,
+        "bytes": 159458,
+        "sha256": "10d39d772d7ab1d8529ae0ddaede569e6ab967556ffef5d1a65cc034ee63be85"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/1.-Margherita-.jpg",
+      "local_path": "fotky/2d9abebb21-1.-Margherita-.jpg",
+      "width": 1024,
+      "height": 1016,
+      "bytes": 159458,
+      "sha256": "10d39d772d7ab1d8529ae0ddaede569e6ab967556ffef5d1a65cc034ee63be85"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/10.-Symfonie.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/10.-Symfonie-150x150.jpg",
+        "local_path": "fotky/eecdc8c4f5-10.-Symfonie-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 8971,
+        "sha256": "a7e4a59add08dba1e874009657116ebebe5576d6c268d082039010014b887346"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/10.-Symfonie-480x302.jpg",
+        "local_path": "fotky/0f61ab19bc-10.-Symfonie-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 44199,
+        "sha256": "72b3c10938faccef032165731be643c7dfb573ea9b85d3e1a56fee1388ac4e33"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/10.-Symfonie.jpg",
+        "local_path": "fotky/df6a3dfe61-10.-Symfonie.jpg",
+        "width": 1024,
+        "height": 976,
+        "bytes": 160059,
+        "sha256": "4c8db842e3f876fcd1d5e8c1d0ab91d92bac4718c6dcf77889f920631d448a69"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/10.-Symfonie.jpg",
+      "local_path": "fotky/df6a3dfe61-10.-Symfonie.jpg",
+      "width": 1024,
+      "height": 976,
+      "bytes": 160059,
+      "sha256": "4c8db842e3f876fcd1d5e8c1d0ab91d92bac4718c6dcf77889f920631d448a69"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/11.Vegetarianska.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/11.Vegetarianska-150x150.jpg",
+        "local_path": "fotky/b73b10f59c-11.Vegetarianska-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9625,
+        "sha256": "4284a18d7729654bb4facc40488301d5e4016100ad1b22b7cd6b91f4bdc1d4e2"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/11.Vegetarianska-480x302.jpg",
+        "local_path": "fotky/5ace6aef52-11.Vegetarianska-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 47988,
+        "sha256": "cb9330174a1ad5e64fc960f6f69cd988d6be30ac186e5ca1b4624a0143ccf6f3"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/11.Vegetarianska.jpg",
+        "local_path": "fotky/d4a80e6cdb-11.Vegetarianska.jpg",
+        "width": 1024,
+        "height": 1008,
+        "bytes": 162356,
+        "sha256": "63422f2c662a31d1615448fcae36f631c4a8d3d0fa3aed312cd9dec2d10ae119"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/11.Vegetarianska.jpg",
+      "local_path": "fotky/d4a80e6cdb-11.Vegetarianska.jpg",
+      "width": 1024,
+      "height": 1008,
+      "bytes": 162356,
+      "sha256": "63422f2c662a31d1615448fcae36f631c4a8d3d0fa3aed312cd9dec2d10ae119"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/12.Hermelinova.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/12.Hermelinova-150x150.jpg",
+        "local_path": "fotky/07ef04f794-12.Hermelinova-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9464,
+        "sha256": "4ab8e69b335bae00f934a6a07185a732dd61f440097c9f92ef3a2096a55e8cc1"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/12.Hermelinova-480x302.jpg",
+        "local_path": "fotky/1ef43f403f-12.Hermelinova-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 45433,
+        "sha256": "87c68b200e83c707961be0b52914210a3d4e462f2ef4dc7091cfc508bf5bf50a"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/12.Hermelinova.jpg",
+        "local_path": "fotky/a92c693252-12.Hermelinova.jpg",
+        "width": 1000,
+        "height": 1024,
+        "bytes": 147890,
+        "sha256": "243b63f293e2c7e37384f7ba5a098ff8d2142b01d927d719bbe2acf3a596996f"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/12.Hermelinova.jpg",
+      "local_path": "fotky/a92c693252-12.Hermelinova.jpg",
+      "width": 1000,
+      "height": 1024,
+      "bytes": 147890,
+      "sha256": "243b63f293e2c7e37384f7ba5a098ff8d2142b01d927d719bbe2acf3a596996f"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/13.Mexicka-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/13.Mexicka--150x150.jpg",
+        "local_path": "fotky/d66c863050-13.Mexicka--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 8085,
+        "sha256": "b876537642b9c51720d6aa1d124840258186ed5303759d1d48de0341db32b841"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/13.Mexicka--480x302.jpg",
+        "local_path": "fotky/6668fcd096-13.Mexicka--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 41404,
+        "sha256": "ab2a73c2aaf63f1c528789ff728255f28dba147c1f2672eecfbc0c45a510ce13"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/13.Mexicka-.jpg",
+        "local_path": "fotky/e9e64a1559-13.Mexicka-.jpg",
+        "width": 576,
+        "height": 1024,
+        "bytes": 56889,
+        "sha256": "702ca573cffa1b87bcee08f370b9b53f25e9be446e14e0b509590c972e42eb3b"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/13.Mexicka-.jpg",
+      "local_path": "fotky/e9e64a1559-13.Mexicka-.jpg",
+      "width": 576,
+      "height": 1024,
+      "bytes": 56889,
+      "sha256": "702ca573cffa1b87bcee08f370b9b53f25e9be446e14e0b509590c972e42eb3b"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/14.Uzenarska-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/14.Uzenarska--150x150.jpg",
+        "local_path": "fotky/0b84f3b4c8-14.Uzenarska--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9165,
+        "sha256": "e07006afa95e2a32043e799200b4a5c45c1d1da9d1ad9149cad638806edf422c"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/14.Uzenarska--480x302.jpg",
+        "local_path": "fotky/8ea1dd9795-14.Uzenarska--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 44014,
+        "sha256": "67bc6ac43b0a6cff63e3042c94cf9616fd1cd713b97ea5c0d7966235caa5393f"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/14.Uzenarska-.jpg",
+        "local_path": "fotky/51f2610e7b-14.Uzenarska-.jpg",
+        "width": 1024,
+        "height": 984,
+        "bytes": 159368,
+        "sha256": "4aa41a6dbbf30c48865e9811ea40ebee4cadba3e78799f87feb643c118024890"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/14.Uzenarska-.jpg",
+      "local_path": "fotky/51f2610e7b-14.Uzenarska-.jpg",
+      "width": 1024,
+      "height": 984,
+      "bytes": 159368,
+      "sha256": "4aa41a6dbbf30c48865e9811ea40ebee4cadba3e78799f87feb643c118024890"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/15.Tunakova-special-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/15.Tunakova-special--150x150.jpg",
+        "local_path": "fotky/6baab8518e-15.Tunakova-special--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9070,
+        "sha256": "8560fbe15dbc45a94d4ac707a6cdb259f353c980fc2cad8cd66566fd50e10d0f"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/15.Tunakova-special--480x302.jpg",
+        "local_path": "fotky/15872eb447-15.Tunakova-special--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 43746,
+        "sha256": "3bc949ceb361f93ad12486bc6f060b1492187b6ad8eb94d648bf7bf27593174e"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/15.Tunakova-special-.jpg",
+        "local_path": "fotky/7e719ae95a-15.Tunakova-special-.jpg",
+        "width": 1024,
+        "height": 984,
+        "bytes": 159683,
+        "sha256": "ab2582db2081e6f225f8c2fbd7867c588f8635bf40f3e744cce5a803163c03fc"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/15.Tunakova-special-.jpg",
+      "local_path": "fotky/7e719ae95a-15.Tunakova-special-.jpg",
+      "width": 1024,
+      "height": 984,
+      "bytes": 159683,
+      "sha256": "ab2582db2081e6f225f8c2fbd7867c588f8635bf40f3e744cce5a803163c03fc"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/16.-Visi-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/16.-Visi--150x150.jpg",
+        "local_path": "fotky/be22fc3115-16.-Visi--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9414,
+        "sha256": "a8acdb0576104218846dd4e367e427101cc424fa5ce92e93b7823c240ee75d20"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/16.-Visi--480x302.jpg",
+        "local_path": "fotky/9bd8b14865-16.-Visi--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 45673,
+        "sha256": "17f545de808fcefa534782a23da344bd5a630defe1769d1a724114eb02491c67"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/16.-Visi-.jpg",
+        "local_path": "fotky/6cf261b7a1-16.-Visi-.jpg",
+        "width": 1024,
+        "height": 992,
+        "bytes": 156146,
+        "sha256": "8137f60bafa5513ba7e9c91a1626b35126a68ccf96f669bce21dac785b8bbb55"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/16.-Visi-.jpg",
+      "local_path": "fotky/6cf261b7a1-16.-Visi-.jpg",
+      "width": 1024,
+      "height": 992,
+      "bytes": 156146,
+      "sha256": "8137f60bafa5513ba7e9c91a1626b35126a68ccf96f669bce21dac785b8bbb55"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/17.-Dabelska-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/17.-Dabelska--150x150.jpg",
+        "local_path": "fotky/b1dcc86332-17.-Dabelska--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 8549,
+        "sha256": "f1f33c98123cc02ef970b686de789780ff8c7f77cb204b3598df88710703e6e3"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/17.-Dabelska--480x302.jpg",
+        "local_path": "fotky/c593e46632-17.-Dabelska--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 41179,
+        "sha256": "1ac909889834d0974606925ea1d20df3b0beabcacaef4f9dd050dcfb3766503a"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/17.-Dabelska-.jpg",
+        "local_path": "fotky/2f8eda6406-17.-Dabelska-.jpg",
+        "width": 1008,
+        "height": 1024,
+        "bytes": 148890,
+        "sha256": "e1171b1516cb0e7fe3549c8fec03308680222da372a3bb191a9c658922406f8e"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/17.-Dabelska-.jpg",
+      "local_path": "fotky/2f8eda6406-17.-Dabelska-.jpg",
+      "width": 1008,
+      "height": 1024,
+      "bytes": 148890,
+      "sha256": "e1171b1516cb0e7fe3549c8fec03308680222da372a3bb191a9c658922406f8e"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/18.-Ohniva.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/18.-Ohniva-150x150.jpg",
+        "local_path": "fotky/e0774d115f-18.-Ohniva-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9056,
+        "sha256": "154ef64c9c2bbf12177dba292bed4bf60b30735104e2bd3b5c13cdff6e124920"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/18.-Ohniva-480x302.jpg",
+        "local_path": "fotky/e1934792d4-18.-Ohniva-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 45430,
+        "sha256": "f796d637bda91434e0520232ffad231d22baed720e98f5cf0df26bd6dca7be90"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/18.-Ohniva.jpg",
+        "local_path": "fotky/e0ef0e45d8-18.-Ohniva.jpg",
+        "width": 1024,
+        "height": 1016,
+        "bytes": 162479,
+        "sha256": "6be4476b811eda033fda33115bed7aa700724aa6d6f2ee402465a75e4f8b3f82"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/18.-Ohniva.jpg",
+      "local_path": "fotky/e0ef0e45d8-18.-Ohniva.jpg",
+      "width": 1024,
+      "height": 1016,
+      "bytes": 162479,
+      "sha256": "6be4476b811eda033fda33115bed7aa700724aa6d6f2ee402465a75e4f8b3f82"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/19.-Zeleninova-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/19.-Zeleninova--150x150.jpg",
+        "local_path": "fotky/24ef1ab610-19.-Zeleninova--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9436,
+        "sha256": "f5fff0c0f2e5636dc92ff68b5a202a49b03e52475ef00ec6a478cf02db31241e"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/19.-Zeleninova--480x302.jpg",
+        "local_path": "fotky/6e9929945b-19.-Zeleninova--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 45658,
+        "sha256": "05ccbfd65484e1fc62323d7d8795149bd01f641e4014b3a1be300053ef6457de"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/19.-Zeleninova-.jpg",
+        "local_path": "fotky/054fcd5082-19.-Zeleninova-.jpg",
+        "width": 1024,
+        "height": 1016,
+        "bytes": 165136,
+        "sha256": "07bae615a235a514d726f3b2f397d02adbc25c0bf1af358caaa812dc18b72e55"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/19.-Zeleninova-.jpg",
+      "local_path": "fotky/054fcd5082-19.-Zeleninova-.jpg",
+      "width": 1024,
+      "height": 1016,
+      "bytes": 165136,
+      "sha256": "07bae615a235a514d726f3b2f397d02adbc25c0bf1af358caaa812dc18b72e55"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/2.Sunkova-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/2.Sunkova--150x150.jpg",
+        "local_path": "fotky/04a8841d97-2.Sunkova--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 8144,
+        "sha256": "082b14bf72a925f194d9617ec046bfa35b6e557aa4fcec6f3b45bd57a197351c"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/2.Sunkova--480x302.jpg",
+        "local_path": "fotky/d90d60adab-2.Sunkova--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 35596,
+        "sha256": "c9562c7c87aa3c66805f5556e8aeec07ad1b7894536e17e543f559114d21324e"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/2.Sunkova-.jpg",
+        "local_path": "fotky/c819486371-2.Sunkova-.jpg",
+        "width": 1024,
+        "height": 992,
+        "bytes": 131672,
+        "sha256": "afbc0d89de13e718ca3d866adebc69c9cc12227abdc480813a487f8142114956"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/2.Sunkova-.jpg",
+      "local_path": "fotky/c819486371-2.Sunkova-.jpg",
+      "width": 1024,
+      "height": 992,
+      "bytes": 131672,
+      "sha256": "afbc0d89de13e718ca3d866adebc69c9cc12227abdc480813a487f8142114956"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/20.-Z-komina-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/20.-Z-komina--150x150.jpg",
+        "local_path": "fotky/84a7ef2320-20.-Z-komina--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9367,
+        "sha256": "fbc53975b71bbf386450f0d93a77dc338034f878916c1c3a09f05400323fc6c7"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/20.-Z-komina--480x302.jpg",
+        "local_path": "fotky/fd1c2e946e-20.-Z-komina--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 45080,
+        "sha256": "6b04ee89881d66625d8ade0025e70f68f6dde34f1f9c3c2e53b1f4ddad91598d"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/20.-Z-komina-.jpg",
+        "local_path": "fotky/85a5cba32a-20.-Z-komina-.jpg",
+        "width": 1024,
+        "height": 1000,
+        "bytes": 155408,
+        "sha256": "83a68185a1b5f24346dbb8af399e426127d24f814719882e7ac37803c8ebbc18"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/20.-Z-komina-.jpg",
+      "local_path": "fotky/85a5cba32a-20.-Z-komina-.jpg",
+      "width": 1024,
+      "height": 1000,
+      "bytes": 155408,
+      "sha256": "83a68185a1b5f24346dbb8af399e426127d24f814719882e7ac37803c8ebbc18"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/21.Hovezi.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/21.Hovezi-150x150.jpg",
+        "local_path": "fotky/f77a67641e-21.Hovezi-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 7727,
+        "sha256": "483d7fbd2f5291faf8ee66d62edc5619f68405e744c4ec8ae3ac8ace83b06a1c"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/21.Hovezi-480x302.jpg",
+        "local_path": "fotky/57e82bae6a-21.Hovezi-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 41585,
+        "sha256": "ca44a1161f4915bf2586cceeb18d8da356b9bb8e4c8637feb9c593e75033ffed"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/21.Hovezi.jpg",
+        "local_path": "fotky/60a820f1cc-21.Hovezi.jpg",
+        "width": 576,
+        "height": 1024,
+        "bytes": 56772,
+        "sha256": "683432c3b4880477e8e17aa5a3cd43684e42e9ae5af9fbd8b34e9302a0fe497d"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/21.Hovezi.jpg",
+      "local_path": "fotky/60a820f1cc-21.Hovezi.jpg",
+      "width": 576,
+      "height": 1024,
+      "bytes": 56772,
+      "sha256": "683432c3b4880477e8e17aa5a3cd43684e42e9ae5af9fbd8b34e9302a0fe497d"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/22.Susena-sunka-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/22.Susena-sunka--150x150.jpg",
+        "local_path": "fotky/7c17fb5012-22.Susena-sunka--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9321,
+        "sha256": "bd4b125767aa96d39069d178b291f412ad49c727707af50d54a1ec93ffa5e242"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/22.Susena-sunka--480x302.jpg",
+        "local_path": "fotky/4d9443e2a5-22.Susena-sunka--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 48314,
+        "sha256": "732c000baf6ee1a3fb24be5b8d85bb146750360b55839cdb2345d39c548f3502"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/22.Susena-sunka-.jpg",
+        "local_path": "fotky/c441b2c0a5-22.Susena-sunka-.jpg",
+        "width": 840,
+        "height": 1024,
+        "bytes": 121119,
+        "sha256": "ff92456170f364063a449e44d5d96a3f4893f080ccaea0cba30f9295f2b947b4"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/22.Susena-sunka-.jpg",
+      "local_path": "fotky/c441b2c0a5-22.Susena-sunka-.jpg",
+      "width": 840,
+      "height": 1024,
+      "bytes": 121119,
+      "sha256": "ff92456170f364063a449e44d5d96a3f4893f080ccaea0cba30f9295f2b947b4"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/23.Pikantni.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/23.Pikantni-150x150.jpg",
+        "local_path": "fotky/9c84f42759-23.Pikantni-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9027,
+        "sha256": "65b6e0486221f233b732f57b0bc8bcc3aab084731d7e7090d36d8dc5a240c773"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/23.Pikantni-480x302.jpg",
+        "local_path": "fotky/ccb307e3f1-23.Pikantni-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 48610,
+        "sha256": "554c7ac07f866e3374746b7a2160301f1c968ed5ddd20e1e8c9758ef54c2ec0e"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/23.Pikantni.jpg",
+        "local_path": "fotky/8a777d5575-23.Pikantni.jpg",
+        "width": 1024,
+        "height": 1016,
+        "bytes": 171530,
+        "sha256": "2b97f968d8488a8cbf945beca196b07b67eff14cfd8cec3d90ba97652d09ea2d"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/23.Pikantni.jpg",
+      "local_path": "fotky/8a777d5575-23.Pikantni.jpg",
+      "width": 1024,
+      "height": 1016,
+      "bytes": 171530,
+      "sha256": "2b97f968d8488a8cbf945beca196b07b67eff14cfd8cec3d90ba97652d09ea2d"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/24.Kremova-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/24.Kremova--150x150.jpg",
+        "local_path": "fotky/563c0e135c-24.Kremova--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 10274,
+        "sha256": "0729914a8cdf0969eae63912adb43fe3fe4140a0ecaafd19629b38e8a0f8d75e"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/24.Kremova--480x302.jpg",
+        "local_path": "fotky/adba2c305a-24.Kremova--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 56884,
+        "sha256": "0ae106e4920a170265aa3762854c9b338f10fb6c7053121079ef09e08764ce87"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/24.Kremova-.jpg",
+        "local_path": "fotky/f1f725ee13-24.Kremova-.jpg",
+        "width": 1024,
+        "height": 1016,
+        "bytes": 194434,
+        "sha256": "e8801a7371300a6ebbea4e9c1ed35edca5c0c88b4631d8195dd3ddf0039ff63a"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/24.Kremova-.jpg",
+      "local_path": "fotky/f1f725ee13-24.Kremova-.jpg",
+      "width": 1024,
+      "height": 1016,
+      "bytes": 194434,
+      "sha256": "e8801a7371300a6ebbea4e9c1ed35edca5c0c88b4631d8195dd3ddf0039ff63a"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/3.Oliviva.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/3.Oliviva-150x150.jpg",
+        "local_path": "fotky/31f8892b35-3.Oliviva-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9118,
+        "sha256": "fb3126beb14612683abc1b4eebe32f6c4b7fbf9c1ec2acae6b8d07bff3601d20"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/3.Oliviva-480x302.jpg",
+        "local_path": "fotky/7e07fcd052-3.Oliviva-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 39015,
+        "sha256": "2884e2210dc76ee1b50d119fe54902c533c83e1e6e4d50d86f0dbb89c84635da"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/3.Oliviva.jpg",
+        "local_path": "fotky/3235d1b89b-3.Oliviva.jpg",
+        "width": 1024,
+        "height": 1008,
+        "bytes": 122885,
+        "sha256": "ca15f464c8e51c1be741cc4d3d72c09b7ee364ae9f52cb148b706c0329dfcc28"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/3.Oliviva.jpg",
+      "local_path": "fotky/3235d1b89b-3.Oliviva.jpg",
+      "width": 1024,
+      "height": 1008,
+      "bytes": 122885,
+      "sha256": "ca15f464c8e51c1be741cc4d3d72c09b7ee364ae9f52cb148b706c0329dfcc28"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/4.zampionova-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/4.zampionova--150x150.jpg",
+        "local_path": "fotky/f41badd8c8-4.zampionova--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9663,
+        "sha256": "470bd473b13ede69012105bae27bf62a30064753c740e5ce86a727bb6d602c6c"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/4.zampionova--480x302.jpg",
+        "local_path": "fotky/26b2c87c76-4.zampionova--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 49228,
+        "sha256": "3908c407fd41c7275e0820c24f36b0bae83064a2bfceca2bd6dd42ef8e759c8a"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/4.zampionova-.jpg",
+        "local_path": "fotky/128433fb4d-4.zampionova-.jpg",
+        "width": 1016,
+        "height": 1024,
+        "bytes": 177413,
+        "sha256": "f4f24c785d9e849efd6829db32e64a16489be9e2e1cc801e5fee7f3c674b7ba4"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/4.zampionova-.jpg",
+      "local_path": "fotky/128433fb4d-4.zampionova-.jpg",
+      "width": 1016,
+      "height": 1024,
+      "bytes": 177413,
+      "sha256": "f4f24c785d9e849efd6829db32e64a16489be9e2e1cc801e5fee7f3c674b7ba4"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/464b0c56-c36c-403c-bbef-0e81d7260843.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/464b0c56-c36c-403c-bbef-0e81d7260843-150x150.jpg",
+        "local_path": "fotky/333374593f-464b0c56-c36c-403c-bbef-0e81d7260843-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 4034,
+        "sha256": "7b12a8176ff8cec15b4c398e3f8a0b5243787cc7dee06582b8ac0657022a7ff6"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/464b0c56-c36c-403c-bbef-0e81d7260843-480x302.jpg",
+        "local_path": "fotky/e79b20be7b-464b0c56-c36c-403c-bbef-0e81d7260843-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 14532,
+        "sha256": "3a55da73d32dbc999ed04b6ac535bc3b4d09b4957b449eced01d9764b3fe8450"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/464b0c56-c36c-403c-bbef-0e81d7260843.jpg",
+        "local_path": "fotky/f17a9e3f09-464b0c56-c36c-403c-bbef-0e81d7260843.jpg",
+        "width": 508,
+        "height": 739,
+        "bytes": 13568,
+        "sha256": "7482507e4eea995c482c83274e1ac4119a81ec2b6b548ae5b5e840f1517911a7"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/464b0c56-c36c-403c-bbef-0e81d7260843.jpg",
+      "local_path": "fotky/f17a9e3f09-464b0c56-c36c-403c-bbef-0e81d7260843.jpg",
+      "width": 508,
+      "height": 739,
+      "bytes": 13568,
+      "sha256": "7482507e4eea995c482c83274e1ac4119a81ec2b6b548ae5b5e840f1517911a7"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/5.-Ananasova.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/5.-Ananasova-150x150.jpg",
+        "local_path": "fotky/721d8e7c0b-5.-Ananasova-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 8024,
+        "sha256": "1052403c95ffc66d59b68273883145d610f74021df82552cbc69b5f63e82df64"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/5.-Ananasova-480x302.jpg",
+        "local_path": "fotky/4a61f3aae5-5.-Ananasova-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 36932,
+        "sha256": "5aea70689a354836cc05068a7f2557b163e2768349ae2bcf26e0f93fa0a2d5a0"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/5.-Ananasova.jpg",
+        "local_path": "fotky/70f4354480-5.-Ananasova.jpg",
+        "width": 1016,
+        "height": 1024,
+        "bytes": 133124,
+        "sha256": "a1fa9195f90ac4626188a23bc22dd386b141ec918d140b259645afaad7e9019e"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/5.-Ananasova.jpg",
+      "local_path": "fotky/70f4354480-5.-Ananasova.jpg",
+      "width": 1016,
+      "height": 1024,
+      "bytes": 133124,
+      "sha256": "a1fa9195f90ac4626188a23bc22dd386b141ec918d140b259645afaad7e9019e"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/6.-Syrova-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/6.-Syrova--150x150.jpg",
+        "local_path": "fotky/572e4c9dfd-6.-Syrova--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 7809,
+        "sha256": "17babb22a733a337846150bf68b60f40c67b454dfb6a16592604748ebde8f416"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/6.-Syrova--480x302.jpg",
+        "local_path": "fotky/4855762451-6.-Syrova--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 37033,
+        "sha256": "16febd0cacdd2dbe280de8156f0c1577f92abc225eab554f753124735fb61387"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/6.-Syrova-.jpg",
+        "local_path": "fotky/d62cb102a2-6.-Syrova-.jpg",
+        "width": 1024,
+        "height": 1016,
+        "bytes": 144757,
+        "sha256": "4529b9bd377695aad1f784590779a41a42060ec988d6c7f1db95ba3dc17a8173"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/6.-Syrova-.jpg",
+      "local_path": "fotky/d62cb102a2-6.-Syrova-.jpg",
+      "width": 1024,
+      "height": 1016,
+      "bytes": 144757,
+      "sha256": "4529b9bd377695aad1f784590779a41a42060ec988d6c7f1db95ba3dc17a8173"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/7.-Salamova.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/7.-Salamova-150x150.jpg",
+        "local_path": "fotky/6e26eac6fa-7.-Salamova-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9392,
+        "sha256": "a53d635a9ccbfe944c377c80585b064797f6a7effc64790b6d859a17b62b5e29"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/7.-Salamova-480x302.jpg",
+        "local_path": "fotky/97f1876d16-7.-Salamova-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 47746,
+        "sha256": "d2e17a5b25b92999ff410bfd027bf4001442c969f1591cee2108c290eb013608"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/7.-Salamova.jpg",
+        "local_path": "fotky/5d74f83d73-7.-Salamova.jpg",
+        "width": 1024,
+        "height": 1008,
+        "bytes": 166954,
+        "sha256": "d55dc1fe653034388d4ae979e07bcc13ec28953f5bb2afceae594c4779b4336f"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/7.-Salamova.jpg",
+      "local_path": "fotky/5d74f83d73-7.-Salamova.jpg",
+      "width": 1024,
+      "height": 1008,
+      "bytes": 166954,
+      "sha256": "d55dc1fe653034388d4ae979e07bcc13ec28953f5bb2afceae594c4779b4336f"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/8.Slaninova.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/8.Slaninova-150x150.jpg",
+        "local_path": "fotky/da32ffefbc-8.Slaninova-150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9373,
+        "sha256": "d11113fbf2c1866ea236bb29340dd8c1d6df073f51520c0b4a89466b2e669d21"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/8.Slaninova-480x302.jpg",
+        "local_path": "fotky/5088391c86-8.Slaninova-480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 45015,
+        "sha256": "a682b60874da43e80c3adead18e883e28c80e3475b7a6c16a126ccde88e7c6bf"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/8.Slaninova.jpg",
+        "local_path": "fotky/c126b1e68e-8.Slaninova.jpg",
+        "width": 976,
+        "height": 1024,
+        "bytes": 154908,
+        "sha256": "125447e72ea14727968de32e255fbd417569df25eb643daeead3c0f116c53e3f"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/8.Slaninova.jpg",
+      "local_path": "fotky/c126b1e68e-8.Slaninova.jpg",
+      "width": 976,
+      "height": 1024,
+      "bytes": 154908,
+      "sha256": "125447e72ea14727968de32e255fbd417569df25eb643daeead3c0f116c53e3f"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/9.Tunakova-.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/9.Tunakova--150x150.jpg",
+        "local_path": "fotky/fca79a30a7-9.Tunakova--150x150.jpg",
+        "width": 150,
+        "height": 150,
+        "bytes": 9514,
+        "sha256": "8ea5f21f8d5e09b9d2d5f05701b1d185d44431e67a1ef668780f879acd30c162"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/9.Tunakova--480x302.jpg",
+        "local_path": "fotky/dfb21f911e-9.Tunakova--480x302.jpg",
+        "width": 480,
+        "height": 302,
+        "bytes": 47329,
+        "sha256": "5bf95df2c97f43592ea81f02a3e3bc8dfd78406afb6a2ae615ce038c6a218e0a"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/9.Tunakova-.jpg",
+        "local_path": "fotky/b89eb2399b-9.Tunakova-.jpg",
+        "width": 1024,
+        "height": 1008,
+        "bytes": 161773,
+        "sha256": "684120def85d49f1d0fe8301e9eb04b8fd69254c833a06abdebea9146c68987e"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/9.Tunakova-.jpg",
+      "local_path": "fotky/b89eb2399b-9.Tunakova-.jpg",
+      "width": 1024,
+      "height": 1008,
+      "bytes": 161773,
+      "sha256": "684120def85d49f1d0fe8301e9eb04b8fd69254c833a06abdebea9146c68987e"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Chardonnay.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Chardonnay-150x150.png",
+        "local_path": "fotky/9d70eb7010-Chardonnay-150x150.png",
+        "width": 150,
+        "height": 150,
+        "bytes": 6104,
+        "sha256": "fb0ecbab81ea07f74f2f58bf8aa40d3d54497630e3881ebbcc2698c0616b6a35"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Chardonnay-462x1024.png",
+        "local_path": "fotky/d4f99660d9-Chardonnay-462x1024.png",
+        "width": 462,
+        "height": 1024,
+        "bytes": 77648,
+        "sha256": "3a71a44b6dfa6cb308243f819abd340be1e8abfbd763f2c9093bc907e30c82ea"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Chardonnay-480x302.png",
+        "local_path": "fotky/a1cd1c8ead-Chardonnay-480x302.png",
+        "width": 480,
+        "height": 302,
+        "bytes": 26067,
+        "sha256": "83900bdf0f328bc7107b9d7d966fee59be8539ab274f7ad3066e80461af692f4"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Chardonnay.png",
+        "local_path": "fotky/dd1a0f0506-Chardonnay.png",
+        "width": 550,
+        "height": 1220,
+        "bytes": 96255,
+        "sha256": "d379668fbcbfbed50784fdd98d5cb83241732e7c1e760b747ea088e112f16605"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Chardonnay.png",
+      "local_path": "fotky/dd1a0f0506-Chardonnay.png",
+      "width": 550,
+      "height": 1220,
+      "bytes": 96255,
+      "sha256": "d379668fbcbfbed50784fdd98d5cb83241732e7c1e760b747ea088e112f16605"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Fondatore.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Fondatore-150x150.png",
+        "local_path": "fotky/81d35f21de-Fondatore-150x150.png",
+        "width": 150,
+        "height": 150,
+        "bytes": 7515,
+        "sha256": "da6f24b53317e56abecfe17c44dae110536e57425dc817079103427e36394243"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Fondatore-354x1024.png",
+        "local_path": "fotky/1cc309b0ef-Fondatore-354x1024.png",
+        "width": 354,
+        "height": 1024,
+        "bytes": 76495,
+        "sha256": "972354157307028f154a5dbeadc4acaf86d9f003d93c897a860d4c5950950d98"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Fondatore-480x302.png",
+        "local_path": "fotky/907edf8435-Fondatore-480x302.png",
+        "width": 480,
+        "height": 302,
+        "bytes": 26508,
+        "sha256": "29275a0368f92b7ca0304916fe561ed297328e01fdf75e89e12e20b2a80abf62"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Fondatore-scaled.png",
+        "local_path": "fotky/7e71a8ba8c-Fondatore-scaled.png",
+        "width": 884,
+        "height": 2560,
+        "bytes": 361843,
+        "sha256": "c06eb79c86e39303c057c385a79894e6ff9341ab22cfd02805953bce0bb4c4fe"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Fondatore.png",
+        "local_path": "fotky/7ca3b74fbd-Fondatore.png",
+        "width": 1011,
+        "height": 2927,
+        "bytes": 454491,
+        "sha256": "0dc31a97dd7be22e05d5f1f30c8839e14bb69a69522d8682d1accaaf8c51d88b"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Fondatore.png",
+      "local_path": "fotky/7ca3b74fbd-Fondatore.png",
+      "width": 1011,
+      "height": 2927,
+      "bytes": 454491,
+      "sha256": "0dc31a97dd7be22e05d5f1f30c8839e14bb69a69522d8682d1accaaf8c51d88b"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/IKI-extra-dry1.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/IKI-extra-dry1-150x150.png",
+        "local_path": "fotky/58882a7e41-IKI-extra-dry1-150x150.png",
+        "width": 150,
+        "height": 150,
+        "bytes": 6766,
+        "sha256": "023da0c03e118fe3f70a67584bddb892b3e73f28388723a6f992d1ec3d3ccad6"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/IKI-extra-dry1-410x1024.png",
+        "local_path": "fotky/c5928de6f7-IKI-extra-dry1-410x1024.png",
+        "width": 410,
+        "height": 1024,
+        "bytes": 53250,
+        "sha256": "8355214f5b4ad0d6ddcc4aa39717c9f5db922f5a26e35ee6ff7c94bcca2a11e7"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/IKI-extra-dry1-480x302.png",
+        "local_path": "fotky/abf3578d12-IKI-extra-dry1-480x302.png",
+        "width": 480,
+        "height": 302,
+        "bytes": 21916,
+        "sha256": "54fd02f816fc7dfd1bf2f3e22fa1ead1697b3c93469ff6919849b728e394a342"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/IKI-extra-dry1.png",
+        "local_path": "fotky/86dc7c929e-IKI-extra-dry1.png",
+        "width": 945,
+        "height": 2362,
+        "bytes": 198158,
+        "sha256": "d2433bdecf0e9bf9e966c4d5d36977dd5d3ee270e8c47c0cbcd6911084dd481b"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/IKI-extra-dry1.png",
+      "local_path": "fotky/86dc7c929e-IKI-extra-dry1.png",
+      "width": 945,
+      "height": 2362,
+      "bytes": 198158,
+      "sha256": "d2433bdecf0e9bf9e966c4d5d36977dd5d3ee270e8c47c0cbcd6911084dd481b"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Omacka-na-celou-pizzu-2-1.jpg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Omacka-na-celou-pizzu-2-1-300x295.jpg",
+        "local_path": "fotky/b60587f9ad-Omacka-na-celou-pizzu-2-1-300x295.jpg",
+        "width": 300,
+        "height": 295,
+        "bytes": 31282,
+        "sha256": "86e94c5a705db91415ee12ca4fb473caf50fa8b4f6a7ddbc3e0915477757f5e2"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Omacka-na-celou-pizzu-2-1.jpg",
+        "local_path": "fotky/15981c542d-Omacka-na-celou-pizzu-2-1.jpg",
+        "width": 1024,
+        "height": 1008,
+        "bytes": 174083,
+        "sha256": "76d5c7b02287251d27109824e5a140271c18746c60ab18b7ad7343d31c034c59"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Omacka-na-celou-pizzu-2-1.jpg",
+      "local_path": "fotky/15981c542d-Omacka-na-celou-pizzu-2-1.jpg",
+      "width": 1024,
+      "height": 1008,
+      "bytes": 174083,
+      "sha256": "76d5c7b02287251d27109824e5a140271c18746c60ab18b7ad7343d31c034c59"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Pinot-grigio.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Pinot-grigio-150x150.png",
+        "local_path": "fotky/b6edd6c06f-Pinot-grigio-150x150.png",
+        "width": 150,
+        "height": 150,
+        "bytes": 6051,
+        "sha256": "53d95ce41bc353f6f856f0b0a4c2b0720547c47073cd9d310554a20586618545"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Pinot-grigio-462x1024.png",
+        "local_path": "fotky/6163788f47-Pinot-grigio-462x1024.png",
+        "width": 462,
+        "height": 1024,
+        "bytes": 79924,
+        "sha256": "63e6e590bc6996e2b0dcfa6e1243334eda883f16aa5975842119e9453a1f56cc"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Pinot-grigio-480x302.png",
+        "local_path": "fotky/e7def705f3-Pinot-grigio-480x302.png",
+        "width": 480,
+        "height": 302,
+        "bytes": 28096,
+        "sha256": "99a747ea37c8a63b487f1d2fd3b64277dea6b27573063760c4fb12b2e2b72be7"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Pinot-grigio.png",
+        "local_path": "fotky/b4ddce397a-Pinot-grigio.png",
+        "width": 550,
+        "height": 1220,
+        "bytes": 98670,
+        "sha256": "bf7c6489a51920eb2ef41487c9540e387461c46b9cdda5c1364c5b0daff3a8b2"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Pinot-grigio.png",
+      "local_path": "fotky/b4ddce397a-Pinot-grigio.png",
+      "width": 550,
+      "height": 1220,
+      "bytes": 98670,
+      "sha256": "bf7c6489a51920eb2ef41487c9540e387461c46b9cdda5c1364c5b0daff3a8b2"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Rive-San-Pietro-di-Barbozza-a2018-2.jpeg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Rive-San-Pietro-di-Barbozza-a2018-2-150x150.jpeg",
+        "local_path": "fotky/b34c450eff-Rive-San-Pietro-di-Barbozza-a2018-2-150x150.jpeg",
+        "width": 150,
+        "height": 150,
+        "bytes": 3079,
+        "sha256": "2be5e1784cda28eaf71b507da2d70b6a51f0762d92da0018bd379212bb1ef4d3"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Rive-San-Pietro-di-Barbozza-a2018-2-343x1024.jpeg",
+        "local_path": "fotky/b8eb32b1d7-Rive-San-Pietro-di-Barbozza-a2018-2-343x1024.jpeg",
+        "width": 343,
+        "height": 1024,
+        "bytes": 38158,
+        "sha256": "7d0c42856e825f4d7eb83ec89cc8a7d31aed4350d7f2385def27a6c5b6c021a9"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Rive-San-Pietro-di-Barbozza-a2018-2-scaled.jpeg",
+        "local_path": "fotky/74a1668f25-Rive-San-Pietro-di-Barbozza-a2018-2-scaled.jpeg",
+        "width": 858,
+        "height": 2560,
+        "bytes": 169788,
+        "sha256": "ae015172288308339b3004bcc017826def5dd7741e594fb1df9d19dae5e267c7"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Rive-San-Pietro-di-Barbozza-a2018-2.jpeg",
+        "local_path": "fotky/daf737b774-Rive-San-Pietro-di-Barbozza-a2018-2.jpeg",
+        "width": 863,
+        "height": 2574,
+        "bytes": 128526,
+        "sha256": "c8088661b3fc4995ee4890cf09be8fa0c746d1d8f52c4fb8ed7eb652b2bb5d83"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Rive-San-Pietro-di-Barbozza-a2018-2.jpeg",
+      "local_path": "fotky/daf737b774-Rive-San-Pietro-di-Barbozza-a2018-2.jpeg",
+      "width": 863,
+      "height": 2574,
+      "bytes": 128526,
+      "sha256": "c8088661b3fc4995ee4890cf09be8fa0c746d1d8f52c4fb8ed7eb652b2bb5d83"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Sauvignon.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Sauvignon-150x150.png",
+        "local_path": "fotky/be2088ef77-Sauvignon-150x150.png",
+        "width": 150,
+        "height": 150,
+        "bytes": 6038,
+        "sha256": "296df76f075f4ba5803cc30428c7cb2f81da015c3761d1a1f913178d8eb0145d"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Sauvignon-462x1024.png",
+        "local_path": "fotky/a3fd9e506f-Sauvignon-462x1024.png",
+        "width": 462,
+        "height": 1024,
+        "bytes": 79666,
+        "sha256": "eb1b877022cf628c241a63aa840d662519850f8bf51799ff8db458c43310bc98"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Sauvignon-480x302.png",
+        "local_path": "fotky/54455d1ee1-Sauvignon-480x302.png",
+        "width": 480,
+        "height": 302,
+        "bytes": 27098,
+        "sha256": "ceaf35b3dba6a2c14f00ab6ffad70dc5119c79c54d6f2a727720a4ef83b89323"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Sauvignon.png",
+        "local_path": "fotky/16e6876754-Sauvignon.png",
+        "width": 550,
+        "height": 1220,
+        "bytes": 95318,
+        "sha256": "3ae8d5aaba76ecdf07081623321c0c91fe4842286bae8ef05d1bb145d83cca2c"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Sauvignon.png",
+      "local_path": "fotky/16e6876754-Sauvignon.png",
+      "width": 550,
+      "height": 1220,
+      "bytes": 95318,
+      "sha256": "3ae8d5aaba76ecdf07081623321c0c91fe4842286bae8ef05d1bb145d83cca2c"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Aquarius_frontale-1.jpeg",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Aquarius_frontale-1-150x150.jpeg",
+        "local_path": "fotky/6c927f6076-Valdo-Aquarius_frontale-1-150x150.jpeg",
+        "width": 150,
+        "height": 150,
+        "bytes": 3579,
+        "sha256": "d2aaea96d5e94badb59cf33f97e82e995b3b8d6b1568caff863fbb607bf88e7e"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Aquarius_frontale-1-480x302.jpeg",
+        "local_path": "fotky/57da85ce53-Valdo-Aquarius_frontale-1-480x302.jpeg",
+        "width": 480,
+        "height": 302,
+        "bytes": 13544,
+        "sha256": "ab0dae2513d81e81ad2c3cb34852176054f2f2e2ed4a27c2013a4b0ee87bc9f4"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Aquarius_frontale-1-684x1024.jpeg",
+        "local_path": "fotky/c6ade33ba3-Valdo-Aquarius_frontale-1-684x1024.jpeg",
+        "width": 684,
+        "height": 1024,
+        "bytes": 59661,
+        "sha256": "793c99c352df2f6433a51c87f325ca28784f1f2b47c1184653a17635a989331c"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Aquarius_frontale-1-scaled.jpeg",
+        "local_path": "fotky/88e3f29b4a-Valdo-Aquarius_frontale-1-scaled.jpeg",
+        "width": 1709,
+        "height": 2560,
+        "bytes": 273159,
+        "sha256": "eecf80c803b969ae7a1ef1f24c465929800315750f635dbc99a557c8be373736"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Aquarius_frontale-1.jpeg",
+        "local_path": "fotky/b7d5cdc8b2-Valdo-Aquarius_frontale-1.jpeg",
+        "width": 3507,
+        "height": 5253,
+        "bytes": 471579,
+        "sha256": "5e1b5700f597292e17c6b60a9b7da5d8435299430cd7eaffacefc5980d693d56"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Aquarius_frontale-1.jpeg",
+      "local_path": "fotky/b7d5cdc8b2-Valdo-Aquarius_frontale-1.jpeg",
+      "width": 3507,
+      "height": 5253,
+      "bytes": 471579,
+      "sha256": "5e1b5700f597292e17c6b60a9b7da5d8435299430cd7eaffacefc5980d693d56"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-150x150.png",
+        "local_path": "fotky/788d038df5-Valdo-Origine-150x150.png",
+        "width": 150,
+        "height": 150,
+        "bytes": 6422,
+        "sha256": "56827232043f50632729057f3adfed2a308479736d2982b663433c1d6d86bd7a"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-388x1024.png",
+        "local_path": "fotky/8c799152aa-Valdo-Origine-388x1024.png",
+        "width": 388,
+        "height": 1024,
+        "bytes": 65719,
+        "sha256": "5f7c820816854afbcd65b4b904198b702a31546802a3b0020c88fc1794f7ce3e"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-480x302.png",
+        "local_path": "fotky/c50cebe556-Valdo-Origine-480x302.png",
+        "width": 480,
+        "height": 302,
+        "bytes": 18824,
+        "sha256": "299a8fa1f65461313537b971a760c319e48176553af4443f15f77feb5951fceb"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-scaled.png",
+        "local_path": "fotky/8e80c44c4a-Valdo-Origine-scaled.png",
+        "width": 971,
+        "height": 2560,
+        "bytes": 359361,
+        "sha256": "8898f645e104f8011ecba8eadee33031804d86e3b2cb1eb2f36750408766ef5c"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine.png",
+        "local_path": "fotky/cf55fadde3-Valdo-Origine.png",
+        "width": 1188,
+        "height": 3132,
+        "bytes": 707409,
+        "sha256": "e4d47cd25cd952965e5014655c59337b9de7497b07a6559314df18575d159742"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine.png",
+      "local_path": "fotky/cf55fadde3-Valdo-Origine.png",
+      "width": 1188,
+      "height": 3132,
+      "bytes": 707409,
+      "sha256": "e4d47cd25cd952965e5014655c59337b9de7497b07a6559314df18575d159742"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Fluo.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Fluo-150x150.png",
+        "local_path": "fotky/d45309d911-Valdo-Origine-Fluo-150x150.png",
+        "width": 150,
+        "height": 150,
+        "bytes": 5678,
+        "sha256": "a5090314878b8f30eb81b7f2ef6e6de577f1b748b2069d7527e26d937c87e1d7"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Fluo-347x1024.png",
+        "local_path": "fotky/16a2ea9c1c-Valdo-Origine-Fluo-347x1024.png",
+        "width": 347,
+        "height": 1024,
+        "bytes": 67934,
+        "sha256": "d5a101cb5e9f4c7941592c832967e98f1e84f94676e478c4607e20e9397ce24e"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Fluo-480x302.png",
+        "local_path": "fotky/21f490c60c-Valdo-Origine-Fluo-480x302.png",
+        "width": 480,
+        "height": 302,
+        "bytes": 14536,
+        "sha256": "b0582c10ae5b5c3211d1242406fb95b2450ec144aed3a26fc3e29914ea65cb3a"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Fluo.png",
+        "local_path": "fotky/e3ca8d00c7-Valdo-Origine-Fluo.png",
+        "width": 850,
+        "height": 2505,
+        "bytes": 341359,
+        "sha256": "8ce52252cbe011ec7f743c81cbd5d8bee2331db6472207875704c8f2600105be"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Fluo.png",
+      "local_path": "fotky/e3ca8d00c7-Valdo-Origine-Fluo.png",
+      "width": 850,
+      "height": 2505,
+      "bytes": 341359,
+      "sha256": "8ce52252cbe011ec7f743c81cbd5d8bee2331db6472207875704c8f2600105be"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Rose.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Rose-150x150.png",
+        "local_path": "fotky/3bec5013bc-Valdo-Origine-Rose-150x150.png",
+        "width": 150,
+        "height": 150,
+        "bytes": 6545,
+        "sha256": "83102c16b06530b706448de35e7543fe3752c48bba8ffaa4c7c451495c6a8bf9"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Rose-388x1024.png",
+        "local_path": "fotky/361ee466ef-Valdo-Origine-Rose-388x1024.png",
+        "width": 388,
+        "height": 1024,
+        "bytes": 70218,
+        "sha256": "e40e5794a5fef6524137ef76744c02a8675d83eb1e8aeaa1ae582afa6bd72e66"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Rose-480x302.png",
+        "local_path": "fotky/0ed8904d1f-Valdo-Origine-Rose-480x302.png",
+        "width": 480,
+        "height": 302,
+        "bytes": 18777,
+        "sha256": "2d1f3fc7363fd584be0df4ea6df0ef9a40a7a8150635e8b75948ad7124e0d2a1"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Rose-scaled.png",
+        "local_path": "fotky/cce571f565-Valdo-Origine-Rose-scaled.png",
+        "width": 971,
+        "height": 2560,
+        "bytes": 399748,
+        "sha256": "72353718be2fa6c193213f20bacbec8436a81747fd041de14c79d68501cc9fa3"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Rose.png",
+        "local_path": "fotky/f6e68f279e-Valdo-Origine-Rose.png",
+        "width": 1188,
+        "height": 3132,
+        "bytes": 750593,
+        "sha256": "b524b7b72f947bb9ecaff0ab7ae096d4e5af9a794feffbc27fab5eba519ce2fe"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Rose.png",
+      "local_path": "fotky/f6e68f279e-Valdo-Origine-Rose.png",
+      "width": 1188,
+      "height": 3132,
+      "bytes": 750593,
+      "sha256": "b524b7b72f947bb9ecaff0ab7ae096d4e5af9a794feffbc27fab5eba519ce2fe"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Paradise-Fronte-2.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Paradise-Fronte-2-150x150.png",
+        "local_path": "fotky/5135c16d07-Valdo-Paradise-Fronte-2-150x150.png",
+        "width": 150,
+        "height": 150,
+        "bytes": 7755,
+        "sha256": "fab499067f50853b13a2cfd3ea553b8337ad2b79294b60b57bfffdf219c171ed"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Paradise-Fronte-2-576x1024.png",
+        "local_path": "fotky/2c62871c6e-Valdo-Paradise-Fronte-2-576x1024.png",
+        "width": 576,
+        "height": 1024,
+        "bytes": 101305,
+        "sha256": "34753d0b4d19cc202947ce0c5854867261ef5e8537a06edf422eeb4327a7dca3"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Paradise-Fronte-2-scaled.png",
+        "local_path": "fotky/04940e1540-Valdo-Paradise-Fronte-2-scaled.png",
+        "width": 1440,
+        "height": 2560,
+        "bytes": 981548,
+        "sha256": "f5a39eda6570859eda0f67673365a97a29e70cdec6159851946776f0707fd7e5"
+      },
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Paradise-Fronte-2.png",
+        "local_path": "fotky/19aec6f7ef-Valdo-Paradise-Fronte-2.png",
+        "width": 2160,
+        "height": 3840,
+        "bytes": 829967,
+        "sha256": "a4a70a178eb19101ba105de8c380899e1c5e37601149f70a66603dc5738bb65d"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Paradise-Fronte-2.png",
+      "local_path": "fotky/19aec6f7ef-Valdo-Paradise-Fronte-2.png",
+      "width": 2160,
+      "height": 3840,
+      "bytes": 829967,
+      "sha256": "a4a70a178eb19101ba105de8c380899e1c5e37601149f70a66603dc5738bb65d"
+    }
+  },
+  {
+    "family_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/hero1.png",
+    "used_on_primary_pages": true,
+    "variants": [
+      {
+        "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/hero1.png",
+        "local_path": "fotky/736c454ef8-hero1.png",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 722968,
+        "sha256": "dc031878c11f0ab9652fbbd99a5e4c3de0e75b7645f69aed1bd56d3ee69dd7cc"
+      }
+    ],
+    "recommended": {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/hero1.png",
+      "local_path": "fotky/736c454ef8-hero1.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 722968,
+      "sha256": "dc031878c11f0ab9652fbbd99a5e4c3de0e75b7645f69aed1bd56d3ee69dd7cc"
+    }
+  }
+]

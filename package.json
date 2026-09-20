@@ -1,0 +1,15 @@
+{
+  "name": "pizza-visi",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Pizza Visi — poctivá pizza v Rudné, Hostivicích a Berouně",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/serve.mjs --dist",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

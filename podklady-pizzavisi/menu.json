@@ -1,0 +1,2132 @@
+{
+  "source_url": "https://pizzavisi.cz/menu/",
+  "currency": "CZK",
+  "categories": [
+    {
+      "id": "baleni",
+      "name": "Balení",
+      "items": [
+        {
+          "id": "pizza-krabice",
+          "name": "Pizza krabice",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 16.0,
+              "price_text": "16 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 23.0,
+              "price_text": "23 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/pizza-krabice/"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pizzy",
+      "name": "Pizzy",
+      "items": [
+        {
+          "id": "1-margherita",
+          "name": "1. Margherita",
+          "description": "drcená rajčata, mozzarella, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 150.0,
+              "price_text": "150 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 220.0,
+              "price_text": "220 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/1.-Margherita--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/1.-Margherita-.jpg",
+            "local_path": "fotky/2d9abebb21-1.-Margherita-.jpg",
+            "width": 1024,
+            "height": 1016
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 1,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/1-margherita/"
+          ]
+        },
+        {
+          "id": "2-sunkova",
+          "name": "2. Šunková",
+          "description": "drcená rajčata, mozzarella, šunka – prosciutto cotto, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "šunka – prosciutto cotto",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 170.0,
+              "price_text": "170 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 240.0,
+              "price_text": "240 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/2.Sunkova--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/2.Sunkova-.jpg",
+            "local_path": "fotky/c819486371-2.Sunkova-.jpg",
+            "width": 1024,
+            "height": 992
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 2,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/2-sunkova/"
+          ]
+        },
+        {
+          "id": "3-olivova",
+          "name": "3. Olivová",
+          "description": "drcená rajčata, mozzarella, šunka – prosciutto cotto, olivy, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "šunka – prosciutto cotto",
+            "olivy",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 180.0,
+              "price_text": "180 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 250.0,
+              "price_text": "250 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/3.Oliviva-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/3.Oliviva.jpg",
+            "local_path": "fotky/3235d1b89b-3.Oliviva.jpg",
+            "width": 1024,
+            "height": 1008
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 3,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/3-olivova/"
+          ]
+        },
+        {
+          "id": "4-zampionova",
+          "name": "4. Žampionová",
+          "description": "smetana (halta), mozzarella, šunka – prosciutto cotto, žampiony, oregano",
+          "ingredients": [
+            "smetana (halta)",
+            "mozzarella",
+            "šunka – prosciutto cotto",
+            "žampiony",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 180.0,
+              "price_text": "180 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 250.0,
+              "price_text": "250 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/4.zampionova--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/4.zampionova-.jpg",
+            "local_path": "fotky/128433fb4d-4.zampionova-.jpg",
+            "width": 1016,
+            "height": 1024
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 4,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/4-zampionova/"
+          ]
+        },
+        {
+          "id": "5-ananasova",
+          "name": "5. Ananasová",
+          "description": "drcená rajčata, mozzarella, šunka – prosciutto cotto, ananas, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "šunka – prosciutto cotto",
+            "ananas",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 180.0,
+              "price_text": "180 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 250.0,
+              "price_text": "250 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/5.-Ananasova-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/5.-Ananasova.jpg",
+            "local_path": "fotky/70f4354480-5.-Ananasova.jpg",
+            "width": 1016,
+            "height": 1024
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 5,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/5-hawai/"
+          ]
+        },
+        {
+          "id": "6-syrova",
+          "name": "6. Sýrová",
+          "description": "smetana (halta), mozzarella, gorgonzola, gouda, grana padano, oregano",
+          "ingredients": [
+            "smetana (halta)",
+            "mozzarella",
+            "gorgonzola",
+            "gouda",
+            "grana padano",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 190.0,
+              "price_text": "190 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 260.0,
+              "price_text": "260 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/6.-Syrova--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/6.-Syrova-.jpg",
+            "local_path": "fotky/d62cb102a2-6.-Syrova-.jpg",
+            "width": 1024,
+            "height": 1016
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 6,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/6-syrova/"
+          ]
+        },
+        {
+          "id": "7-salamova",
+          "name": "7. Salámová",
+          "description": "drcená rajčata, mozzarella, salám pepperoni, cibule, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "salám pepperoni",
+            "cibule",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 190.0,
+              "price_text": "190 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 260.0,
+              "price_text": "260 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/7.-Salamova-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/7.-Salamova.jpg",
+            "local_path": "fotky/5d74f83d73-7.-Salamova.jpg",
+            "width": 1024,
+            "height": 1008
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 7,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/7-salamova/"
+          ]
+        },
+        {
+          "id": "8-slaninova",
+          "name": "8. Slaninová",
+          "description": "drcená rajčata, mozzarella, anglická slanina, cibule, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "anglická slanina",
+            "cibule",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 190.0,
+              "price_text": "190 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 260.0,
+              "price_text": "260 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/8.Slaninova-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/8.Slaninova.jpg",
+            "local_path": "fotky/c126b1e68e-8.Slaninova.jpg",
+            "width": 976,
+            "height": 1024
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 8,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/8-slaninova/"
+          ]
+        },
+        {
+          "id": "9-tunakova",
+          "name": "9. Tuňáková",
+          "description": "smetana (halta), mozzarella, tuňák, cibule, oregano",
+          "ingredients": [
+            "smetana (halta)",
+            "mozzarella",
+            "tuňák",
+            "cibule",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 190.0,
+              "price_text": "190 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 260.0,
+              "price_text": "260 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/9.Tunakova--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/9.Tunakova-.jpg",
+            "local_path": "fotky/b89eb2399b-9.Tunakova-.jpg",
+            "width": 1024,
+            "height": 1008
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 9,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/9-tunakova/"
+          ]
+        },
+        {
+          "id": "10-symfonie",
+          "name": "10. Symfonie",
+          "description": "smetana (halta), mozzarella, gorgonzola, anglická slanina, cibule, špenát, oregano",
+          "ingredients": [
+            "smetana (halta)",
+            "mozzarella",
+            "gorgonzola",
+            "anglická slanina",
+            "cibule",
+            "špenát",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 210.0,
+              "price_text": "210 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 280.0,
+              "price_text": "280 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/10.-Symfonie-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/10.-Symfonie.jpg",
+            "local_path": "fotky/df6a3dfe61-10.-Symfonie.jpg",
+            "width": 1024,
+            "height": 976
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 10,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/10-symfonie/"
+          ]
+        },
+        {
+          "id": "11-vegetarianska",
+          "name": "11. Vegetariánská",
+          "description": "drcená rajčata, mozzarella, cibule, paprika, žampiony, špenát, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "cibule",
+            "paprika",
+            "žampiony",
+            "špenát",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 190.0,
+              "price_text": "190 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 260.0,
+              "price_text": "260 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/11.Vegetarianska-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/11.Vegetarianska.jpg",
+            "local_path": "fotky/d4a80e6cdb-11.Vegetarianska.jpg",
+            "width": 1024,
+            "height": 1008
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 11,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/11-vegetarianska/"
+          ]
+        },
+        {
+          "id": "12-hermelinova",
+          "name": "12. Hermelínová",
+          "description": "smetana (halta), mozzarella, šunka – prosciutto cotto, hermelín, brusinky, oregano",
+          "ingredients": [
+            "smetana (halta)",
+            "mozzarella",
+            "šunka – prosciutto cotto",
+            "hermelín",
+            "brusinky",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 200.0,
+              "price_text": "200 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 270.0,
+              "price_text": "270 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/12.Hermelinova-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/12.Hermelinova.jpg",
+            "local_path": "fotky/a92c693252-12.Hermelinova.jpg",
+            "width": 1000,
+            "height": 1024
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 12,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/12-hermelinova/"
+          ]
+        },
+        {
+          "id": "13-mexicka",
+          "name": "13. Mexická 🌶️",
+          "description": "drcená rajčata, mozzarella, salám pepperoni, cibule, kukuřice, kozí rohy, chilli, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "salám pepperoni",
+            "cibule",
+            "kukuřice",
+            "kozí rohy",
+            "chilli",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 190.0,
+              "price_text": "190 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 260.0,
+              "price_text": "260 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/13.Mexicka--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/13.Mexicka-.jpg",
+            "local_path": "fotky/e9e64a1559-13.Mexicka-.jpg",
+            "width": 576,
+            "height": 1024
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 13,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/13-mexicka/"
+          ]
+        },
+        {
+          "id": "14-uzenarska",
+          "name": "14. Uzenářská",
+          "description": "drcená rajčata, mozzarella, šunka – prosciutto cotto, anglická slanina, salám pepperoni, cibule, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "šunka – prosciutto cotto",
+            "anglická slanina",
+            "salám pepperoni",
+            "cibule",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 190.0,
+              "price_text": "190 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 260.0,
+              "price_text": "260 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/14.Uzenarska--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/14.Uzenarska-.jpg",
+            "local_path": "fotky/51f2610e7b-14.Uzenarska-.jpg",
+            "width": 1024,
+            "height": 984
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 14,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/14-uzenarska/"
+          ]
+        },
+        {
+          "id": "15-tunakova-special",
+          "name": "15. Tuňáková speciál",
+          "description": "smetana (halta), mozzarella, šunka, žampiony, tuňák, olivy, oregano",
+          "ingredients": [
+            "smetana (halta)",
+            "mozzarella",
+            "šunka",
+            "žampiony",
+            "tuňák",
+            "olivy",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 210.0,
+              "price_text": "210 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 280.0,
+              "price_text": "280 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/15.Tunakova-special--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/15.Tunakova-special-.jpg",
+            "local_path": "fotky/7e719ae95a-15.Tunakova-special-.jpg",
+            "width": 1024,
+            "height": 984
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 15,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/15-tunakova-special/"
+          ]
+        },
+        {
+          "id": "16-visi",
+          "name": "16. Visi 🌶️",
+          "description": "drcená rajčata, mozzarella, salám pepperoni, anglická slanina, paprika, cibule, žampiony, jalapeňo, grana padano, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "salám pepperoni",
+            "anglická slanina",
+            "paprika",
+            "cibule",
+            "žampiony",
+            "jalapeňo",
+            "grana padano",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 210.0,
+              "price_text": "210 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 280.0,
+              "price_text": "280 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/16.-Visi--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/16.-Visi-.jpg",
+            "local_path": "fotky/6cf261b7a1-16.-Visi-.jpg",
+            "width": 1024,
+            "height": 992
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 16,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/16-visi/"
+          ]
+        },
+        {
+          "id": "17-dabelska",
+          "name": "17. Ďábelská 🌶️",
+          "description": "smetana (halta), mozzarella, šunka – prosciutto cotto, salám pepperoni, kozí rohy, chilli, oregano",
+          "ingredients": [
+            "smetana (halta)",
+            "mozzarella",
+            "šunka – prosciutto cotto",
+            "salám pepperoni",
+            "kozí rohy",
+            "chilli",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 190.0,
+              "price_text": "190 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 260.0,
+              "price_text": "260 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/17.-Dabelska--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/17.-Dabelska-.jpg",
+            "local_path": "fotky/2f8eda6406-17.-Dabelska-.jpg",
+            "width": 1008,
+            "height": 1024
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 17,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/17-dabelska/"
+          ]
+        },
+        {
+          "id": "18-ohniva",
+          "name": "18. Ohnivá 🌶️🌶️",
+          "description": "drcená rajčata, mozzarella, salám pepperoni, ventricina pikante, anglická slanina, jalapeňo, chilli, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "salám pepperoni",
+            "ventricina pikante",
+            "anglická slanina",
+            "jalapeňo",
+            "chilli",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 200.0,
+              "price_text": "200 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 270.0,
+              "price_text": "270 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/18.-Ohniva-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/18.-Ohniva.jpg",
+            "local_path": "fotky/e0ef0e45d8-18.-Ohniva.jpg",
+            "width": 1024,
+            "height": 1016
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 18,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/18-ohniva/"
+          ]
+        },
+        {
+          "id": "19-zeleninova",
+          "name": "19. Zeleninová 🌶️",
+          "description": "Smetana (halta), mozzarella, žampiony, kukuřice, cibule, olivy, jalapeňo, paprika, oregano",
+          "ingredients": [
+            "Smetana (halta)",
+            "mozzarella",
+            "žampiony",
+            "kukuřice",
+            "cibule",
+            "olivy",
+            "jalapeňo",
+            "paprika",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 190.0,
+              "price_text": "190 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 260.0,
+              "price_text": "260 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/19.-Zeleninova--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/19.-Zeleninova-.jpg",
+            "local_path": "fotky/054fcd5082-19.-Zeleninova-.jpg",
+            "width": 1024,
+            "height": 1016
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 19,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/19-zeleninova/"
+          ]
+        },
+        {
+          "id": "20-z-komina",
+          "name": "20. Z komína",
+          "description": "drcená rajčata, mozzarella, slanina z komína, paprika, kukuřice, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "slanina z komína",
+            "paprika",
+            "kukuřice",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 200.0,
+              "price_text": "200 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 270.0,
+              "price_text": "270 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/20.-Z-komina--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/20.-Z-komina-.jpg",
+            "local_path": "fotky/85a5cba32a-20.-Z-komina-.jpg",
+            "width": 1024,
+            "height": 1000
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 20,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/20-z-komina/"
+          ]
+        },
+        {
+          "id": "21-hovezi",
+          "name": "21. Hovězí",
+          "description": "drcená rajčata, mozzarella, hovězí roastbeef, cibule, grana padano, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "hovězí roastbeef",
+            "cibule",
+            "grana padano",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 220.0,
+              "price_text": "220 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 290.0,
+              "price_text": "290 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/21.Hovezi-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/21.Hovezi.jpg",
+            "local_path": "fotky/60a820f1cc-21.Hovezi.jpg",
+            "width": 576,
+            "height": 1024
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 21,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/21-hovezi/"
+          ]
+        },
+        {
+          "id": "22-susena-sunka",
+          "name": "22. Sušená šunka",
+          "description": "drcená rajčata, mozzarella, šunka - prosciutto crudo, rukola, cherry rajčata, grana padano, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "šunka - prosciutto crudo",
+            "rukola",
+            "cherry rajčata",
+            "grana padano",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 230.0,
+              "price_text": "230 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 300.0,
+              "price_text": "300 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/22.Susena-sunka--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/22.Susena-sunka-.jpg",
+            "local_path": "fotky/c441b2c0a5-22.Susena-sunka-.jpg",
+            "width": 840,
+            "height": 1024
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 22,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/22-susena-sunka/"
+          ]
+        },
+        {
+          "id": "23-pikantni",
+          "name": "23. Pikantní",
+          "description": "drcená rajčata, mozzarella, ventricina piccante, grana padano, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "ventricina piccante",
+            "grana padano",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 210.0,
+              "price_text": "210 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 290.0,
+              "price_text": "290 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/23.Pikantni-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/23.Pikantni.jpg",
+            "local_path": "fotky/8a777d5575-23.Pikantni.jpg",
+            "width": 1024,
+            "height": 1016
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 23,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/23-pikantni/"
+          ]
+        },
+        {
+          "id": "24-kremova",
+          "name": "24. Krémová",
+          "description": "drcená rajčata, mozzarella, rukola, cherry rajčata, mozarella balzamikový krém, bazalkové pesto, oregano",
+          "ingredients": [
+            "drcená rajčata",
+            "mozzarella",
+            "rukola",
+            "cherry rajčata",
+            "mozarella balzamikový krém",
+            "bazalkové pesto",
+            "oregano"
+          ],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 210.0,
+              "price_text": "210 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 290.0,
+              "price_text": "290 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": null,
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/24.Kremova--150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/24.Kremova-.jpg",
+            "local_path": "fotky/f1f725ee13-24.Kremova-.jpg",
+            "width": 1024,
+            "height": 1016
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "number": 24,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/24-kremova/"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vino-prosecco",
+      "name": "Víno / Prosecco",
+      "items": [
+        {
+          "id": "valdo-cuvee-del-fondatore",
+          "name": "VALDO CUVÉE DEL FONDATORE",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 479.0,
+          "price_text": "479 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Fondatore-150x150.png",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Fondatore.png",
+            "local_path": "fotky/7ca3b74fbd-Fondatore.png",
+            "width": 1011,
+            "height": 2927
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/valdo-cuvee-del-fondatore/"
+          ]
+        },
+        {
+          "id": "cantina-di-rauscedo-chardonnay-0-75l",
+          "name": "CANTINA DI RAUSCEDO CHARDONNAY 0,75L",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 329.0,
+          "price_text": "329 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Chardonnay-150x150.png",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Chardonnay.png",
+            "local_path": "fotky/dd1a0f0506-Chardonnay.png",
+            "width": 550,
+            "height": 1220
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/cantina-di-rauscedo-chardonnay-075l/"
+          ]
+        },
+        {
+          "id": "cantina-di-rauscedo-pinot-grigio-0-75l",
+          "name": "CANTINA DI RAUSCEDO PINOT GRIGIO 0,75L",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 329.0,
+          "price_text": "329 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Pinot-grigio-150x150.png",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Pinot-grigio.png",
+            "local_path": "fotky/b4ddce397a-Pinot-grigio.png",
+            "width": 550,
+            "height": 1220
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/cantina-di-rauscedo-pinot-grigio-075l/"
+          ]
+        },
+        {
+          "id": "valdo-aquarius-blanc-de-blancs-0-75l",
+          "name": "VALDO AQUARIUS BLANC DE BLANCS 0,75l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 399.0,
+          "price_text": "399 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Aquarius_frontale-1-150x150.jpeg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Aquarius_frontale-1.jpeg",
+            "local_path": "fotky/b7d5cdc8b2-Valdo-Aquarius_frontale-1.jpeg",
+            "width": 3507,
+            "height": 5253
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/valdo-aquarius-blanc-de-blancs-075l/"
+          ]
+        },
+        {
+          "id": "cantina-di-rauscedo-sauvignon-0-75l",
+          "name": "CANTINA DI RAUSCEDO SAUVIGNON 0,75L",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 329.0,
+          "price_text": "329 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Sauvignon-150x150.png",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Sauvignon.png",
+            "local_path": "fotky/16e6876754-Sauvignon.png",
+            "width": 550,
+            "height": 1220
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/cantina-di-rauscedo-sauvignon-075l/"
+          ]
+        },
+        {
+          "id": "valdo-extra-dry-doc-etichetta-nera-0-75l",
+          "name": "VALDO Extra Dry DOC Etichetta Nera 0,75l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 359.0,
+          "price_text": "359 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/464b0c56-c36c-403c-bbef-0e81d7260843-150x150.jpg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/464b0c56-c36c-403c-bbef-0e81d7260843.jpg",
+            "local_path": "fotky/f17a9e3f09-464b0c56-c36c-403c-bbef-0e81d7260843.jpg",
+            "width": 508,
+            "height": 739
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/valdo-extra-dry-doc-etichetta-nera-075l/"
+          ]
+        },
+        {
+          "id": "valdo-iki-extra-dry-0-75l",
+          "name": "VALDO IKI EXTRA DRY 0,75l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 329.0,
+          "price_text": "329 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/IKI-extra-dry1-150x150.png",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/IKI-extra-dry1.png",
+            "local_path": "fotky/86dc7c929e-IKI-extra-dry1.png",
+            "width": 945,
+            "height": 2362
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/valdo-iki-extra-dry-075l/"
+          ]
+        },
+        {
+          "id": "valdo-origine-brut-0-75l",
+          "name": "VALDO ORIGINE BRUT 0,75l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 389.0,
+          "price_text": "389 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-150x150.png",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine.png",
+            "local_path": "fotky/cf55fadde3-Valdo-Origine.png",
+            "width": 1188,
+            "height": 3132
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/valdo-origine-brut-075l/"
+          ]
+        },
+        {
+          "id": "valdo-origine-extra-dry-fluo-0-75l",
+          "name": "VALDO ORIGINE EXTRA DRY FLUO 0,75l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 389.0,
+          "price_text": "389 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Fluo-150x150.png",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Fluo.png",
+            "local_path": "fotky/e3ca8d00c7-Valdo-Origine-Fluo.png",
+            "width": 850,
+            "height": 2505
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/valdo-origine-extra-dry-fluo-075l/"
+          ]
+        },
+        {
+          "id": "valdo-origine-rose-brut-0-75l",
+          "name": "VALDO ORIGINE ROSE BRUT 0,75l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 389.0,
+          "price_text": "389 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Rose-150x150.png",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Origine-Rose.png",
+            "local_path": "fotky/f6e68f279e-Valdo-Origine-Rose.png",
+            "width": 1188,
+            "height": 3132
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/valdo-origine-rose-brut-075l/"
+          ]
+        },
+        {
+          "id": "valdo-paradise-rose-brut-0-75l",
+          "name": "VALDO PARADISE ROSE BRUT 0,75l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 399.0,
+          "price_text": "399 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Paradise-Fronte-2-150x150.png",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Valdo-Paradise-Fronte-2.png",
+            "local_path": "fotky/19aec6f7ef-Valdo-Paradise-Fronte-2.png",
+            "width": 2160,
+            "height": 3840
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/valdo-paradise-rose-brut-075l/"
+          ]
+        },
+        {
+          "id": "valdo-rive-di-san-pietro-extra-brut-0-75l",
+          "name": "VALDO RIVE DI SAN PIETRO EXTRA BRUT 0,75l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 519.0,
+          "price_text": "519 Kč",
+          "image": {
+            "source_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Rive-San-Pietro-di-Barbozza-a2018-2-150x150.jpeg",
+            "original_url": "https://pizzavisi.cz/wp-content/uploads/2026/03/Rive-San-Pietro-di-Barbozza-a2018-2.jpeg",
+            "local_path": "fotky/daf737b774-Rive-San-Pietro-di-Barbozza-a2018-2.jpeg",
+            "width": 863,
+            "height": 2574
+          },
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": null,
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/valdo-rive-di-san-pietro-extra-brut-075l/"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dej-si-navic",
+      "name": "Dej si navíc",
+      "items": [
+        {
+          "id": "grana-padano",
+          "name": "Grana padano",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 40,
+              "price_text": "40 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 55,
+              "price_text": "55 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+40 Kč / 55 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_962",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/grana-padano/"
+          ]
+        },
+        {
+          "id": "sunka",
+          "name": "Šunka",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 40,
+              "price_text": "40 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 55,
+              "price_text": "55 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+40 Kč / 55 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_983",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/sunka/"
+          ]
+        },
+        {
+          "id": "salam",
+          "name": "Salám",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 45,
+              "price_text": "45 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 60,
+              "price_text": "60 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+45 Kč / 60 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_986",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/salam/"
+          ]
+        },
+        {
+          "id": "mozzarella",
+          "name": "Mozzarella",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 30,
+              "price_text": "30 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 45,
+              "price_text": "45 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+30 Kč / 45 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_989",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/mozzarella/"
+          ]
+        },
+        {
+          "id": "slanina",
+          "name": "Slanina",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 40,
+              "price_text": "40 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 55,
+              "price_text": "55 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+40 Kč / 55 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_992",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/slanina/"
+          ]
+        },
+        {
+          "id": "cibule",
+          "name": "Cibule",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 25,
+              "price_text": "25 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 40,
+              "price_text": "40 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+25 Kč / 40 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_995",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/cibule/"
+          ]
+        },
+        {
+          "id": "zampiony",
+          "name": "Žampiony",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 35,
+              "price_text": "35 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 50,
+              "price_text": "50 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+35 Kč / 50 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_999",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/zampiony/"
+          ]
+        },
+        {
+          "id": "olivy",
+          "name": "Olivy",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 25,
+              "price_text": "25 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 40,
+              "price_text": "40 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+25 Kč / 40 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1002",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/olivy/"
+          ]
+        },
+        {
+          "id": "kukurice",
+          "name": "Kukuřice",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 25,
+              "price_text": "25 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 40,
+              "price_text": "40 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+25 Kč / 40 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1005",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/kukurice/"
+          ]
+        },
+        {
+          "id": "spenat",
+          "name": "Špenát",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 25,
+              "price_text": "25 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 40,
+              "price_text": "40 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+25 Kč / 40 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1008",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/spenat/"
+          ]
+        },
+        {
+          "id": "cesnek",
+          "name": "Česnek",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 20,
+              "price_text": "20 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 35,
+              "price_text": "35 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+20 Kč / 35 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1011",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/cesnek/"
+          ]
+        },
+        {
+          "id": "tunak",
+          "name": "Tuňák",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 40,
+              "price_text": "40 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 55,
+              "price_text": "55 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+40 Kč / 55 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1014",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/tunak/"
+          ]
+        },
+        {
+          "id": "chilli",
+          "name": "Chilli",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 20,
+              "price_text": "20 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 35,
+              "price_text": "35 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+20 Kč / 35 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1017",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/chilli/"
+          ]
+        },
+        {
+          "id": "berani-rohy",
+          "name": "Beraní rohy",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 25,
+              "price_text": "25 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 40,
+              "price_text": "40 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+25 Kč / 40 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1020",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/berani-rohy/"
+          ]
+        },
+        {
+          "id": "ananas",
+          "name": "Ananas",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 25,
+              "price_text": "25 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 40,
+              "price_text": "40 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+25 Kč / 40 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1023",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/ananas/"
+          ]
+        },
+        {
+          "id": "jalapeno",
+          "name": "Jalapeňo",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 30,
+              "price_text": "30 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 45,
+              "price_text": "45 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+30 Kč / 45 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1027",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/jalapeno/"
+          ]
+        },
+        {
+          "id": "hovezi-roastbeef",
+          "name": "Hovězí roastbeef",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 45,
+              "price_text": "45 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 60,
+              "price_text": "60 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+45 Kč / 60 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1030",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/hovezi-roastbeef/"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chutne-okraje",
+      "name": "chutné okraje",
+      "items": [
+        {
+          "id": "mozzarellove-okraje",
+          "name": "Mozzarellové okraje",
+          "description": "",
+          "ingredients": [],
+          "prices": [
+            {
+              "label": "30 cm",
+              "diameter_cm": 30,
+              "price_czk": 60,
+              "price_text": "60 Kč"
+            },
+            {
+              "label": "40 cm",
+              "diameter_cm": 40,
+              "price_czk": 80,
+              "price_text": "80 Kč"
+            }
+          ],
+          "price_czk": null,
+          "price_text": "+60 Kč / 80 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1074",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/mozzarellove-okraje/"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "omacky",
+      "name": "Omáčky",
+      "items": [
+        {
+          "id": "chilli-50g",
+          "name": "Chilli 50g",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 35.0,
+          "price_text": "35 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1087",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/chilli-50g/"
+          ]
+        },
+        {
+          "id": "bylinkova-50g",
+          "name": "Bylinková 50g",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 35.0,
+          "price_text": "35 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1084",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/bylinkova-50g/"
+          ]
+        },
+        {
+          "id": "cesnekova-50g",
+          "name": "Česneková 50g",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 35.0,
+          "price_text": "35 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1081",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/cesnekova-50g/"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "napoje",
+      "name": "Nápoje",
+      "items": [
+        {
+          "id": "nestea-zeleny-caj-0-5l",
+          "name": "Nestea zelený čaj 0,5l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 50.0,
+          "price_text": "50 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1038",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/nestea-zeleny-caj-05l/"
+          ]
+        },
+        {
+          "id": "nestea-broskev-0-5l",
+          "name": "Nestea broskev 0,5l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 50.0,
+          "price_text": "50 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1042",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/nestea-broskev-05l/"
+          ]
+        },
+        {
+          "id": "fanta-pomeranc-0-5l",
+          "name": "Fanta pomeranč 0.5l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 50.0,
+          "price_text": "50 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1046",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/fanta-pomeranc-0-5l/"
+          ]
+        },
+        {
+          "id": "coca-cola-0-5l",
+          "name": "Coca-Cola 0,5l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 50.0,
+          "price_text": "50 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1052",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/coca-cola-05l/"
+          ]
+        },
+        {
+          "id": "coca-cola-light-0-5l",
+          "name": "Coca-Cola light 0,5l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 50.0,
+          "price_text": "50 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1049",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/coca-cola-light-05l/"
+          ]
+        },
+        {
+          "id": "sprite-0-5l",
+          "name": "Sprite 0,5l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 50.0,
+          "price_text": "50 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1055",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/sprite-05l/"
+          ]
+        },
+        {
+          "id": "coca-cola-plech",
+          "name": "Coca-Cola (plech)",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 40.0,
+          "price_text": "40 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1058",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/coca-cola-plech/"
+          ]
+        },
+        {
+          "id": "sprite-plech",
+          "name": "Sprite (plech)",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 40.0,
+          "price_text": "40 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1062",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/sprite-plech/"
+          ]
+        },
+        {
+          "id": "fanta-pomeranc-plech",
+          "name": "Fanta pomeranč (plech)",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 40.0,
+          "price_text": "40 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1065",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/fanta-pomeranc-plech/"
+          ]
+        },
+        {
+          "id": "voda-jemne-sycena-0-5l",
+          "name": "Voda jemně sycená 0,5l",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 30.0,
+          "price_text": "30 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1068",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/voda-jemne-sycena-05l/"
+          ]
+        },
+        {
+          "id": "voda-neperliva",
+          "name": "Voda neperlivá",
+          "description": "",
+          "ingredients": [],
+          "prices": [],
+          "price_czk": 30.0,
+          "price_text": "30 Kč",
+          "image": null,
+          "source_url": "https://pizzavisi.cz/menu/",
+          "source_element_id": "menu_1071",
+          "allergens": null,
+          "detail_urls": [
+            "https://pizzavisi.cz/menus/voda-neperliva/"
+          ]
+        }
+      ]
+    }
+  ],
+  "item_count": 69,
+  "allergen_documents": [
+    {
+      "source_url": "https://pizzavisi.cz/wp-content/uploads/2024/03/alergeny.pdf",
+      "local_path": "dokumenty/bd3fa8188a-alergeny.pdf"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+# Build output and dependencies
+dist/
+node_modules/
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+
+# Python and tool caches
+__pycache__/
+*.py[cod]
+.cache/
+coverage/
+*.log
+
+# Local editor and operating system files
+.DS_Store
+._*
+.idea/
+.vscode/
+*.swp
+*.swo

@@ -1,0 +1,33 @@
+{
+  "checked_at": "2026-09-20T18:50:05.801944+00:00",
+  "passed": true,
+  "counts": {
+    "pages": 91,
+    "menu_items": 69,
+    "menu_categories": {
+      "Balení": 1,
+      "Pizzy": 24,
+      "Víno / Prosecco": 12,
+      "Dej si navíc": 17,
+      "chutné okraje": 1,
+      "Omáčky": 3,
+      "Nápoje": 11
+    },
+    "photo_families": 47,
+    "primary_photo_families": 46,
+    "photos": 139,
+    "graphics": 33,
+    "documents": 1,
+    "download_errors": 1,
+    "failed_assets": 3
+  },
+  "checks": [
+    "All JSON files parse",
+    "All downloaded media files exist",
+    "24 pizzas each with 2 prices and a local image",
+    "69 current menu items, each with a price",
+    "Branch phone links and every delivery area match archived source text",
+    "SHA-256 and byte size match all 173 unique downloaded files",
+    "Browser-rendered image and background coverage verified on all 3 primary pages"
+  ]
+}
