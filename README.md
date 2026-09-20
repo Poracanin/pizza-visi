@@ -20,6 +20,12 @@ npm run preview
 
 `dist/` je samostatný statický web vhodný k nasazení na statický hosting. Server poskytuje pouze webové soubory z `public/`, případně `dist/`; archiv podkladů nezveřejňuje. Náhled a dev server nelze provozovat současně na stejném portu.
 
+## GitHub Pages
+
+Veřejný demo web: https://poracanin.github.io/pizza-visi/.
+
+Workflow `.github/workflows/pages.yml` po každém pushi do `main` spustí testy, sestaví web a nasadí obsah `dist/` do kořene této adresy. Lze ho spustit i ručně v záložce Actions. V Settings → Pages musí být jako zdroj nastaveno **GitHub Actions**. Kořen repozitáře se nepublikuje; archiv podkladů a zdrojové skripty nejsou součástí nasazeného webu. Relativní cesty k souborům podporují umístění pod `/pizza-visi/`.
+
 ## Co funguje
 
 - Kompaktní úvodní modal: nahoře tři pobočky s fotografiemi, pod nimi doručovací adresa bez přepínání. Zapamatování pobočky a možnost změny.
@@ -48,4 +54,4 @@ npm run preview
 - `docs/background-texture.md`: původ a zadání vytvořené textury.
 - `tests/`: ceny, vyhledávání, fotografie, pobočkové kontakty a demo přiřazování lokalit; výpočty košíku, obnovování, slučování a limity počtů.
 
-Původní PDF s alergeny nesouhlasí s aktuálním menu. Proto nový web odkazuje s dotazy na alergeny přímo na pobočky; starší informace nevydává za aktuální. Nedělní otevírací dobu zdroj neuvádí. Ceny, kontakty a časy odpovídají exportu z 20. 9. 2026 a před veřejným spuštěním je má klient potvrdit. Web zatím není veřejně publikován.
+Původní PDF s alergeny nesouhlasí s aktuálním menu. Proto nový web odkazuje s dotazy na alergeny přímo na pobočky; starší informace nevydává za aktuální. Nedělní otevírací dobu zdroj neuvádí. Ceny, kontakty a časy odpovídají exportu z 20. 9. 2026 a před ostrým spuštěním je má klient potvrdit. Publikovaná verze slouží jako demo bez skutečných objednávek a plateb.
