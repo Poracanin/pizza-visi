@@ -13,8 +13,12 @@ http.createServer(async (req, res) => {
   if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405); res.end(); return; }
   try {
     const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
-    const file = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
+    let file = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
     if (!file.startsWith(root + path.sep) || pathname.includes('\0')) { res.writeHead(403); res.end(); return; }
+    if ((await stat(file)).isDirectory()) {
+      if (!pathname.endsWith('/')) { res.writeHead(302, { Location: pathname + '/' }); res.end(); return; }
+      file = path.join(file, 'index.html');
+    }
     if (!(await stat(file)).isFile()) throw new Error('Not a file');
     const body = await readFile(file);
     res.writeHead(200, { 'Content-Type': mime[path.extname(file)] || 'application/octet-stream', 'Content-Length': body.length, 'Cache-Control': 'no-cache', 'X-Content-Type-Options': 'nosniff' });

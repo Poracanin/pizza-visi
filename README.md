@@ -28,6 +28,8 @@ Workflow `.github/workflows/pages.yml` po každém pushi do `main` spustí testy
 
 ## Co funguje
 
+Administrace / POS je dostupná na **https://poracanin.github.io/pizza-visi/admin/** (lokálně `/admin/`). Obsahuje objednávky podle kanálů včetně Woltu, samostatné sklady tří poboček, naskladnění a upravitelné receptury s jednorázovým odečtem při zahájení přípravy. Jde o veřejné demo bez přihlášení a živých integrací, s ukládáním v prohlížeči a ukázkovými gramážemi. Podrobnosti: [docs/admin.md](docs/admin.md).
+
 - Kompaktní úvodní modal: nahoře tři pobočky s fotografiemi, pod nimi doručovací adresa bez přepínání. Zapamatování pobočky a možnost změny.
 - Kompaktní hero se ztlumenou fotografií vybrané pobočky v pozadí.
 - V modalu lze zadat doručovací adresu: po potvrzení „Doručit sem“ demo automaticky vybere pobočku podle názvu města nebo rozvozové lokality a zavře modal. Překryvy nabídnou ruční volbu, neznámá lokalita se nepotvrdí. Nejde o geokódování ani ověření dostupnosti rozvozu; adresa se neodesílá na server a neukládá do úložiště prohlížeče.
