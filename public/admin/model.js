@@ -1,4 +1,5 @@
 import {stockSummary, makeInitialBatches, addBatch, allocateBatches, validateBatches} from './inventory.js';
+import {deliveryAssignment, removeDeliveryOrder, validateDeliveryPlans} from './delivery.js?v=b58c57dc';
 // Amounts are whole grams or millilitres. Mutations are pure: one complete state
 // is persisted only after the entire operation succeeds.
 export const SOURCES = ['web', 'pos', 'wolt', 'foodora', 'bolt'];
@@ -44,7 +45,8 @@ export function addOrder(state, site, input, now = new Date().toISOString()) {
   const order = {id: `VISI-${++next.sequence}`, branchId: input.branchId, source: input.source,
     fulfillment: input.fulfillment, payment: input.payment, label: String(input.label || 'Demo objednávka').trim().slice(0, 80),
     status: 'new', lines, subtotal, packaging, delivery, total: subtotal + packaging + delivery,
-    createdAt: now, updatedAt: now, minutes: 30, deduction: null};
+    createdAt: now, updatedAt: now, minutes: 30, deduction: null,
+    deliveryAddress: input.fulfillment === 'delivery' ? String(input.deliveryAddress || '').trim().slice(0, 180) : ''};
   next.orders.unshift(order);
   return {state: next, order};
 }
@@ -76,6 +78,11 @@ export function transitionOrder(state, id, target, seed, now = new Date().toISOS
   if (missing.length) fail(`Nedostatek surovin: ${missing.map(i => `${i.name} (chybí ${i.missing} ${i.unit})`).join(', ')}. Doplňte použitelné šarže a data spotřeby.`);
   const next = clone(state);
   const order = next.orders.find(o => o.id === id);
+  if (target === 'completed' && order.fulfillment === 'delivery') {
+    const assignment = deliveryAssignment(next, order);
+    if (!assignment) fail('Nejprve přiřaďte objednávku kurýrovi v plánu rozvozu.');
+    order.handoff = {...assignment, at: now};
+  }
   if (target === 'preparing') {
     if (order.deduction) fail('Suroviny už byly odečteny.');
     order.deduction = {at: now, allocations: allocateBatches(next, order.branchId, needs, now), amounts: Object.fromEntries(needs.map(i => [i.id, i.needed]))};
@@ -85,6 +92,7 @@ export function transitionOrder(state, id, target, seed, now = new Date().toISOS
   order.status = target;
   order.minutes = minutes;
   order.updatedAt = now;
+  if (['completed', 'cancelled'].includes(target)) removeDeliveryOrder(next, order);
   return next;
 }
 export function restock(state, seed, branchId, ingredientId, amount, metadata, now = new Date().toISOString()) {
@@ -133,6 +141,7 @@ export function restoreState(raw, site, seed) {
       if (!item || (item.category === 'pizzy' ? ![30, 40].includes(line.size) : line.size !== null) || !integer(line.quantity, 1, 20)) fail('Položka objednávky je neplatná.');
     }
     const deducted = ['preparing', 'ready', 'completed'].includes(order.status);
+    if (order.handoff && (order.status !== 'completed' || order.fulfillment !== 'delivery' || !integer(order.handoff.courierId, 1, 3) || !integer(order.handoff.position, 1, Number.MAX_SAFE_INTEGER) || !Number.isFinite(Date.parse(order.handoff.at)))) fail('Záznam předání kurýrovi je neplatný.');
     if (deducted !== Boolean(order.deduction)) fail('Záznam odečtu skladu je neplatný.');
     if (deducted && (!order.deduction.amounts || Object.entries(order.deduction.amounts).some(([id, qty]) => !seed.ingredients.some(i => i.id === id) || !integer(qty, 1, 1000000000)))) fail('Množství v odečtu je neplatné.');
   }
@@ -140,6 +149,7 @@ export function restoreState(raw, site, seed) {
     if (!Object.hasOwn(state.stocks, move.branchId) || !['in', 'out', 'waste', 'correction'].includes(move.type) || !move.amounts || Object.entries(move.amounts).some(([id, qty]) => !seed.ingredients.some(i => i.id === id) || !integer(qty, 1, 1000000000))) fail('Historie skladu je neplatná.');
   }
   validateBatches(state, seed, site);
+  validateDeliveryPlans(state);
   return state;
 }
 

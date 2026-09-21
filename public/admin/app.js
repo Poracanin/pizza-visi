@@ -1,6 +1,7 @@
 import {stockSummary, batchStatus, daysLeft, localDay, updateBatch, discardBatch} from './inventory.js';
-import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js';
+import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=d7176c66';
 import {normalizeSearch, itemPrice} from '../menu-utils.js';
+import {COURIERS, deliveryOrders, deliveryPlan, deliveryAssignment, saveDeliveryPlan} from './delivery.js?v=b58c57dc';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
@@ -8,10 +9,11 @@ const money = value => `${new Intl.NumberFormat('cs-CZ').format(value)} Kč`;
 const number = value => new Intl.NumberFormat('cs-CZ', {maximumFractionDigits: 3}).format(value);
 const when = value => new Date(value).toLocaleString('cs-CZ', {day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit'});
 const sourceNames = {web: 'Pizza Visi', pos: 'Pokladna', wolt: 'Wolt', foodora: 'foodora', bolt: 'Bolt Food'};
-const statusNames = {new: 'Nové', confirmed: 'Potvrzené', preparing: 'V přípravě', ready: 'K výdeji', completed: 'Dokončené', cancelled: 'Zrušené'};
+const statusNames = {new: 'Nové', confirmed: 'Potvrzené', preparing: 'V přípravě', ready: 'Předat kurýrovi', completed: 'Dokončené', cancelled: 'Zrušené'};
 let site, seed, state, busy = false, branchId = 'rudna', view = 'orders', sourceFilter = 'all', search = '', stockFilter = 'all', toastTimer;
 let draft = [], catalogSize = 30, catalogCategory = 'pizzy', editorOrder;
 let recipeChanges = new Map(), pizzaSearch = '', ingredientSearch = '';
+let routeDraft, routeBefore, routeBranch, selectedCourier = 1;
 const dateText = day => day ? day.split('-').reverse().join('.') : 'Neuvedeno';
 const stockInfo = id => stockSummary(state, branchId, id);
 const expiryCaption = day => !day ? 'Chybí datum' : daysLeft(day) < 0 ? `Prošlé ${Math.abs(daysLeft(day))} d` : daysLeft(day) === 0 ? 'Spotřebovat dnes' : `Zbývá ${daysLeft(day)} d`;
@@ -19,6 +21,7 @@ const dialog = $('#editor');
 const branch = () => site.branches.find(b => b.id === branchId);
 const branchOrders = () => state.orders.filter(o => o.branchId === branchId);
 const ingredient = id => seed.ingredients.find(i => i.id === id);
+const stopsText = count => `${count} ${count === 1 ? 'zastávka' : count >= 2 && count <= 4 ? 'zastávky' : 'zastávek'}`;
 const quantity = (value, unit) => value >= 1000 ? `${number(value / 1000)} ${unit === 'g' ? 'kg' : 'l'}` : `${number(value)} ${unit}`;
 const sourceBadge = source => ['wolt', 'foodora', 'bolt'].includes(source)
   ? `<span class="source-badge source-${source}"><img src="./assets/logos/${source === 'wolt' ? 'wolt.png' : source === 'bolt' ? 'bolt-food.svg' : 'foodora.svg'}" alt="${sourceNames[source]}"></span>`
@@ -65,13 +68,51 @@ function render() {
 function renderOrders() {
   const active = branchOrders().filter(o => !['completed', 'cancelled'].includes(o.status));
   const shown = active.filter(o => sourceFilter === 'all' || o.source === sourceFilter);
-  $('#workspace').innerHTML = heading(`PROVOZ / ${esc(branch().name)}`, 'Objednávky', `<span class="live-dot"></span> ${active.length} aktivních objednávek · přehled kuchyně a výdeje`, '<button class="primary-button" data-new-order>＋ Nová objednávka</button>') +
+  $('#workspace').innerHTML = heading(`PROVOZ / ${esc(branch().name)}`, 'Objednávky', `<span class="live-dot"></span> ${active.length} aktivních objednávek · přehled kuchyně a výdeje`, '<button class="secondary-button delivery-plan-button" data-plan-delivery>Naplánovat rozvoz</button><button class="primary-button" data-new-order>＋ Nová objednávka</button>') +
     `<div class="orders-board">${['new', 'confirmed', 'preparing', 'ready'].map(status => `<section class="order-column" data-column="${status}" aria-label="${statusNames[status]}"><header class="column-header"><strong><i></i>${statusNames[status]}</strong><span>${shown.filter(o => o.status === status).length}</span></header><div class="column-list">${shown.filter(o => o.status === status).map(orderCard).join('') || '<p class="column-empty">Všechno vyřízeno.<br>Tady je zatím klid.</p>'}</div></section>`).join('')}</div>
     <footer class="orders-footer"><div class="channel-toolbar" role="group" aria-label="Filtrovat podle zdroje"><button data-source="all" aria-pressed="${sourceFilter === 'all'}">Všechny <b>${active.length}</b></button>${SOURCES.map(source => `<button data-source="${source}" aria-pressed="${sourceFilter === source}">${sourceBadge(source)}<b>${active.filter(o => o.source === source).length}</b></button>`).join('')}<span class="channels-note">Ukázkové kanály</span></div><span class="sr-only">Sklad se odečítá při zahájení přípravy</span><button class="text-button" data-go="history">Historie objednávek ↗</button></footer>`;
 }
 function orderCard(order) {
-  const action = {new: 'Potvrdit objednávku', confirmed: 'Začít připravovat', preparing: 'Hotovo → k výdeji', ready: order.fulfillment === 'pickup' ? 'Předat zákazníkovi' : 'Předat kurýrovi'}[order.status];
-  return `<article class="order-card is-${order.source}"><div class="card-top"><strong>#${esc(order.id.split('-')[1])}</strong>${sourceBadge(order.source)}</div><div class="card-time">${when(order.createdAt)} · ${esc(order.label)}</div><div class="order-items">${order.lines.map(l => `<div><b>${l.quantity}×</b><span><strong>${esc(l.name)}</strong><small>${l.size ? `${l.size} cm` : 'nápoj'}</small></span></div>`).join('')}</div><p class="fulfillment">${order.fulfillment === 'pickup' ? '↗ Vyzvednutí na pobočce' : '↗ Doručení kurýrem'}</p><div class="payment-line"><span>${{cash: 'Hotově', card: 'Karta · demo', online: 'Online · demo'}[order.payment]}</span><strong>${money(order.total)}</strong></div>${order.deduction ? '<p class="deducted">✓ Suroviny odečteny</p>' : ''}<button class="advance-order" data-order="${esc(order.id)}">${action}</button></article>`;
+  const action = {new: 'Potvrdit objednávku', confirmed: 'Začít připravovat', preparing: 'Hotovo → k předání', ready: order.fulfillment === 'pickup' ? 'Předat zákazníkovi' : 'Předat kurýrovi'}[order.status];
+  return `<article class="order-card is-${order.source}"><div class="card-top"><strong>#${esc(order.id.split('-')[1])}</strong>${sourceBadge(order.source)}</div><div class="card-time">${when(order.createdAt)} · ${esc(order.label)}</div><div class="order-items">${order.lines.map(l => `<div><b>${l.quantity}×</b><span><strong>${esc(l.name)}</strong><small>${l.size ? `${l.size} cm` : 'nápoj'}</small></span></div>`).join('')}</div><p class="fulfillment">${order.fulfillment === 'pickup' ? '↗ Vyzvednutí na pobočce' : '↗ Doručení kurýrem'}</p>${order.fulfillment === 'delivery' ? `<p class="card-courier">${courierCaption(order)}</p>` : ''}<div class="payment-line"><span>${{cash: 'Hotově', card: 'Karta · demo', online: 'Online · demo'}[order.payment]}</span><strong>${money(order.total)}</strong></div>${order.deduction ? '<p class="deducted">✓ Suroviny odečteny</p>' : ''}<button class="advance-order" data-order="${esc(order.id)}">${action}</button></article>`;
+}
+function courierCaption(order) {
+  const assignment = deliveryAssignment(state, order);
+  return assignment ? `Kurýr ${assignment.courierId} · ${assignment.position}. zastávka` : 'Kurýr nepřiřazen';
+}
+function openDeliveryPlanner() {
+  routeBranch = branchId;
+  routeBefore = deliveryPlan(state, routeBranch);
+  routeDraft = structuredClone(routeBefore);
+  selectedCourier = 1;
+  openDialog('Naplánovat rozvoz', 'Vyberte kurýra a klepejte na objednávky v pořadí zastávek.', '<div id="delivery-planner"></div><footer class="dialog-footer"><p id="delivery-plan-status" role="status"></p><button class="secondary-button" data-close>Zrušit</button><button class="primary-button" id="save-delivery-plan" data-save-delivery-plan>Uložit rozvoz</button></footer>', 'delivery-dialog');
+  renderDeliveryPlanner();
+}
+function renderDeliveryPlanner(focusSelector) {
+  const orders = deliveryOrders(state, routeBranch).sort((a,b) => a.createdAt.localeCompare(b.createdAt));
+  const route = routeDraft[selectedCourier - 1];
+  const listScroll = $('#delivery-order-list')?.scrollTop || 0, routeScroll = $('#courier-stops')?.scrollTop || 0;
+  const count = routeDraft.flat().length;
+  $('#delivery-planner').innerHTML = `<div class="courier-tabs" role="group" aria-label="Vybrat kurýra">${COURIERS.map(id => `<button data-courier="${id}" aria-pressed="${id === selectedCourier}"><span class="courier-avatar">${id}</span><span>Kurýr ${id}<small>${stopsText(routeDraft[id - 1].length)}</small></span><span class="courier-selected" aria-hidden="true">${id === selectedCourier ? '✓' : ''}</span></button>`).join('')}</div>
+    <div class="delivery-layout"><section class="delivery-orders"><div class="delivery-section-heading"><h3>Objednávky k rozvozu <span>${orders.length}</span></h3><p>Klepnutím přidáte zastávku vybranému kurýrovi.</p></div><div id="delivery-order-list">${orders.map(order => {
+      const assigned = routeDraft.findIndex(ids => ids.includes(order.id)), position = assigned < 0 ? 0 : routeDraft[assigned].indexOf(order.id) + 1;
+      const selected = assigned === selectedCourier - 1, shortId = order.id.split('-')[1];
+      const action = selected ? `Odebrat #${shortId} z trasy` : `Přiřadit #${shortId} kurýrovi ${selectedCourier}`;
+      return `<button class="delivery-order ${selected ? 'is-selected' : ''}" data-plan-order="${esc(order.id)}" aria-label="${action}" aria-pressed="${selected}"><span class="stop-number">${selected ? position : '+'}</span><span class="delivery-order-info"><span class="delivery-order-top"><strong>#${esc(shortId)} <span>${esc(order.label)}</span></strong>${sourceBadge(order.source)}</span><span class="delivery-address">${esc(order.deliveryAddress || 'Adresa není vyplněná')}</span><span class="delivery-order-items">${order.lines.map(line => `${line.quantity}× ${esc(line.name)}`).join(' · ')}</span><span class="delivery-order-meta"><span class="delivery-state ${order.status === 'ready' ? 'is-ready' : ''}">${order.status === 'ready' ? 'Připraveno' : statusNames[order.status]}</span><span>${assigned < 0 ? 'Bez kurýra' : `Kurýr ${assigned + 1} · ${position}. zastávka`}</span><span>${money(order.total)}</span></span></span></button>`;
+    }).join('') || '<p class="delivery-empty">Žádné objednávky k rozvozu.<br>Objednávky s doručením se zobrazí tady.</p>'}</div></section>
+    <section class="courier-route"><div class="delivery-section-heading"><h3>Trasa · Kurýr ${selectedCourier}</h3><p>Pořadí upravíte šipkami. Odebrání vrátí objednávku do výběru.</p></div><ol id="courier-stops">${route.map((id,index) => {
+      const order = orders.find(order => order.id === id);
+      if (!order) return `<li class="route-stale">#${esc(id.split('-')[1])} už není k rozvozu. <button class="route-control" data-remove-stop="${esc(id)}" aria-label="Odebrat #${esc(id.split('-')[1])}">×</button></li>`;
+      return `<li data-route-stop="${id}" tabindex="-1"><span class="stop-number">${index + 1}</span><div class="route-stop-info"><strong>#${esc(id.split('-')[1])} · ${esc(order.label)}</strong><span>${esc(order.deliveryAddress || 'Adresa není vyplněná')}</span><small>${order.status === 'ready' ? 'Připraveno k předání' : statusNames[order.status]}</small></div><div class="route-controls"><button class="route-control" data-move-stop="${id}" data-direction="-1" aria-label="Posunout #${esc(id.split('-')[1])} dříve" ${index === 0 ? 'disabled' : ''}>↑</button><button class="route-control" data-move-stop="${id}" data-direction="1" aria-label="Posunout #${esc(id.split('-')[1])} později" ${index === route.length - 1 ? 'disabled' : ''}>↓</button><button class="route-control" data-remove-stop="${id}" aria-label="Odebrat #${esc(id.split('-')[1])}">×</button></div></li>`;
+    }).join('') || '<li class="delivery-empty">Trasa je zatím prázdná.<br>První vybraná objednávka dostane číslo 1.</li>'}</ol><p class="delivery-hint">Výběr objednávky jiného kurýra ji přesune do této trasy.</p></section></div>`;
+  $('#delivery-plan-status').textContent = `Přiřazeno ${count} z ${orders.length} objednávek`;
+  $('#save-delivery-plan').disabled = JSON.stringify(routeDraft) === JSON.stringify(routeBefore);
+  $('#delivery-order-list').scrollTop = listScroll; $('#courier-stops').scrollTop = routeScroll;
+  if (focusSelector) {
+    const target = $(focusSelector);
+    target?.focus({preventScroll: true});
+    if (target?.hasAttribute('data-route-stop')) target.scrollIntoView({block: 'nearest'});
+  }
 }
 function stockStats() {
   return `<footer class="stock-summary"><span>${seed.ingredients.length} surovin</span><span>${seed.ingredients.filter(i => stockInfo(i.id).available <= i.minimum).length} pod minimem</span><span>${pizzas(site).length} receptur · 30 cm</span><span>Nejdříve se vydávají šarže s nejbližší spotřebou (FEFO).</span></footer>`;
@@ -134,7 +175,7 @@ function openDiscardBatch(id) {
 }
 function renderHistory() {
   const orders = branchOrders().filter(o => ['completed', 'cancelled'].includes(o.status));
-  $('#workspace').innerHTML = heading(`ARCHIV / ${esc(branch().name)}`, 'Historie objednávek', 'Dokončené a zrušené demo objednávky. Odečty zůstávají v historii skladu.') + `<div class="panel table-scroll"><table><thead><tr><th>Objednávka</th><th>Zdroj</th><th>Položky</th><th>Stav</th><th>Celkem</th><th>Čas</th></tr></thead><tbody>${orders.map(o => `<tr><td><strong>#${esc(o.id.split('-')[1])}</strong><small>${esc(o.label)}</small></td><td>${sourceBadge(o.source)}</td><td>${o.lines.map(l => `${l.quantity}× ${esc(l.name)}${l.size ? ` ${l.size} cm` : ''}`).join('<br>')}</td><td>${statusNames[o.status]}</td><td>${money(o.total)}</td><td>${when(o.updatedAt)}</td></tr>`).join('') || '<tr><td colspan="6" class="empty-state">První dokončené objednávky se objeví tady.</td></tr>'}</tbody></table></div>`;
+  $('#workspace').innerHTML = heading(`ARCHIV / ${esc(branch().name)}`, 'Historie objednávek', 'Dokončené a zrušené demo objednávky. Odečty zůstávají v historii skladu.') + `<div class="panel table-scroll"><table><thead><tr><th>Objednávka</th><th>Zdroj</th><th>Položky</th><th>Stav</th><th>Celkem</th><th>Čas</th></tr></thead><tbody>${orders.map(o => `<tr><td><strong>#${esc(o.id.split('-')[1])}</strong><small>${esc(o.label)}</small></td><td>${sourceBadge(o.source)}</td><td>${o.lines.map(l => `${l.quantity}× ${esc(l.name)}${l.size ? ` ${l.size} cm` : ''}`).join('<br>')}</td><td>${o.handoff ? `Předáno kurýrovi<small>Kurýr ${o.handoff.courierId} · ${o.handoff.position}. zastávka</small>` : statusNames[o.status]}</td><td>${money(o.total)}</td><td>${when(o.updatedAt)}</td></tr>`).join('') || '<tr><td colspan="6" class="empty-state">První dokončené objednávky se objeví tady.</td></tr>'}</tbody></table></div>`;
 }
 function openDialog(title, subtitle, content, className = '') {
   dialog.className = className;
@@ -170,16 +211,18 @@ function openOrder(id) {
   const timePicker = ['new', 'confirmed'].includes(order.status)
     ? `<div class="eta-picker"><div class="eta-heading"><label for="order-minutes">Připravit za</label><output id="order-minutes-value" for="order-minutes">${minutes} <span>min</span></output></div><input id="order-minutes" type="range" min="10" max="180" step="10" value="${minutes}" aria-valuetext="${minutes} minut" aria-describedby="order-minutes-help" style="--eta-progress:${(minutes - 10) / 170 * 100}%"><div class="eta-scale"><span>10 min</span><span id="order-minutes-help">Po 10 minutách</span><span>180 min</span></div></div>`
     : '<p class="inline-note">Sklad už byl odečten. Posun objednávky jej znovu nezmění.</p>';
+  const assignment = deliveryAssignment(state, order);
+  const deliveryDetail = order.fulfillment === 'delivery' ? `<div class="order-delivery"><div><span>${esc(order.deliveryAddress || 'Adresa není vyplněná')}</span><strong>${courierCaption(order)}</strong></div><button class="small-button" data-plan-delivery>${assignment ? 'Upravit rozvoz' : 'Vybrat kurýra'}</button></div>` : '';
   let buttons = '';
   if (order.status === 'new') buttons = `<button class="secondary-button" data-transition="confirmed">Jen potvrdit</button><button class="primary-button" data-transition="preparing">Potvrdit a připravovat</button>`;
   if (order.status === 'confirmed') buttons = '<button class="primary-button" data-transition="preparing">Začít přípravu a odečíst sklad</button>';
-  if (order.status === 'preparing') buttons = '<button class="primary-button" data-transition="ready">Hotovo → k výdeji</button>';
-  if (order.status === 'ready') buttons = `<button class="primary-button" data-transition="completed">${order.fulfillment === 'pickup' ? 'Předat zákazníkovi' : 'Předat kurýrovi'}</button>`;
-  openDialog(`Objednávka #${esc(id.split('-')[1])}`, `${esc(order.label)} · ${statusNames[order.status]} · ${when(order.createdAt)}`, `<div class="order-detail"><div class="detail-source">${sourceBadge(order.source)}<strong>${money(order.total)}</strong></div><div class="detail-items">${order.lines.map(l => `<div><span>${l.quantity}× ${esc(l.name)} ${l.size ? `· ${l.size} cm` : ''}</span><strong>${money(l.quantity * l.unitPrice)}</strong></div>`).join('')}<div class="muted"><span>Krabice / rozvoz</span><span>${money(order.packaging)} / ${money(order.delivery)}</span></div></div>${stockDetail}${timePicker}</div><footer class="dialog-footer">${['new', 'confirmed'].includes(order.status) ? '<button class="text-button danger-text" data-cancel-order>Zrušit objednávku</button>' : ''}<div class="footer-actions">${buttons}</div></footer>`, 'order-dialog');
+  if (order.status === 'preparing') buttons = '<button class="primary-button" data-transition="ready">Hotovo → k předání</button>';
+  if (order.status === 'ready') buttons = `<button class="primary-button" data-transition="completed" ${order.fulfillment === 'delivery' && !assignment ? 'disabled' : ''}>${order.fulfillment === 'pickup' ? 'Předat zákazníkovi' : 'Předat kurýrovi'}</button>`;
+  openDialog(`Objednávka #${esc(id.split('-')[1])}`, `${esc(order.label)} · ${statusNames[order.status]} · ${when(order.createdAt)}`, `<div class="order-detail"><div class="detail-source">${sourceBadge(order.source)}<strong>${money(order.total)}</strong></div><div class="detail-items">${order.lines.map(l => `<div><span>${l.quantity}× ${esc(l.name)} ${l.size ? `· ${l.size} cm` : ''}</span><strong>${money(l.quantity * l.unitPrice)}</strong></div>`).join('')}<div class="muted"><span>Krabice / rozvoz</span><span>${money(order.packaging)} / ${money(order.delivery)}</span></div></div>${deliveryDetail}${stockDetail}${timePicker}</div><footer class="dialog-footer">${['new', 'confirmed'].includes(order.status) ? '<button class="text-button danger-text" data-cancel-order>Zrušit objednávku</button>' : ''}<div class="footer-actions">${buttons}</div></footer>`, 'order-dialog');
 }
 function openNewOrder() {
   draft = []; catalogSize = 30; catalogCategory = 'pizzy';
-  openDialog('Nová objednávka', 'Ukázkový prodej na pobočce nebo z libovolného kanálu.', `<form id="new-order-form"><div class="new-order-layout"><section class="catalog-pane" aria-label="Nabídka"><div class="catalog-tools"><select id="catalog-category" aria-label="Kategorie"><option value="pizzy">Pizzy · 24</option><option value="napoje">Nápoje</option><option value="vino-prosecco">Víno a prosecco</option></select><span class="fixed-size">Pizzy pouze 30 cm</span></div><div id="product-grid" class="product-grid"></div></section><aside class="cart-pane"><div class="cart-form"><h3>Košík</h3><div id="cart-lines"></div><div class="form-columns"><label>Zdroj<select name="source">${SOURCES.map(s => `<option value="${s}" ${s === 'pos' ? 'selected' : ''}>${sourceNames[s]}</option>`).join('')}</select></label><label>Předání<select name="fulfillment" id="fulfillment"><option value="pickup">Vyzvednutí</option><option value="delivery">Doručení</option></select></label></div><label>Označení <span class="muted">jen ukázkové údaje</span><input name="label" value="Demo objednávka" maxlength="80" required></label><label>Platba<select name="payment"><option value="cash">Hotově</option><option value="card">Kartou · demo</option><option value="online">Online · demo</option></select></label></div><footer class="cart-checkout"><div id="draft-total"></div><p class="inline-note">Demo platba · sklad se odečte při přípravě.</p><button class="primary-button" id="create-order" type="submit" disabled>Vytvořit objednávku</button></footer></aside></div></form>`, 'new-order-dialog');
+  openDialog('Nová objednávka', 'Ukázkový prodej na pobočce nebo z libovolného kanálu.', `<form id="new-order-form"><div class="new-order-layout"><section class="catalog-pane" aria-label="Nabídka"><div class="catalog-tools"><select id="catalog-category" aria-label="Kategorie"><option value="pizzy">Pizzy · 24</option><option value="napoje">Nápoje</option><option value="vino-prosecco">Víno a prosecco</option></select><span class="fixed-size">Pizzy pouze 30 cm</span></div><div id="product-grid" class="product-grid"></div></section><aside class="cart-pane"><div class="cart-form"><h3>Košík</h3><div id="cart-lines"></div><div class="form-columns"><label>Zdroj<select name="source">${SOURCES.map(s => `<option value="${s}" ${s === 'pos' ? 'selected' : ''}>${sourceNames[s]}</option>`).join('')}</select></label><label>Předání<select name="fulfillment" id="fulfillment"><option value="pickup">Vyzvednutí</option><option value="delivery">Doručení</option></select></label></div><label id="delivery-address-field" hidden>Adresa doručení <span class="muted">nepovinné · demo</span><input name="deliveryAddress" maxlength="180" placeholder="Ulice, číslo domu, obec"></label><label>Označení <span class="muted">jen ukázkové údaje</span><input name="label" value="Demo objednávka" maxlength="80" required></label><label>Platba<select name="payment"><option value="cash">Hotově</option><option value="card">Kartou · demo</option><option value="online">Online · demo</option></select></label></div><footer class="cart-checkout"><div id="draft-total"></div><p class="inline-note">Demo platba · sklad se odečte při přípravě.</p><button class="primary-button" id="create-order" type="submit" disabled>Vytvořit objednávku</button></footer></aside></div></form>`, 'new-order-dialog');
   renderCatalog(); renderDraft();
 }
 function renderCatalog() {
@@ -215,6 +258,31 @@ document.addEventListener('click', async event => {
   }
   if (button.hasAttribute('data-order')) return openOrder(button.dataset.order);
   if (button.hasAttribute('data-new-order')) return openNewOrder();
+  if (button.hasAttribute('data-plan-delivery')) return openDeliveryPlanner();
+  if (button.hasAttribute('data-courier')) {
+    selectedCourier = Number(button.dataset.courier);
+    return renderDeliveryPlanner(`[data-courier="${selectedCourier}"]`);
+  }
+  if (button.hasAttribute('data-plan-order')) {
+    const id = button.dataset.planOrder, selected = routeDraft[selectedCourier - 1].includes(id);
+    routeDraft = routeDraft.map(route => route.filter(orderId => orderId !== id));
+    if (!selected) routeDraft[selectedCourier - 1].push(id);
+    return renderDeliveryPlanner(`[data-plan-order="${id}"]`);
+  }
+  if (button.hasAttribute('data-remove-stop')) {
+    const id = button.dataset.removeStop;
+    routeDraft = routeDraft.map(route => route.filter(orderId => orderId !== id));
+    return renderDeliveryPlanner(`[data-plan-order="${id}"]`);
+  }
+  if (button.hasAttribute('data-move-stop')) {
+    const route = routeDraft[selectedCourier - 1], index = route.indexOf(button.dataset.moveStop), next = index + Number(button.dataset.direction);
+    if (index >= 0 && next >= 0 && next < route.length) [route[index], route[next]] = [route[next], route[index]];
+    return renderDeliveryPlanner(`[data-route-stop="${button.dataset.moveStop}"]`);
+  }
+  if (button.hasAttribute('data-save-delivery-plan')) {
+    if (await transact(current => saveDeliveryPlan(current, routeBranch, routeDraft, routeBefore), 'Plán rozvozu byl uložen.')) dialog.close();
+    return;
+  }
 
   if (button.hasAttribute('data-add')) {
     const product = products(site).find(p => p.id === button.dataset.add), size = product.category === 'pizzy' ? catalogSize : null;
@@ -239,7 +307,7 @@ document.addEventListener('change', event => {
   if (event.target.id === 'stock-ingredient') stockUnits();
   if (event.target.id === 'stock-unit') stockPreview();
   if (event.target.id === 'catalog-category') { catalogCategory = event.target.value; renderCatalog(); }
-  if (event.target.id === 'fulfillment') renderDraft();
+  if (event.target.id === 'fulfillment') { $('#delivery-address-field').hidden = event.target.value !== 'delivery'; renderDraft(); }
 });
 document.addEventListener('input', event => {
   if (event.target.id === 'order-minutes') {
@@ -278,7 +346,7 @@ document.addEventListener('submit', async event => {
     if (await transact(current=>discardBatch(current,id,data.get('reason')),'Zásoba byla vyřazena a zapsána do historie.')) openBatches(ingredientId);
   }
   if (form.id === 'new-order-form') {
-    if (await transact(current => addOrder(current, site, {branchId, source: data.get('source'), fulfillment: data.get('fulfillment'), payment: data.get('payment'), label: data.get('label'), lines: draft}).state, 'Nová objednávka čeká na potvrzení.')) { dialog.close(); setView('orders'); sourceFilter = 'all'; render(); }
+    if (await transact(current => addOrder(current, site, {branchId, source: data.get('source'), fulfillment: data.get('fulfillment'), payment: data.get('payment'), label: data.get('label'), deliveryAddress: data.get('deliveryAddress'), lines: draft}).state, 'Nová objednávka čeká na potvrzení.')) { dialog.close(); setView('orders'); sourceFilter = 'all'; render(); }
   }
 });
 window.addEventListener('storage', event => {
