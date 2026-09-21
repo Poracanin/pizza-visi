@@ -2,6 +2,29 @@ import {createState, addOrder, pizzas, transitionOrder} from './admin/model.js?v
 import {COURIERS, deliveryAssignment, deliveryPlan, saveDeliveryPlan, platformCourier} from './admin/delivery.js?v=bb45e9a7';
 
 export const PREVIEW_KEY = 'pizza-visi-courier-preview-v1';
+// Public places used only as sample destinations, never actual customer addresses.
+const PREVIEW_STREETS = {
+  rudna: ['Masarykova 94/53', 'Riegerova 527/50', '5. května 583'],
+  hostivice: ['Husovo náměstí 13', 'Husovo náměstí 1702', 'Husovo náměstí 60'],
+  beroun: ['Pivovarská 105/11', 'Pod Kaplankou 21', 'Pivovarská 105/11']
+};
+const LEGACY_PREVIEW_STREETS = ['Ukázková 12', 'Vzorová 8', 'Cvičná 5'];
+
+export function upgradeCourierPreviewAddresses(state, site) {
+  let next = state;
+  for (const order of state.orders) {
+    if (!order.courierPreview || order.courierMapSample) continue;
+    const branch = site.branches.find(b => b.id === order.branchId);
+    if (!branch || !PREVIEW_STREETS[branch.id]) continue;
+    const index = LEGACY_PREVIEW_STREETS.findIndex(street => order.deliveryAddress === `${street}, ${branch.name}`);
+    if (index < 0) continue; // Preserve any manually changed address.
+    if (next === state) next = structuredClone(state);
+    const updated = next.orders.find(o => o.id === order.id);
+    updated.deliveryAddress = `${PREVIEW_STREETS[branch.id][index]}, ${branch.name}`;
+    updated.courierMapSample = true;
+  }
+  return next;
+}
 const fail = message => { throw new Error(message); };
 const ownDelivery = order => order.fulfillment === 'delivery' && !platformCourier(order);
 const handed = order => ownDelivery(order) && order.status === 'completed' && COURIERS.includes(order.handoff?.courierId);
@@ -83,11 +106,12 @@ export function createCourierPreview(site, seed, now = new Date().toISOString())
     const ids = [];
     for (let i = 0; i < samples.length; i++) {
       const {street, ...sample} = samples[i];
-      const result = addOrder(state, site, {...sample, branchId: branch.id, source: i === 1 ? 'web' : 'pos', fulfillment: 'delivery', deliveryAddress: `${street}, ${branch.name}`, lines: [{pizzaId: menu[i].id, size: 30, quantity: i === 0 ? 2 : 1}], minutes: 30}, now);
+      const result = addOrder(state, site, {...sample, branchId: branch.id, source: i === 1 ? 'web' : 'pos', fulfillment: 'delivery', deliveryAddress: `${PREVIEW_STREETS[branch.id]?.[i] || street}, ${branch.name}`, lines: [{pizzaId: menu[i].id, size: 30, quantity: i === 0 ? 2 : 1}], minutes: 30}, now);
       state = result.state; ids.push(result.order.id);
       state = transitionOrder(state, result.order.id, 'preparing', seed, now);
       state = transitionOrder(state, result.order.id, 'ready', seed, now);
       state.orders.find(o => o.id === result.order.id).courierPreview = true;
+      state.orders.find(o => o.id === result.order.id).courierMapSample = Boolean(PREVIEW_STREETS[branch.id]);
     }
     state = saveDeliveryPlan(state, branch.id, [ids, [], []], deliveryPlan(state, branch.id));
     // Show a route already on the road, with the final stop still at the branch.

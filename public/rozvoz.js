@@ -1,5 +1,6 @@
+import {hasSampleMap, clearSampleMaps, mountSampleMaps} from './courier-maps.js?v=1';
 import {STORAGE_KEY, restoreState, createState} from './admin/model.js?v=16388c99';
-import {PREVIEW_KEY, ISSUE_REASONS, createCourierPreview, validateCourierState, courierOrders, courierHistory, deliveryStatus, takeOrder, finishDelivery, setDeliveryIssue} from './courier-model.js?v=1';
+import {PREVIEW_KEY, ISSUE_REASONS, createCourierPreview, upgradeCourierPreviewAddresses, validateCourierState, courierOrders, courierHistory, deliveryStatus, takeOrder, finishDelivery, setDeliveryIssue} from './courier-model.js?v=2';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -49,7 +50,10 @@ async function loadCurrent() {
   const selectedMode = mode, key = keyFor(selectedMode);
   await lock(key, () => {
     const restored = read(key);
-    if (restored) state = restored;
+    if (restored) {
+      state = selectedMode === 'preview' ? upgradeCourierPreviewAddresses(restored, site) : restored;
+      if (state !== restored) { state.revision = restored.revision + 1; localStorage.setItem(key, JSON.stringify(state)); }
+    }
     else if (selectedMode === 'preview') {
       const initial = createCourierPreview(site, seed);
       localStorage.setItem(key, JSON.stringify(initial)); state = initial;
@@ -78,8 +82,13 @@ function paymentRow(order, completed = false) {
 }
 function navigation(order, label = 'Navigovat', style = 'secondary') {
   if (!order.deliveryAddress?.trim()) return `<button class="${style}" disabled>Adresa chybí</button>`;
-  if (isSample(order)) return `<button class="${style}" data-action="demo-map">${icon('nav')}${label}</button>`;
+  if (isSample(order) && !order.courierMapSample) return `<button class="${style}" data-action="demo-map">${icon('nav')}${label}</button>`;
   return `<a class="${style}" href="${esc(mapUrl(order.deliveryAddress))}" target="_blank" rel="noopener noreferrer">${icon('nav')}${label}</a>`;
+}
+function mapPreview(order) {
+  if (!order?.courierMapSample || !hasSampleMap(order.deliveryAddress)) return '';
+  const query = encodeURIComponent(order.deliveryAddress + ', Česko');
+  return `<section class="delivery-map" aria-label="Mapa ukázkové zastávky"><div class="map-heading"><span>${icon('pin')}Ukázková mapa</span><a href="https://www.google.com/maps/search/?api=1&query=${query}" target="_blank" rel="noopener noreferrer">Zvětšit mapu ↗</a></div><div class="sample-map" data-sample-map="${esc(order.deliveryAddress)}" role="region" aria-label="Mapa: ${esc(order.deliveryAddress)}"></div><div class="map-caption"><span>${icon('pin')}</span><div><strong>${esc(order.deliveryAddress)}</strong><small>Veřejné místo · ukázková cílová adresa</small></div></div></section>`;
 }
 function card(order, index, first) {
   const status = deliveryStatus(order), next = first && ['driving','issue'].includes(status);
@@ -90,7 +99,7 @@ function card(order, index, first) {
 function routePage() {
   const orders = active(), driving = orders.filter(o => ['driving','issue'].includes(deliveryStatus(o))), pending = orders.filter(o => ['ready','waiting'].includes(deliveryStatus(o)));
   const list = filter === 'driving' ? driving : filter === 'pending' ? pending : orders;
-  return `${heading('MŮJ ROZVOZ', `${branch().name} · ${new Date().toLocaleDateString('cs-CZ',{day:'numeric',month:'long',timeZone:'Europe/Prague'})}`)}<div class="stats"><div class="stat"><strong>${driving.length}</strong><span>Na cestě</span></div><div class="stat"><strong>${pending.length}</strong><span>Na pobočce</span></div><div class="stat"><strong>${todayHistory().length}</strong><span>Dnes doručeno</span></div></div><div class="filters" aria-label="Filtr rozvozů">${[['all','Vše',orders.length],['driving','Na cestě',driving.length],['pending','Na pobočce',pending.length]].map(([id,label,count]) => `<button data-filter="${id}" aria-pressed="${filter === id}">${label}<b>${count}</b></button>`).join('')}</div><div class="stop-list">${list.length ? list.map(order => card(order, orders.indexOf(order), order === orders[0])).join('') : `<div class="empty">${icon('check')}<h2>${orders.length ? 'TADY JE TEĎ PRÁZDNO' : history().length ? 'VŠECHNO VYŘÍZENO' : 'ZATÍM ŽÁDNÉ ZASTÁVKY'}</h2><p>${orders.length ? 'V tomto filtru nemáte žádný rozvoz.' : mode === 'admin' ? 'Další objednávky se objeví, až vám je pobočka přiřadí v plánu rozvozu.' : history().length ? 'Všechny zastávky máte za sebou. Doručení najdete v historii.' : 'Ukázkové zastávky má kurýr 1. Přepněte kurýra v nastavení nahoře.'}</p>${mode === 'admin' && !orders.length ? '<a class="secondary" href="./admin/#orders" target="_blank" rel="noopener">Otevřít administraci ↗</a>' : ''}</div>`}</div><p class="demo-note">${mode === 'preview' ? 'Ukázkové adresy a zákazníci. Navigaci ke skutečné adrese můžete vyzkoušet u objednávek z administrace.' : 'Vlastní rozvozy Pizza Visi. Wolt, foodora a Bolt Food používají své kurýry.'}</p>`;
+  return `${heading('MŮJ ROZVOZ', `${branch().name} · ${new Date().toLocaleDateString('cs-CZ',{day:'numeric',month:'long',timeZone:'Europe/Prague'})}`)}${mapPreview(list[0])}<div class="stats"><div class="stat"><strong>${driving.length}</strong><span>Na cestě</span></div><div class="stat"><strong>${pending.length}</strong><span>Na pobočce</span></div><div class="stat"><strong>${todayHistory().length}</strong><span>Dnes doručeno</span></div></div><div class="filters" aria-label="Filtr rozvozů">${[['all','Vše',orders.length],['driving','Na cestě',driving.length],['pending','Na pobočce',pending.length]].map(([id,label,count]) => `<button data-filter="${id}" aria-pressed="${filter === id}">${label}<b>${count}</b></button>`).join('')}</div><div class="stop-list">${list.length ? list.map(order => card(order, orders.indexOf(order), order === orders[0])).join('') : `<div class="empty">${icon('check')}<h2>${orders.length ? 'TADY JE TEĎ PRÁZDNO' : history().length ? 'VŠECHNO VYŘÍZENO' : 'ZATÍM ŽÁDNÉ ZASTÁVKY'}</h2><p>${orders.length ? 'V tomto filtru nemáte žádný rozvoz.' : mode === 'admin' ? 'Další objednávky se objeví, až vám je pobočka přiřadí v plánu rozvozu.' : history().length ? 'Všechny zastávky máte za sebou. Doručení najdete v historii.' : 'Ukázkové zastávky má kurýr 1. Přepněte kurýra v nastavení nahoře.'}</p>${mode === 'admin' && !orders.length ? '<a class="secondary" href="./admin/#orders" target="_blank" rel="noopener">Otevřít administraci ↗</a>' : ''}</div>`}</div><p class="demo-note">${mode === 'preview' ? 'Ukázkoví zákazníci a rozvozy. Mapy používají adresy veřejných míst; nejde o skutečné objednávky.' : 'Vlastní rozvozy Pizza Visi. Wolt, foodora a Bolt Food používají své kurýry.'}</p>`;
 }
 function historyPage() {
   const orders = history();
@@ -105,14 +114,18 @@ function render() {
   if (fatal || !state) return;
   $('#profile').disabled = false; $('#profile').textContent = `K${courierId}`;
   $('#mode-banner').innerHTML = `<span class="demo-label">DEMO</span><span>${mode === 'preview' ? 'Ukázková trasa' : 'Rozvozy z administrace'}</span><span class="local-dot">V zařízení</span>`;
+  clearSampleMaps($('#main'));
   $('#main').innerHTML = view === 'history' ? historyPage() : view === 'overview' ? overviewPage() : routePage();
+  mountSampleMaps($('#main'));
   $('#navigation').hidden = false;
   $('#navigation').innerHTML = [['route','Trasa','route'],['history','Doručené','check'],['overview','Přehled','wallet']].map(([id,label,symbol]) => `<button data-view="${id}" ${view === id ? 'aria-current="page"' : ''}>${icon(symbol)}${id === 'route' && active().length ? `<span class="nav-count">${active().length}</span>` : ''}<span>${label}</span></button>`).join('');
 }
 function openSheet(title, eyebrow, content) {
+  clearSampleMaps($('#sheet-content'));
   $('#sheet-content').innerHTML = `<header class="sheet-head"><div><span class="eyebrow">${esc(eyebrow)}</span><h2 id="sheet-title">${esc(title)}</h2></div><button class="icon-button" data-action="close" aria-label="Zavřít detail">${icon('close')}</button></header><div class="sheet-body"><p id="sheet-error" class="error-box" role="alert" hidden></p>${content}</div>`;
   if (!sheet.open) sheet.showModal();
   sheet.scrollTop = 0;
+  mountSampleMaps($('#sheet-content'));
 }
 function openOrder(id) {
   const order = [...active(), ...history()].find(o => o.id === id);
@@ -125,7 +138,7 @@ function openOrder(id) {
   else if (status === 'delivered') action = `<p class="setting-info"><strong>${icon('check')} Doručeno ${new Date(order.courierDelivery.deliveredAt).toLocaleDateString('cs-CZ',{timeZone:'Europe/Prague'})} v ${when(order.courierDelivery.deliveredAt)}</strong><br>Potvrzení je uložené v historii kurýra ${courierId}.</p>`;
   else if (status === 'issue') action = `<div class="error-box">${icon('alert')} ${esc(order.courierDelivery.issue)}<br><span class="fine">Poznámka je uložená jen v tomto demu. Pokud potřebujete pomoc, zavolejte na pobočku.</span></div><a class="secondary full" href="${esc(branch().phone_uri)}">${icon('phone')}Zavolat na pobočku</a><button class="primary full" style="margin-top:10px" data-action="resolve">Problém vyřešen, pokračovat</button>`;
   else action = `<form id="finish-form">${order.payment !== 'online' ? `<label class="check-field"><input name="paid" type="checkbox" required><span>${order.payment === 'cash' ? `Převzal/a jsem hotovost ${money(order.total)}.` : `Platba ${money(order.total)} na terminálu proběhla úspěšně.`} <span class="fine">(Demo)</span></span></label>` : ''}<label class="check-field"><input name="delivered" type="checkbox" required><span>Objednávku jsem předal/a zákazníkovi.</span></label><button class="primary full" type="submit">${icon('check')}Potvrdit doručení</button><p class="fine">Uloží ukázkové doručení. Žádná platba se neprovede.</p></form><button class="text-button" data-action="issue">Problém s doručením</button>`;
-  openSheet(`OBJEDNÁVKA #${order.id.slice(5)}`, `${branch().name} · ${statusNames[status]}`, `${address(order)}<div class="contact-actions">${navigation(order)}${tel ? `<a class="secondary" href="${esc(tel)}">${icon('phone')}Zavolat</a>` : `<button class="secondary" disabled>${icon('phone')}${isSample(order) ? 'Demo kontakt' : 'Telefon chybí'}</button>`}</div>${order.phone && tel ? `<p class="fine">Telefon: ${esc(order.phone)}</p>` : ''}${order.note ? `<div class="customer-note"><small>POZNÁMKA ZÁKAZNÍKA</small>${esc(order.note)}</div>` : ''}<h3 class="detail-label">Obsah objednávky</h3><ul class="item-list">${order.lines.map(line => `<li><b>${line.quantity}×</b><span>${esc(line.name)}<small>${line.size ? `${line.size} cm` : 'Nápoj'}</small></span><strong>${money(line.quantity * line.unitPrice)}</strong></li>`).join('')}</ul><div class="fees"><span>Krabice</span><span>${money(order.packaging)}</span></div><div class="fees"><span>Rozvoz</span><span>${money(order.delivery)}</span></div><div class="payment-box">${paymentRow(order, true)}<p class="fine">${status === 'delivered' ? 'Úhrada potvrzena v rámci ukázkového doručení.' : order.payment === 'online' ? 'V ukázce zaplaceno online. U zákazníka nic nevybíráte.' : order.payment === 'cash' ? 'K vybrání při předání zákazníkovi.' : 'K úhradě na terminálu. Terminál není připojený; zde pouze potvrdíte ukázkovou platbu.'}</p></div>${action}`);
+  openSheet(`OBJEDNÁVKA #${order.id.slice(5)}`, `${branch().name} · ${statusNames[status]}`, `${address(order)}<div class="contact-actions">${navigation(order)}${tel ? `<a class="secondary" href="${esc(tel)}">${icon('phone')}Zavolat</a>` : `<button class="secondary" disabled>${icon('phone')}${isSample(order) ? 'Demo kontakt' : 'Telefon chybí'}</button>`}</div>${mapPreview(order)}${order.phone && tel ? `<p class="fine">Telefon: ${esc(order.phone)}</p>` : ''}${order.note ? `<div class="customer-note"><small>POZNÁMKA ZÁKAZNÍKA</small>${esc(order.note)}</div>` : ''}<h3 class="detail-label">Obsah objednávky</h3><ul class="item-list">${order.lines.map(line => `<li><b>${line.quantity}×</b><span>${esc(line.name)}<small>${line.size ? `${line.size} cm` : 'Nápoj'}</small></span><strong>${money(line.quantity * line.unitPrice)}</strong></li>`).join('')}</ul><div class="fees"><span>Krabice</span><span>${money(order.packaging)}</span></div><div class="fees"><span>Rozvoz</span><span>${money(order.delivery)}</span></div><div class="payment-box">${paymentRow(order, true)}<p class="fine">${status === 'delivered' ? 'Úhrada potvrzena v rámci ukázkového doručení.' : order.payment === 'online' ? 'V ukázce zaplaceno online. U zákazníka nic nevybíráte.' : order.payment === 'cash' ? 'K vybrání při předání zákazníkovi.' : 'K úhradě na terminálu. Terminál není připojený; zde pouze potvrdíte ukázkovou platbu.'}</p></div>${action}`);
 }
 function openSettings() {
   sheetOrder = null;
@@ -220,7 +233,7 @@ document.addEventListener('submit', async event => {
   }
 });
 sheet.addEventListener('cancel', event => { if (busy) event.preventDefault(); });
-sheet.addEventListener('close', () => { sheetOrder = null; });
+sheet.addEventListener('close', () => { sheetOrder = null; clearSampleMaps($('#sheet-content')); });
 window.addEventListener('storage', async event => {
   if (!site || fatal || (event.key !== null && event.key !== keyFor(mode))) return;
   try {

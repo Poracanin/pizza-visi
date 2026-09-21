@@ -1,0 +1,183 @@
+{
+  "Masarykova 94/53, Rudná": [
+    {
+      "place_id": 132710240,
+      "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+      "osm_type": "way",
+      "osm_id": 123215863,
+      "lat": "50.0337952",
+      "lon": "14.2321981",
+      "category": "amenity",
+      "type": "townhall",
+      "place_rank": 30,
+      "importance": 5.964065003428729e-05,
+      "addresstype": "amenity",
+      "name": "Městský úřad",
+      "display_name": "Městský úřad, 94/53, Masarykova, Dušníky, Rudná, okres Praha-západ, Středočeský kraj, 252 19, Česko",
+      "address": {
+        "amenity": "Městský úřad",
+        "house_number": "94/53",
+        "road": "Masarykova",
+        "suburb": "Dušníky",
+        "town": "Rudná",
+        "district": "okres Praha-západ",
+        "ISO3166-2-lvl5": "CZ-20A",
+        "state": "Středočeský kraj",
+        "ISO3166-2-lvl4": "CZ-20",
+        "postcode": "252 19",
+        "country": "Česko",
+        "country_code": "cz"
+      },
+      "boundingbox": [
+        "50.0337095",
+        "50.0338786",
+        "14.2320573",
+        "14.2323401"
+      ]
+    }
+  ],
+  "5. května 583, Rudná": [
+    {
+      "place_id": 132137793,
+      "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+      "osm_type": "node",
+      "osm_id": 635235486,
+      "lat": "50.0256688",
+      "lon": "14.2122000",
+      "category": "place",
+      "type": "house",
+      "place_rank": 30,
+      "importance": 5.964065003428729e-05,
+      "addresstype": "place",
+      "name": "",
+      "display_name": "583/8, 5. května, Hořelice, Rudná, okres Praha-západ, Středočeský kraj, 252 19, Česko",
+      "address": {
+        "house_number": "583/8",
+        "road": "5. května",
+        "suburb": "Hořelice",
+        "town": "Rudná",
+        "district": "okres Praha-západ",
+        "ISO3166-2-lvl5": "CZ-20A",
+        "state": "Středočeský kraj",
+        "ISO3166-2-lvl4": "CZ-20",
+        "postcode": "252 19",
+        "country": "Česko",
+        "country_code": "cz"
+      },
+      "boundingbox": [
+        "50.0256188",
+        "50.0257188",
+        "14.2121500",
+        "14.2122500"
+      ]
+    }
+  ],
+  "Husovo náměstí 13, Hostivice": [
+    {
+      "place_id": 132993373,
+      "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+      "osm_type": "node",
+      "osm_id": 635125155,
+      "lat": "50.0805013",
+      "lon": "14.2555613",
+      "category": "place",
+      "type": "house",
+      "place_rank": 30,
+      "importance": 5.964065003428729e-05,
+      "addresstype": "place",
+      "name": "",
+      "display_name": "13, Husovo náměstí, Břve, Hostivice, okres Praha-západ, Středočeský kraj, 253 01, Česko",
+      "address": {
+        "house_number": "13",
+        "road": "Husovo náměstí",
+        "village": "Břve",
+        "town": "Hostivice",
+        "district": "okres Praha-západ",
+        "ISO3166-2-lvl5": "CZ-20A",
+        "state": "Středočeský kraj",
+        "ISO3166-2-lvl4": "CZ-20",
+        "postcode": "253 01",
+        "country": "Česko",
+        "country_code": "cz"
+      },
+      "boundingbox": [
+        "50.0804513",
+        "50.0805513",
+        "14.2555113",
+        "14.2556113"
+      ]
+    }
+  ],
+  "Husovo náměstí 1702, Hostivice": [
+    {
+      "place_id": 132880202,
+      "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+      "osm_type": "node",
+      "osm_id": 635125147,
+      "lat": "50.0803688",
+      "lon": "14.2542975",
+      "category": "place",
+      "type": "house",
+      "place_rank": 30,
+      "importance": 5.964065003428729e-05,
+      "addresstype": "place",
+      "name": "",
+      "display_name": "1702, Husovo náměstí, Břve, Hostivice, okres Praha-západ, Středočeský kraj, 253 01, Česko",
+      "address": {
+        "house_number": "1702",
+        "road": "Husovo náměstí",
+        "village": "Břve",
+        "town": "Hostivice",
+        "district": "okres Praha-západ",
+        "ISO3166-2-lvl5": "CZ-20A",
+        "state": "Středočeský kraj",
+        "ISO3166-2-lvl4": "CZ-20",
+        "postcode": "253 01",
+        "country": "Česko",
+        "country_code": "cz"
+      },
+      "boundingbox": [
+        "50.0803188",
+        "50.0804188",
+        "14.2542475",
+        "14.2543475"
+      ]
+    }
+  ],
+  "Pod Kaplankou 21, Beroun": [
+    {
+      "place_id": 130994125,
+      "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+      "osm_type": "node",
+      "osm_id": 296586271,
+      "lat": "49.9646000",
+      "lon": "14.0696156",
+      "category": "place",
+      "type": "house",
+      "place_rank": 30,
+      "importance": 6.204852368958599e-05,
+      "addresstype": "place",
+      "name": "",
+      "display_name": "21, Pod Kaplankou, Beroun-Město, Beroun, okres Beroun, Středočeský kraj, 266 01, Česko",
+      "address": {
+        "house_number": "21",
+        "road": "Pod Kaplankou",
+        "suburb": "Beroun-Město",
+        "town": "Beroun",
+        "county": "okres Beroun",
+        "ISO3166-2-lvl5": "CZ-202",
+        "state": "Středočeský kraj",
+        "ISO3166-2-lvl4": "CZ-20",
+        "postcode": "266 01",
+        "country": "Česko",
+        "country_code": "cz"
+      },
+      "boundingbox": [
+        "49.9645500",
+        "49.9646500",
+        "14.0695656",
+        "14.0696656"
+      ]
+    }
+  ]
+}

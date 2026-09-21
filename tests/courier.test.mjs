@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {restoreState, addOrder, transitionOrder} from '../public/admin/model.js';
 import {saveDeliveryPlan, deliveryPlan} from '../public/admin/delivery.js';
-import {createCourierPreview, courierOrders, courierHistory, deliveryStatus, takeOrder, finishDelivery, setDeliveryIssue, validateCourierState, ISSUE_REASONS} from '../public/courier-model.js';
+import {createCourierPreview, upgradeCourierPreviewAddresses, courierOrders, courierHistory, deliveryStatus, takeOrder, finishDelivery, setDeliveryIssue, validateCourierState, ISSUE_REASONS} from '../public/courier-model.js';
 const site = JSON.parse(fs.readFileSync(new URL('../public/data/site.json', import.meta.url)));
 const seed = JSON.parse(fs.readFileSync(new URL('../public/admin/seed.json', import.meta.url)));
 const now = '2026-09-21T11:00:00.000Z', later = '2026-09-21T11:15:00.000Z';
@@ -112,4 +112,31 @@ test('Pending and addressless orders cannot be taken; corrupted courier records 
   }
   const broken = fixture(); courierOrders(broken,'rudna',1)[2].courierDelivery = {deliveredAt:later};
   assert.throws(()=>restore(broken),/záznam rozvozu/);
+});
+
+
+test('Sample maps update legacy preview addresses without resetting delivered orders or touching POS orders', () => {
+  let state = fixture();
+  const order = courierOrders(state,'rudna',1)[0];
+  state = finishDelivery(state,order.id,'rudna',1,true,later);
+  const legacy = structuredClone(state);
+  for (const branch of site.branches) {
+    const orders = legacy.orders.filter(o => o.branchId === branch.id).sort((a,b) => a.id.localeCompare(b.id));
+    for (const [i, sample] of orders.entries()) {
+      sample.deliveryAddress = `${['Ukázková 12','Vzorová 8','Cvičná 5'][i]}, ${branch.name}`;
+      delete sample.courierMapSample;
+    }
+  }
+  const migrated = upgradeCourierPreviewAddresses(legacy, site);
+  assert.deepEqual(migrated,state);
+  assert.equal(courierHistory(migrated,'rudna',1)[0].id,order.id);
+  assert.deepEqual(restore(migrated),migrated);
+  assert.equal(upgradeCourierPreviewAddresses(migrated,site),migrated);
+  const custom = structuredClone(legacy);
+  custom.orders[0].deliveryAddress = 'Vlastní upravená adresa';
+  custom.orders[1].courierPreview = false;
+  const safe = upgradeCourierPreviewAddresses(custom,site);
+  assert.deepEqual(safe.orders[0],custom.orders[0]);
+  assert.deepEqual(safe.orders[1],custom.orders[1]);
+  assert.equal(courierOrders(migrated,'rudna',1)[0].deliveryAddress,'Riegerova 527/50, Rudná');
 });
