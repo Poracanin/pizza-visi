@@ -1,3 +1,4 @@
+import {stockSummary, makeInitialBatches, addBatch, allocateBatches, validateBatches} from './inventory.js';
 // Amounts are whole grams or millilitres. Mutations are pure: one complete state
 // is persisted only after the entire operation succeeds.
 export const SOURCES = ['web', 'pos', 'wolt', 'foodora', 'bolt'];
@@ -18,9 +19,11 @@ export function validateRecipe(recipe, seed) {
   }
   return true;
 }
-export function createState(site, seed) {
-  const state = {version: 1, revision: 0, sequence: 1040, recipes: clone(seed.recipes), stocks: {}, orders: [], movements: []};
+export function createState(site, seed, now = new Date().toISOString()) {
+  const state = {version: 2, revision: 0, sequence: 1040, recipes: clone(seed.recipes), stocks: {}, orders: [], movements: []};
   for (const branch of site.branches) state.stocks[branch.id] = Object.fromEntries(seed.ingredients.map(i => [i.id, i.initial]));
+  for (const recipe of Object.values(state.recipes)) delete recipe[40];
+  makeInitialBatches(state, seed, now);
   return state;
 }
 export function addOrder(state, site, input, now = new Date().toISOString()) {
@@ -30,7 +33,7 @@ export function addOrder(state, site, input, now = new Date().toISOString()) {
   const menu = products(site);
   const lines = input.lines.map(line => {
     const item = menu.find(p => p.id === line.pizzaId);
-    if (!item || (item.category === 'pizzy' && ![30, 40].includes(line.size)) || !integer(line.quantity, 1, 20)) fail('Neplatná položka, velikost nebo počet.');
+    if (!item || (item.category === 'pizzy' && line.size !== 30) || !integer(line.quantity, 1, 20)) fail('Neplatná položka, velikost nebo počet.');
     const size = item.category === 'pizzy' ? line.size : null;
     return {pizzaId: item.id, name: pizzaName(item), size, quantity: line.quantity, unitPrice: size ? item.prices.find(p => p.diameter_cm === size).price_czk : item.price_czk};
   });
@@ -45,7 +48,7 @@ export function addOrder(state, site, input, now = new Date().toISOString()) {
   next.orders.unshift(order);
   return {state: next, order};
 }
-export function requirements(state, order, seed) {
+export function requirements(state, order, seed, now = new Date().toISOString()) {
   const amounts = {};
   for (const line of order.lines) {
     if (line.size === null) continue; // Drinks are sold by piece; this stock module covers pizza ingredients.
@@ -55,9 +58,10 @@ export function requirements(state, order, seed) {
   }
   return Object.entries(amounts).map(([id, needed]) => {
     const ingredient = seed.ingredients.find(i => i.id === id);
-    const available = state.stocks[order.branchId]?.[id];
+    const summary = stockSummary(state, order.branchId, id, now);
+    const available = summary.available;
     if (!integer(available, 0, 1000000000)) fail('Stav skladu je neplatný.');
-    return {...ingredient, needed, available, missing: Math.max(0, needed - available)};
+    return {...ingredient, ...summary, needed, available, missing: Math.max(0, needed - available)};
   });
 }
 export function transitionOrder(state, id, target, seed, now = new Date().toISOString(), minutes = 30) {
@@ -67,32 +71,33 @@ export function transitionOrder(state, id, target, seed, now = new Date().toISOS
   const allowed = {new: ['confirmed', 'preparing', 'cancelled'], confirmed: ['preparing', 'cancelled'], preparing: ['ready'], ready: ['completed']};
   if (!allowed[original.status]?.includes(target)) fail('Tento přechod objednávky už není možný. Obnovte přehled.');
   if (!integer(minutes, 5, 180)) fail('Čas přípravy musí být 5 až 180 minut.');
-  const needs = target === 'preparing' && !original.deduction ? requirements(state, original, seed) : [];
+  const needs = target === 'preparing' && !original.deduction ? requirements(state, original, seed, now) : [];
   const missing = needs.filter(i => i.missing > 0);
-  if (missing.length) fail(`Nedostatek surovin: ${missing.map(i => `${i.name} (chybí ${i.missing} ${i.unit})`).join(', ')}. Nejdřív naskladněte.`);
+  if (missing.length) fail(`Nedostatek surovin: ${missing.map(i => `${i.name} (chybí ${i.missing} ${i.unit})`).join(', ')}. Doplňte použitelné šarže a data spotřeby.`);
   const next = clone(state);
   const order = next.orders.find(o => o.id === id);
   if (target === 'preparing') {
     if (order.deduction) fail('Suroviny už byly odečteny.');
-    order.deduction = {at: now, amounts: Object.fromEntries(needs.map(i => [i.id, i.needed]))};
+    order.deduction = {at: now, allocations: allocateBatches(next, order.branchId, needs, now), amounts: Object.fromEntries(needs.map(i => [i.id, i.needed]))};
     for (const ingredient of needs) next.stocks[order.branchId][ingredient.id] -= ingredient.needed;
-    next.movements.unshift({id: `out-${id}`, type: 'out', at: now, branchId: order.branchId, orderId: id, note: 'Zahájení přípravy', amounts: clone(order.deduction.amounts)});
+    next.movements.unshift({id: `out-${id}`, type: 'out', at: now, branchId: order.branchId, orderId: id, note: 'Zahájení přípravy', amounts: clone(order.deduction.amounts), allocations: clone(order.deduction.allocations)});
   }
   order.status = target;
   order.minutes = minutes;
   order.updatedAt = now;
   return next;
 }
-export function restock(state, seed, branchId, ingredientId, amount, note = '', now = new Date().toISOString()) {
+export function restock(state, seed, branchId, ingredientId, amount, metadata, now = new Date().toISOString()) {
   if (!Object.hasOwn(state.stocks, branchId) || !seed.ingredients.some(i => i.id === ingredientId)) fail('Vyberte platný sklad a surovinu.');
   if (!integer(amount, 1, 10000000) || state.stocks[branchId][ingredientId] + amount > 1000000000) fail('Zadejte kladné množství v celých g/ml (max. 10 000 kg/l).');
   const next = clone(state);
+  const batch = addBatch(next, branchId, ingredientId, amount, metadata || {}, now);
   next.stocks[branchId][ingredientId] += amount;
-  next.movements.unshift({id: `in-${next.revision}-${now}`, type: 'in', at: now, branchId, note: String(note).trim().slice(0, 100), amounts: {[ingredientId]: amount}});
+  next.movements.unshift({id: `in-${next.revision}-${now}`, type: 'in', at: now, branchId, note: batch.note, batchId: batch.id, lot: batch.lot, receivedOn: batch.receivedOn, expiresOn: batch.expiresOn, amounts: {[ingredientId]: amount}});
   return next;
 }
 export function saveRecipe(state, site, seed, pizzaId, size, recipe) {
-  if (!pizzas(site).some(p => p.id === pizzaId) || ![30, 40].includes(size)) fail('Vyberte platnou pizzu a velikost.');
+  if (!pizzas(site).some(p => p.id === pizzaId) || size !== 30) fail('Vyberte platnou pizzu a velikost.');
   validateRecipe(recipe, seed);
   const next = clone(state);
   next.recipes[pizzaId][size] = clone(recipe);
@@ -105,7 +110,7 @@ export function createDemoState(site, seed) {
     const samples = [['web', 'new'], ['wolt', 'new'], ['foodora', 'new'], ['bolt', 'confirmed'], ['pos', 'confirmed'], ['wolt', 'preparing'], ['web', 'ready']];
     samples.forEach(([source, status], index) => {
       const now = new Date(Date.now() - (index + 1) * 180000).toISOString();
-      const result = addOrder(state, site, {branchId: branch.id, source, fulfillment: index % 2 ? 'delivery' : 'pickup', payment: ['web', 'pos'].includes(source) ? 'cash' : 'online', label: `Demo ${String(index + 1).padStart(2, '0')}`, lines: [{pizzaId: menu[index].id, size: index % 2 ? 40 : 30, quantity: index === 0 ? 2 : 1}]}, now);
+      const result = addOrder(state, site, {branchId: branch.id, source, fulfillment: index % 2 ? 'delivery' : 'pickup', payment: ['web', 'pos'].includes(source) ? 'cash' : 'online', label: `Demo ${String(index + 1).padStart(2, '0')}`, lines: [{pizzaId: menu[index].id, size: 30, quantity: index === 0 ? 2 : 1}]}, now);
       state = result.state;
       if (status !== 'new') state = transitionOrder(state, result.order.id, status === 'ready' ? 'preparing' : status, seed, now);
       if (status === 'ready') state = transitionOrder(state, result.order.id, 'ready', seed, now);
@@ -114,10 +119,11 @@ export function createDemoState(site, seed) {
   return state;
 }
 export function restoreState(raw, site, seed) {
-  const state = JSON.parse(raw);
-  if (state?.version !== 1 || !integer(state.revision, 0, Number.MAX_SAFE_INTEGER) || !integer(state.sequence, 1040, Number.MAX_SAFE_INTEGER) || !Array.isArray(state.orders) || !Array.isArray(state.movements)) fail('Uložená data administrace nejsou platná.');
+  let state = JSON.parse(raw);
+  if (state?.version === 1) state = migrateState(state, site, seed);
+  if (state?.version !== 2 || !integer(state.revision, 0, Number.MAX_SAFE_INTEGER) || !integer(state.sequence, 1040, Number.MAX_SAFE_INTEGER) || !Array.isArray(state.orders) || !Array.isArray(state.movements)) fail('Uložená data administrace nejsou platná.');
   for (const branch of site.branches) for (const ingredient of seed.ingredients) if (!integer(state.stocks?.[branch.id]?.[ingredient.id], 0, 1000000000)) fail('Uložený sklad je neplatný.');
-  for (const pizza of pizzas(site)) for (const size of [30, 40]) validateRecipe(state.recipes?.[pizza.id]?.[size], seed);
+  for (const pizza of pizzas(site)) for (const size of [30]) validateRecipe(state.recipes?.[pizza.id]?.[size], seed);
   const ids = new Set();
   for (const order of state.orders) {
     if (typeof order.id !== 'string' || !/^VISI-\d+$/.test(order.id) || ids.has(order.id) || !Object.hasOwn(state.stocks, order.branchId) || !SOURCES.includes(order.source) || !STATUSES.includes(order.status) || !Array.isArray(order.lines) || !order.lines.length || !Number.isFinite(order.total) || order.total < 0) fail('Uložená objednávka je neplatná.');
@@ -131,7 +137,44 @@ export function restoreState(raw, site, seed) {
     if (deducted && (!order.deduction.amounts || Object.entries(order.deduction.amounts).some(([id, qty]) => !seed.ingredients.some(i => i.id === id) || !integer(qty, 1, 1000000000)))) fail('Množství v odečtu je neplatné.');
   }
   for (const move of state.movements) {
-    if (!Object.hasOwn(state.stocks, move.branchId) || !['in', 'out'].includes(move.type) || !move.amounts || Object.entries(move.amounts).some(([id, qty]) => !seed.ingredients.some(i => i.id === id) || !integer(qty, 1, 1000000000))) fail('Historie skladu je neplatná.');
+    if (!Object.hasOwn(state.stocks, move.branchId) || !['in', 'out', 'waste', 'correction'].includes(move.type) || !move.amounts || Object.entries(move.amounts).some(([id, qty]) => !seed.ingredients.some(i => i.id === id) || !integer(qty, 1, 1000000000))) fail('Historie skladu je neplatná.');
   }
+  validateBatches(state, seed, site);
   return state;
+}
+
+function migrateState(old, site, seed) {
+  const next = clone(old);
+  // Preserve recorded stock and historical deductions; unknown expiry stays unknown.
+  next.version = 2; next.batchSequence = 0; next.batches = [];
+  for (const branch of site.branches) for (const i of seed.ingredients) {
+    const amount = next.stocks?.[branch.id]?.[i.id];
+    if (!integer(amount, 0, 1000000000)) fail('Původní sklad je neplatný.');
+    if (amount) next.batches.push({id: `LOT-${++next.batchSequence}`, branchId: branch.id, ingredientId: i.id, initial: amount, remaining: amount, lot: 'PŘEVEDENÁ ZÁSOBA', receivedOn: null, receivedAt: null, expiresOn: null, note: 'Doplňte údaje o příjmu a trvanlivosti.'});
+  }
+  for (const recipe of Object.values(next.recipes || {})) delete recipe[40];
+  for (const order of next.orders || []) if (['new', 'confirmed'].includes(order.status)) {
+    for (const line of order.lines) if (line.size === 40) {
+      const pizza = pizzas(site).find(p => p.id === line.pizzaId);
+      if (!pizza) fail('Původní objednávka je neplatná.');
+      line.size = 30; line.unitPrice = pizza.prices.find(p => p.diameter_cm === 30).price_czk;
+    }
+    order.subtotal = order.lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
+    order.packaging = order.lines.reduce((sum, l) => sum + (l.size ? 16 * l.quantity : 0), 0);
+    order.total = order.subtotal + order.packaging + order.delivery;
+  }
+  return next;
+}
+export function saveRecipeCells(state, site, seed, changes) {
+  const next = clone(state), affected = new Set();
+  for (const change of changes) {
+    if (!pizzas(site).some(p => p.id === change.pizzaId) || !seed.ingredients.some(i => i.id === change.ingredientId) || !integer(change.amount, 0, 10000)) fail('Množství musí být celé číslo od 0 do 10 000 g/ml.');
+    const current = state.recipes[change.pizzaId][30][change.ingredientId] || 0;
+    if (current !== change.before) fail('Stejnou buňku změnilo jiné okno. Zrušte své změny a načtěte aktuální hodnoty.');
+    if (change.amount) next.recipes[change.pizzaId][30][change.ingredientId] = change.amount;
+    else delete next.recipes[change.pizzaId][30][change.ingredientId];
+    affected.add(change.pizzaId);
+  }
+  for (const id of affected) validateRecipe(next.recipes[id][30], seed);
+  return next;
 }

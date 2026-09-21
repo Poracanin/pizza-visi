@@ -1,4 +1,5 @@
-import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipe} from './model.js';
+import {stockSummary, batchStatus, daysLeft, localDay, updateBatch, discardBatch} from './inventory.js';
+import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js';
 import {normalizeSearch, itemPrice} from '../menu-utils.js';
 
 const $ = selector => document.querySelector(selector);
@@ -8,8 +9,12 @@ const number = value => new Intl.NumberFormat('cs-CZ', {maximumFractionDigits: 3
 const when = value => new Date(value).toLocaleString('cs-CZ', {day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit'});
 const sourceNames = {web: 'Pizza Visi', pos: 'Pokladna', wolt: 'Wolt', foodora: 'foodora', bolt: 'Bolt Food'};
 const statusNames = {new: 'Nové', confirmed: 'Potvrzené', preparing: 'V přípravě', ready: 'K výdeji', completed: 'Dokončené', cancelled: 'Zrušené'};
-let site, seed, state, busy = false, branchId = 'rudna', view = 'orders', sourceFilter = 'all', search = '', lowOnly = false, toastTimer;
-let draft = [], catalogSize = 30, catalogCategory = 'pizzy', recipeBase, editorOrder;
+let site, seed, state, busy = false, branchId = 'rudna', view = 'orders', sourceFilter = 'all', search = '', stockFilter = 'all', toastTimer;
+let draft = [], catalogSize = 30, catalogCategory = 'pizzy', editorOrder;
+let recipeChanges = new Map(), pizzaSearch = '', ingredientSearch = '';
+const dateText = day => day ? day.split('-').reverse().join('.') : 'Neuvedeno';
+const stockInfo = id => stockSummary(state, branchId, id);
+const expiryCaption = day => !day ? 'Chybí datum' : daysLeft(day) < 0 ? `Prošlé ${Math.abs(daysLeft(day))} d` : daysLeft(day) === 0 ? 'Spotřebovat dnes' : `Zbývá ${daysLeft(day)} d`;
 const dialog = $('#editor');
 const branch = () => site.branches.find(b => b.id === branchId);
 const branchOrders = () => state.orders.filter(o => o.branchId === branchId);
@@ -28,7 +33,7 @@ function showError(error) {
   else notify(error.message, true);
 }
 const locked = fn => navigator.locks ? navigator.locks.request(STORAGE_KEY, fn) : fn();
-async function transact(change, message) {
+async function transact(change, message, redraw = true) {
   if (busy) return false;
   busy = true;
   try {
@@ -40,17 +45,18 @@ async function transact(change, message) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); // A single atomic write includes stock, orders and ledger.
       state = next;
     });
-    render(); notify(message); return true;
+    if (redraw) render(); notify(message); return true;
   } catch (error) { showError(error); return false; }
   finally { busy = false; }
 }
 function heading(eyebrow, title, description, action = '') {
-  return `<header class="page-heading"><div><p class="eyebrow">${eyebrow}</p><div class="title-line"><h1>${title}</h1></div><p class="page-description">${description}</p></div>${action}</header>`;
+  return `<header class="page-heading"><h1>${title}</h1><div class="heading-actions">${action}</div></header>`;
 }
 function render() {
+  document.body.dataset.view = view;
   $('#rail-count').textContent = branchOrders().filter(o => !['completed', 'cancelled'].includes(o.status)).length;
-  $('#stock-alert').hidden = !seed.ingredients.some(i => state.stocks[branchId][i.id] <= i.minimum);
-  document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-current', b.dataset.view === view ? 'page' : 'false'));
+  $('#stock-alert').hidden = !seed.ingredients.some(i => (stockInfo(i.id).available <= i.minimum || stockInfo(i.id).expired > 0 || stockInfo(i.id).undated > 0));
+  document.querySelectorAll('button[data-view]').forEach(b => b.setAttribute('aria-current', b.dataset.view === view ? 'page' : 'false'));
   if (view === 'orders') renderOrders();
   if (view === 'stock') renderStock();
   if (view === 'recipes') renderRecipes();
@@ -60,35 +66,71 @@ function renderOrders() {
   const active = branchOrders().filter(o => !['completed', 'cancelled'].includes(o.status));
   const shown = active.filter(o => sourceFilter === 'all' || o.source === sourceFilter);
   $('#workspace').innerHTML = heading(`PROVOZ / ${esc(branch().name)}`, 'Objednávky', `<span class="live-dot"></span> ${active.length} aktivních objednávek · přehled kuchyně a výdeje`, '<button class="primary-button" data-new-order>＋ Nová objednávka</button>') +
-    `<div class="channel-toolbar" role="group" aria-label="Filtrovat podle zdroje"><button data-source="all" aria-pressed="${sourceFilter === 'all'}">Všechny <b>${active.length}</b></button>${SOURCES.map(source => `<button data-source="${source}" aria-pressed="${sourceFilter === source}">${sourceBadge(source)}<b>${active.filter(o => o.source === source).length}</b></button>`).join('')}<span class="channels-note">Ukázkové kanály</span></div>
-    <div class="orders-board">${['new', 'confirmed', 'preparing', 'ready'].map(status => `<section class="order-column" data-column="${status}" aria-label="${statusNames[status]}"><header class="column-header"><strong><i></i>${statusNames[status]}</strong><span>${shown.filter(o => o.status === status).length}</span></header><div class="column-list">${shown.filter(o => o.status === status).map(orderCard).join('') || '<p class="column-empty">Všechno vyřízeno.<br>Tady je zatím klid.</p>'}</div></section>`).join('')}</div>
-    <footer class="orders-footer"><span><i class="status-dot"></i> Sklad se odečítá při zahájení přípravy</span><button class="text-button" data-go="history">Historie objednávek ↗</button></footer>`;
+    `<div class="orders-board">${['new', 'confirmed', 'preparing', 'ready'].map(status => `<section class="order-column" data-column="${status}" aria-label="${statusNames[status]}"><header class="column-header"><strong><i></i>${statusNames[status]}</strong><span>${shown.filter(o => o.status === status).length}</span></header><div class="column-list">${shown.filter(o => o.status === status).map(orderCard).join('') || '<p class="column-empty">Všechno vyřízeno.<br>Tady je zatím klid.</p>'}</div></section>`).join('')}</div>
+    <footer class="orders-footer"><div class="channel-toolbar" role="group" aria-label="Filtrovat podle zdroje"><button data-source="all" aria-pressed="${sourceFilter === 'all'}">Všechny <b>${active.length}</b></button>${SOURCES.map(source => `<button data-source="${source}" aria-pressed="${sourceFilter === source}">${sourceBadge(source)}<b>${active.filter(o => o.source === source).length}</b></button>`).join('')}<span class="channels-note">Ukázkové kanály</span></div><span class="sr-only">Sklad se odečítá při zahájení přípravy</span><button class="text-button" data-go="history">Historie objednávek ↗</button></footer>`;
 }
 function orderCard(order) {
   const action = {new: 'Potvrdit objednávku', confirmed: 'Začít připravovat', preparing: 'Hotovo → k výdeji', ready: order.fulfillment === 'pickup' ? 'Předat zákazníkovi' : 'Předat kurýrovi'}[order.status];
   return `<article class="order-card is-${order.source}"><div class="card-top"><strong>#${esc(order.id.split('-')[1])}</strong>${sourceBadge(order.source)}</div><div class="card-time">${when(order.createdAt)} · ${esc(order.label)}</div><div class="order-items">${order.lines.map(l => `<div><b>${l.quantity}×</b><span><strong>${esc(l.name)}</strong><small>${l.size ? `${l.size} cm` : 'nápoj'}</small></span></div>`).join('')}</div><p class="fulfillment">${order.fulfillment === 'pickup' ? '↗ Vyzvednutí na pobočce' : '↗ Doručení kurýrem'}</p><div class="payment-line"><span>${{cash: 'Hotově', card: 'Karta · demo', online: 'Online · demo'}[order.payment]}</span><strong>${money(order.total)}</strong></div>${order.deduction ? '<p class="deducted">✓ Suroviny odečteny</p>' : ''}<button class="advance-order" data-order="${esc(order.id)}">${action}</button></article>`;
 }
 function stockStats() {
-  return `<div class="stat-grid"><article><span>Suroviny ve skladu</span><strong>${seed.ingredients.length}<small> položek</small></strong></article><article><span>Pod minimální zásobou</span><strong class="${seed.ingredients.some(i => state.stocks[branchId][i.id] <= i.minimum) ? 'danger-text' : 'green-text'}">${seed.ingredients.filter(i => state.stocks[branchId][i.id] <= i.minimum).length}<small> k doplnění</small></strong></article><article><span>Receptury propojené se skladem</span><strong>${pizzas(site).length}<small> pizz · 2 velikosti</small></strong></article></div>`;
+  return `<footer class="stock-summary"><span>${seed.ingredients.length} surovin</span><span>${seed.ingredients.filter(i => stockInfo(i.id).available <= i.minimum).length} pod minimem</span><span>${pizzas(site).length} receptur · 30 cm</span><span>Nejdříve se vydávají šarže s nejbližší spotřebou (FEFO).</span></footer>`;
 }
 function renderStock() {
-  $('#workspace').innerHTML = heading(`ZÁSOBY / ${esc(branch().name)}`, 'Sklad', 'Suroviny pro všechny pizzy. Každá pobočka má vlastní zásoby a pohyby.', '<button class="primary-button" data-restock="">＋ Naskladnit</button>') + stockStats() +
-  `<div class="panel stock-panel"><div class="panel-toolbar"><label class="search-field"><span>⌕</span><input id="stock-search" type="search" placeholder="Najít surovinu…" aria-label="Hledat surovinu" value="${esc(search)}"></label><label class="check-label"><input type="checkbox" id="low-only" ${lowOnly ? 'checked' : ''}> Jen k doplnění</label><span class="muted">Základní jednotky g / ml</span></div><div class="table-scroll"><table><thead><tr><th>Surovina</th><th>Na skladě</th><th>Minimum</th><th>V recepturách</th><th>Stav</th><th><span class="sr-only">Akce</span></th></tr></thead><tbody id="stock-rows"></tbody></table></div></div><div class="section-title"><h2>Poslední pohyby</h2><span>Posledních 20 záznamů · ${esc(branch().name)}</span></div><div class="movement-list">${movementRows()}</div>`;
+  $('#workspace').innerHTML = heading('', 'Sklad', '', '<button class="primary-button" data-restock="">＋ Naskladnit</button>') +
+  `<div class="panel stock-panel"><div class="panel-toolbar"><label class="search-field"><span>⌕</span><input id="stock-search" type="search" placeholder="Najít surovinu…" aria-label="Hledat surovinu" value="${esc(search)}"></label><select id="stock-filter" aria-label="Filtrovat sklad">${[['all','Všechny suroviny'],['low','Pod minimem'],['soon','Spotřeba do 3 dnů'],['expired','Prošlé šarže'],['undated','Chybí datum spotřeby']].map(([id,label])=>`<option value="${id}" ${stockFilter===id?'selected':''}>${label}</option>`).join('')}</select><span class="muted">${esc(branch().name)} · g / ml</span></div><div class="table-scroll stock-scroll"><table><thead><tr><th>Surovina</th><th class="numeric">Použitelné</th><th class="numeric">Minimum</th><th>Poslední příjem</th><th>Nejbližší spotřeba</th><th>Stav</th><th>Šarže / příjem</th></tr></thead><tbody id="stock-rows"></tbody></table></div></div>${stockStats()}<details class="movement-details"><summary>Historie skladových pohybů <span>Posledních 20 záznamů</span></summary><div class="movement-list">${movementRows()}</div></details>`;
   renderStockRows();
 }
 function renderStockRows() {
-  const rows = seed.ingredients.filter(i => normalizeSearch(i.name).includes(normalizeSearch(search)) && (!lowOnly || state.stocks[branchId][i.id] <= i.minimum));
+  const rows = seed.ingredients.filter(i => {
+    const q = stockInfo(i.id);
+    const selected = stockFilter === 'all' || (stockFilter === 'low' && q.available <= i.minimum) || (stockFilter === 'expired' && q.expired > 0) || (stockFilter === 'undated' && q.undated > 0) || (stockFilter === 'soon' && state.batches.some(b => b.branchId === branchId && b.ingredientId === i.id && batchStatus(b) === 'soon'));
+    return normalizeSearch(i.name).includes(normalizeSearch(search)) && selected;
+  });
   $('#stock-rows').innerHTML = rows.map(i => {
-    const amount = state.stocks[branchId][i.id], low = amount <= i.minimum;
-    const count = pizzas(site).filter(p => [30, 40].some(size => state.recipes[p.id][size][i.id])).length;
-    return `<tr><td><strong>${esc(i.name)}</strong><small>${i.unit === 'g' ? 'Hmotnost · g' : 'Objem · ml'}</small></td><td class="stock-amount">${quantity(amount, i.unit)}</td><td class="muted">${quantity(i.minimum, i.unit)}</td><td>${count} pizz</td><td><span class="stock-status ${low ? 'low' : ''}">${low ? '● Doplnit' : '● Dostatek'}</span></td><td><button class="small-button" data-restock="${i.id}" aria-label="Naskladnit ${esc(i.name)}">＋ Naskladnit</button></td></tr>`;
-  }).join('') || '<tr><td colspan="6" class="empty-state">Žádná surovina neodpovídá filtru.</td></tr>';
+    const q = stockInfo(i.id);
+    const tone = q.expired ? 'expired' : q.undated ? 'undated' : q.available <= i.minimum ? 'low' : q.nearest && daysLeft(q.nearest) <= 3 ? 'soon' : 'ok';
+    const label = {expired:'Prošlé zásoby',undated:'Doplnit datum',low:'Naskladnit',soon:'Spotřeba brzy',ok:'V pořádku'}[tone];
+    return `<tr><td><strong>${esc(i.name)}</strong></td><td class="numeric stock-amount">${quantity(q.available, i.unit)}${q.available !== q.total ? `<small>Celkem ${quantity(q.total,i.unit)}</small>`:''}</td><td class="numeric muted">${quantity(i.minimum,i.unit)}</td><td>${dateText(q.lastReceived)}<small>${q.batchCount} ${q.batchCount===1?'šarže':'šarží'} na skladě</small></td><td class="expiry-cell ${tone}">${dateText(q.nearest)}<small>${q.undated ? `${quantity(q.undated,i.unit)} bez data` : q.nearest ? expiryCaption(q.nearest) : 'Žádná zásoba'}</small></td><td><span class="stock-status ${tone}">${label}</span></td><td><div class="row-actions"><button class="small-button" data-batches="${i.id}" aria-label="Šarže ${esc(i.name)}">Šarže</button><button class="small-button plus-button" data-restock="${i.id}" aria-label="Naskladnit ${esc(i.name)}">＋</button></div></td></tr>`;
+  }).join('') || '<tr><td colspan="7" class="empty-state">Žádná surovina neodpovídá filtru.</td></tr>';
 }
 function movementRows() {
-  return state.movements.filter(m => m.branchId === branchId).slice(0, 20).map(m => `<article class="movement"><span class="movement-icon ${m.type}">${m.type === 'in' ? '↙' : '↗'}</span><div><strong>${m.type === 'in' ? 'Naskladnění' : `Příprava #${esc(m.orderId?.split('-')[1])}`}</strong><p>${Object.entries(m.amounts).map(([id, amount]) => `${esc(ingredient(id).name)} ${m.type === 'in' ? '+' : '−'}${quantity(amount, ingredient(id).unit)}`).join(' · ') || 'Bez skladových surovin'}</p>${m.note ? `<small>${esc(m.note)}</small>` : ''}</div><time>${when(m.at)}</time></article>`).join('') || '<p class="empty-state">Zatím žádný pohyb ve skladu.</p>';
+  const labels = {in:'Naskladnění',out:'Výdej do přípravy',waste:'Vyřazení zásoby',correction:'Úprava šarže'};
+  return state.movements.filter(m => m.branchId === branchId).slice(0,20).map(m=>`<article class="movement"><span class="movement-icon ${m.type}">${m.type==='in'?'↙':'↗'}</span><div><strong>${labels[m.type]} ${m.orderId ? '#'+esc(m.orderId.split('-')[1]):''}${m.lot ? ' · '+esc(m.lot):''}</strong><p>${Object.entries(m.amounts).map(([id,amount])=>`${esc(ingredient(id).name)} ${m.type==='in'?'+':'−'}${quantity(amount,ingredient(id).unit)}`).join(' · ')}</p>${m.note?`<small>${esc(m.note)}</small>`:''}${m.after ? `<small>Spotřeba: ${dateText(m.before?.expiresOn)} → ${dateText(m.after.expiresOn)}</small>`:''}</div><time>${when(m.at)}</time></article>`).join('') || '<p class="empty-state">Zatím žádný pohyb ve skladu.</p>';
 }
 function renderRecipes() {
-  $('#workspace').innerHTML = heading('NORMY / VŠECHNY POBOČKY', 'Receptury pizz', 'Nastavte přesné množství surovin na jednu pizzu o průměru 30 a 40 cm.') + `<div class="recipe-notice"><strong>Ukázkové gramáže</strong><span>Nejde o ověřené normy pizzerie. Upravte je podle kuchyně. Těsto evidujeme jako hotový polotovar.</span></div><div class="recipe-grid">${pizzas(site).map(p => `<article class="recipe-card"><img src="../${esc(p.image)}" alt="${esc(pizzaName(p))}" loading="lazy"><div><span class="eyebrow">RECEPTURA ${String(p.number).padStart(2, '0')}</span><h2>${esc(pizzaName(p))}</h2><p>${Object.keys(state.recipes[p.id][30]).map(id => ingredient(id).name).join(', ')}</p><footer><span>30 cm / 40 cm</span><button class="small-button" data-recipe="${p.id}">Upravit recepturu ↗</button></footer></div></article>`).join('')}</div>`;
+  const previousScroll = $('.matrix-scroll');
+  const position = {left: previousScroll?.scrollLeft || 0, top: previousScroll?.scrollTop || 0};
+  $('#workspace').innerHTML = heading('', 'Receptury <small>30 cm</small>', '', '<button class="secondary-button" id="recipes-discard" data-discard-recipes disabled>Zrušit změny</button><button class="primary-button" id="recipes-save" data-save-recipes disabled>Uložit změny</button>')+
+  `<div class="recipe-tools"><label class="search-field"><input type="search" id="pizza-search" placeholder="Najít pizzu…" aria-label="Hledat pizzu v recepturách" value="${esc(pizzaSearch)}"></label><label class="search-field"><input type="search" id="ingredient-search" placeholder="Najít surovinu / sloupec…" aria-label="Hledat sloupec suroviny" value="${esc(ingredientSearch)}"></label><span id="recipe-save-status" role="status"></span></div><div class="table-scroll matrix-scroll" tabindex="0" aria-label="Receptury: vodorovně posuňte pro další suroviny"><table class="recipe-matrix" id="recipe-matrix"></table></div><footer class="matrix-help"><strong>Množství na 1 pizzu · g / ml</strong><span>Prázdné pole = nepoužívá se. Ukázkové normy lze přepsat. Posunutím doprava zobrazíte další suroviny.</span></footer>`;
+  renderMatrix(); recipeSaveStatus();
+  $('.matrix-scroll').scrollTo(position);
+}
+function renderMatrix() {
+  const cols = seed.ingredients.filter(i=>normalizeSearch(i.name).includes(normalizeSearch(ingredientSearch)));
+  const rows = pizzas(site).filter(p=>normalizeSearch(pizzaName(p)).includes(normalizeSearch(pizzaSearch)));
+  $('#recipe-matrix').innerHTML = `<thead><tr><th class="pizza-column">Pizza / 30 cm</th>${cols.map(i=>`<th scope="col">${esc(i.name)}<small>${i.unit}</small></th>`).join('')}</tr></thead><tbody>${rows.map(p=>`<tr><th scope="row" class="pizza-column"><span>${String(p.number).padStart(2,'0')}</span>${esc(pizzaName(p))}</th>${cols.map(i=>{
+    const key=p.id+':'+i.id, change=recipeChanges.get(key), amount=change?change.amount:(state.recipes[p.id][30][i.id]||0);
+    return `<td class="${change?'edited':''}"><input type="number" inputmode="numeric" min="0" max="10000" step="1" placeholder="—" value="${amount||''}" data-cell-pizza="${p.id}" data-cell-ingredient="${i.id}" aria-label="${esc(pizzaName(p))} / ${esc(i.name)} (${i.unit})"></td>`;
+  }).join('')}</tr>`).join('') || `<tr><td colspan="${cols.length+1}">Žádná pizza neodpovídá hledání.</td></tr>`}</tbody>`;
+}
+function recipeSaveStatus() {
+  $('#recipes-save').disabled = !recipeChanges.size;
+  $('#recipes-discard').disabled = !recipeChanges.size;
+  $('#recipe-save-status').textContent = recipeChanges.size ? `Neuložené buňky: ${recipeChanges.size}` : 'Vše uloženo';
+}
+function openBatches(id) {
+  const i=ingredient(id), q=stockInfo(id);
+  const batches=state.batches.filter(b=>b.branchId===branchId && b.ingredientId===id && b.remaining>0).sort((a,b)=>(a.expiresOn||'9999').localeCompare(b.expiresOn||'9999'));
+  openDialog(`Šarže · ${esc(i.name)}`, `Použitelné ${quantity(q.available,i.unit)} / celkem ${quantity(q.total,i.unit)}.`, `<div class="batch-panel"><p class="inline-note">Prošlé šarže a šarže bez data spotřeby jsou blokované. Při přípravě se použije nejbližší platné datum spotřeby.</p><div class="table-scroll"><table class="batches-table"><thead><tr><th>Šarže</th><th>Zbývá</th><th>Příjem</th><th>Spotřebovat do</th><th>Akce</th></tr></thead><tbody>${batches.map(b=>`<tr><td><strong>${esc(b.lot)}</strong><small>${esc(b.id)}</small></td><td>${quantity(b.remaining,i.unit)}</td><td>${dateText(b.receivedOn)}</td><td class="${batchStatus(b)}">${dateText(b.expiresOn)}<small>${expiryCaption(b.expiresOn)}</small></td><td><div class="row-actions"><button class="small-button" data-edit-batch="${b.id}">Upravit</button><button class="small-button danger-text" data-discard-batch="${b.id}">Vyřadit</button></div></td></tr>`).join('')||'<tr><td colspan="5">Žádná zásoba.</td></tr>'}</tbody></table></div></div><footer class="dialog-footer"><button class="secondary-button" data-close>Zavřít</button><button class="primary-button" data-restock="${id}">＋ Naskladnit</button></footer>`, 'batches-dialog');
+}
+function editBatch(id) {
+  const b=state.batches.find(b=>b.id===id);
+  openDialog(`Upravit šarži · ${esc(ingredient(b.ingredientId).name)}`, 'Doplňte skutečné údaje z příjmu a obalu suroviny.', `<form class="dialog-form" id="batch-form" data-batch="${id}"><label>Označení šarže<input name="lot" value="${esc(b.lot)}" maxlength="60" required></label><div class="form-columns"><label>Datum příjmu<input type="date" name="receivedOn" max="${localDay()}" value="${b.receivedOn||''}" required></label><label>Spotřebovat do<input type="date" name="expiresOn" value="${b.expiresOn||''}" required></label></div><p class="inline-note">Úprava se zaznamená do historie. Množství zásoby zůstane stejné.</p><footer class="dialog-footer"><button type="button" class="secondary-button" data-batches="${b.ingredientId}">Zpět</button><button class="primary-button">Uložit šarži</button></footer></form>`);
+}
+function openDiscardBatch(id) {
+  const b=state.batches.find(b=>b.id===id),i=ingredient(b.ingredientId);
+  openDialog('Vyřadit zásobu', `${esc(i.name)} · ${esc(b.lot)} · ${quantity(b.remaining,i.unit)}`, `<form id="discard-batch-form" class="dialog-form" data-batch="${id}"><p class="inline-note">Vyřadí se celý zbývající obsah této šarže. Výdej a důvod zůstanou v historii.</p><label>Důvod<input name="reason" maxlength="100" placeholder="Např. prošlá trvanlivost" required></label><footer class="dialog-footer"><button type="button" class="secondary-button" data-batches="${b.ingredientId}">Zpět</button><button class="primary-button">Potvrdit vyřazení</button></footer></form>`);
 }
 function renderHistory() {
   const orders = branchOrders().filter(o => ['completed', 'cancelled'].includes(o.status));
@@ -101,7 +143,7 @@ function openDialog(title, subtitle, content, className = '') {
 }
 function openRestock(id) {
   const chosen = ingredient(id) || seed.ingredients[0];
-  openDialog('Naskladnit suroviny', `Příjem do skladu pobočky ${esc(branch().name)}.`, `<form id="restock-form" class="dialog-form"><label>Surovina<select id="stock-ingredient" name="ingredient">${seed.ingredients.map(i => `<option value="${i.id}" ${chosen.id === i.id ? 'selected' : ''}>${esc(i.name)}</option>`).join('')}</select></label><div class="form-columns"><label>Množství<input name="amount" type="number" min="0.001" step="0.001" max="10000000" placeholder="Např. 5" required autofocus></label><label>Jednotka<select name="unit" id="stock-unit"></select></label></div><p id="restock-preview" class="inline-note"></p><label>Poznámka <span class="muted">nepovinné</span><input name="note" maxlength="100" placeholder="Např. ranní dodávka"></label><footer class="dialog-footer"><button type="button" class="secondary-button" data-close>Zrušit</button><button class="primary-button" type="submit">Potvrdit naskladnění</button></footer></form>`);
+  openDialog('Naskladnit suroviny', `Příjem do skladu pobočky ${esc(branch().name)}.`, `<form id="restock-form" class="dialog-form"><label>Surovina<select id="stock-ingredient" name="ingredient">${seed.ingredients.map(i => `<option value="${i.id}" ${chosen.id === i.id ? 'selected' : ''}>${esc(i.name)}</option>`).join('')}</select></label><div class="form-columns"><label>Množství<input name="amount" type="number" min="0.001" step="0.001" max="10000000" placeholder="Např. 5" required autofocus></label><label>Jednotka<select name="unit" id="stock-unit"></select></label></div><p id="restock-preview" class="inline-note"></p><label>Označení šarže<input name="lot" maxlength="60" placeholder="Číslo z obalu (nepovinné)"></label><div class="form-columns"><label>Datum příjmu<input type="date" name="receivedOn" value="${localDay()}" max="${localDay()}" required></label><label>Spotřebovat do<input type="date" name="expiresOn" required></label></div><label>Poznámka <span class="muted">nepovinné</span><input name="note" maxlength="100" placeholder="Např. ranní dodávka"></label><footer class="dialog-footer"><button type="button" class="secondary-button" data-close>Zrušit</button><button class="primary-button" type="submit">Potvrdit naskladnění</button></footer></form>`);
   stockUnits();
 }
 function stockUnits() {
@@ -113,11 +155,6 @@ function stockPreview() {
   const form = $('#restock-form'), i = ingredient(form.elements.ingredient.value);
   const addition = Number(form.elements.amount.value) * Number(form.elements.unit.value);
   $('#restock-preview').textContent = `Nyní ${quantity(state.stocks[branchId][i.id], i.unit)} → po naskladnění ${quantity(state.stocks[branchId][i.id] + (Number.isFinite(addition) ? addition : 0), i.unit)}`;
-}
-function openRecipe(id) {
-  const p = pizzas(site).find(p => p.id === id);
-  recipeBase = JSON.stringify(state.recipes[id]);
-  openDialog(`Receptura · ${esc(pizzaName(p))}`, 'Množství na 1 pizzu. Hodnota 0 surovinu z receptury vyřadí.', `<form id="recipe-form" data-pizza="${id}"><div class="inline-note recipe-note">Společné pro všechny pobočky. Změny se použijí u objednávek, které ještě nezačaly přípravu. Dřívější odečty se nepřepočítají.</div><div class="table-scroll recipe-table"><table><thead><tr><th>Surovina</th><th>30 cm</th><th>40 cm</th><th>Jednotka</th></tr></thead><tbody>${seed.ingredients.map(i => `<tr><td>${esc(i.name)}</td>${[30, 40].map(size => `<td><input type="number" name="${i.id}:${size}" min="0" max="10000" step="1" required value="${state.recipes[id][size][i.id] || 0}" aria-label="${esc(i.name)} ${size} cm (${i.unit})"></td>`).join('')}<td class="muted">${i.unit}</td></tr>`).join('')}</tbody></table></div><footer class="dialog-footer"><button class="secondary-button" type="button" data-close>Zrušit</button><button class="primary-button" type="submit">Uložit recepturu</button></footer></form>`, 'recipe-dialog');
 }
 function openOrder(id) {
   const order = state.orders.find(o => o.id === id);
@@ -137,7 +174,7 @@ function openOrder(id) {
 }
 function openNewOrder() {
   draft = []; catalogSize = 30; catalogCategory = 'pizzy';
-  openDialog('Nová objednávka', 'Ukázkový prodej na pobočce nebo z libovolného kanálu.', `<form id="new-order-form"><div class="new-order-layout"><section class="catalog-pane" aria-label="Nabídka"><div class="catalog-tools"><select id="catalog-category" aria-label="Kategorie"><option value="pizzy">Pizzy · 24</option><option value="napoje">Nápoje</option><option value="vino-prosecco">Víno a prosecco</option></select><div class="size-options" role="group" aria-label="Velikost pizzy"><button type="button" data-size="30" aria-pressed="true">30 cm</button><button type="button" data-size="40" aria-pressed="false">40 cm</button></div></div><div id="product-grid" class="product-grid"></div></section><aside class="cart-pane"><h3>Košík</h3><div id="cart-lines"></div><div class="form-columns"><label>Zdroj<select name="source">${SOURCES.map(s => `<option value="${s}" ${s === 'pos' ? 'selected' : ''}>${sourceNames[s]}</option>`).join('')}</select></label><label>Předání<select name="fulfillment" id="fulfillment"><option value="pickup">Vyzvednutí</option><option value="delivery">Doručení</option></select></label></div><label>Označení <span class="muted">jen ukázkové údaje</span><input name="label" value="Demo objednávka" maxlength="80" required></label><label>Platba<select name="payment"><option value="cash">Hotově</option><option value="card">Kartou · demo</option><option value="online">Online · demo</option></select></label><div id="draft-total"></div><p class="inline-note">Suroviny se odečtou až při zahájení přípravy. Platby a doručení jsou simulované.</p><button class="primary-button" id="create-order" type="submit" disabled>Vytvořit objednávku</button></aside></div></form>`, 'new-order-dialog');
+  openDialog('Nová objednávka', 'Ukázkový prodej na pobočce nebo z libovolného kanálu.', `<form id="new-order-form"><div class="new-order-layout"><section class="catalog-pane" aria-label="Nabídka"><div class="catalog-tools"><select id="catalog-category" aria-label="Kategorie"><option value="pizzy">Pizzy · 24</option><option value="napoje">Nápoje</option><option value="vino-prosecco">Víno a prosecco</option></select><span class="fixed-size">Pizzy pouze 30 cm</span></div><div id="product-grid" class="product-grid"></div></section><aside class="cart-pane"><div class="cart-form"><h3>Košík</h3><div id="cart-lines"></div><div class="form-columns"><label>Zdroj<select name="source">${SOURCES.map(s => `<option value="${s}" ${s === 'pos' ? 'selected' : ''}>${sourceNames[s]}</option>`).join('')}</select></label><label>Předání<select name="fulfillment" id="fulfillment"><option value="pickup">Vyzvednutí</option><option value="delivery">Doručení</option></select></label></div><label>Označení <span class="muted">jen ukázkové údaje</span><input name="label" value="Demo objednávka" maxlength="80" required></label><label>Platba<select name="payment"><option value="cash">Hotově</option><option value="card">Kartou · demo</option><option value="online">Online · demo</option></select></label></div><footer class="cart-checkout"><div id="draft-total"></div><p class="inline-note">Demo platba · sklad se odečte při přípravě.</p><button class="primary-button" id="create-order" type="submit" disabled>Vytvořit objednávku</button></footer></aside></div></form>`, 'new-order-dialog');
   renderCatalog(); renderDraft();
 }
 function renderCatalog() {
@@ -152,7 +189,7 @@ function renderDraft() {
   $('#draft-total').innerHTML = `<div><span>Krabice / rozvoz</span><span>${money(packaging)} / ${money(delivery)}</span></div><div><strong>Celkem</strong><strong>${money(subtotal + packaging + delivery)}</strong></div>`;
   $('#create-order').disabled = !draft.length;
 }
-function setView(next) { if (!['orders', 'stock', 'recipes', 'history'].includes(next)) return; view = next; history.replaceState(null, '', `#${next}`); render(); window.scrollTo({top: 0, behavior: 'instant'}); }
+function setView(next) { if (!['orders', 'stock', 'recipes', 'history'].includes(next)) return; if (recipeChanges.size && next !== 'recipes') { notify('Nejdřív uložte nebo zrušte změny receptur.', true); return; } view = next; history.replaceState(null, '', `#${next}`); render(); $('#workspace').scrollTop = 0; window.scrollTo({top: 0, behavior: 'instant'}); }
 
 document.addEventListener('click', async event => {
   const button = event.target.closest('button'); if (!button || busy || !state) return;
@@ -161,10 +198,19 @@ document.addEventListener('click', async event => {
   if (button.hasAttribute('data-source')) { sourceFilter = button.dataset.source; return renderOrders(); }
   if (button.hasAttribute('data-close')) return dialog.close();
   if (button.hasAttribute('data-restock')) return openRestock(button.dataset.restock);
-  if (button.hasAttribute('data-recipe')) return openRecipe(button.dataset.recipe);
+  if (button.hasAttribute('data-batches')) return openBatches(button.dataset.batches);
+  if (button.hasAttribute('data-edit-batch')) return editBatch(button.dataset.editBatch);
+  if (button.hasAttribute('data-discard-batch')) return openDiscardBatch(button.dataset.discardBatch);
+  if (button.hasAttribute('data-discard-recipes')) { recipeChanges.clear(); return renderRecipes(); }
+  if (button.hasAttribute('data-save-recipes')) {
+    const invalid = [...document.querySelectorAll('[data-cell-pizza]')].find(input => !input.checkValidity());
+    if (invalid) return invalid.reportValidity();
+    if (await transact(current => saveRecipeCells(current, site, seed, [...recipeChanges.values()]), 'Receptury 30 cm byly uloženy.', false)) { recipeChanges.clear(); renderRecipes(); }
+    return;
+  }
   if (button.hasAttribute('data-order')) return openOrder(button.dataset.order);
   if (button.hasAttribute('data-new-order')) return openNewOrder();
-  if (button.hasAttribute('data-size')) { catalogSize = Number(button.dataset.size); return renderCatalog(); }
+
   if (button.hasAttribute('data-add')) {
     const product = products(site).find(p => p.id === button.dataset.add), size = product.category === 'pizzy' ? catalogSize : null;
     const line = draft.find(l => l.pizzaId === product.id && l.size === size);
@@ -184,13 +230,22 @@ document.addEventListener('click', async event => {
 });
 document.addEventListener('change', event => {
   if (event.target.id === 'branch') { branchId = event.target.value; sessionStorage.setItem('pizza-visi-admin-branch', branchId); sourceFilter = 'all'; render(); }
-  if (event.target.id === 'low-only') { lowOnly = event.target.checked; renderStockRows(); }
+  if (event.target.id === 'stock-filter') { stockFilter = event.target.value; renderStockRows(); }
   if (event.target.id === 'stock-ingredient') stockUnits();
   if (event.target.id === 'stock-unit') stockPreview();
   if (event.target.id === 'catalog-category') { catalogCategory = event.target.value; renderCatalog(); }
   if (event.target.id === 'fulfillment') renderDraft();
 });
 document.addEventListener('input', event => {
+  if (event.target.hasAttribute('data-cell-pizza')) {
+    const input = event.target, pizzaId = input.dataset.cellPizza, ingredientId = input.dataset.cellIngredient, key = pizzaId + ':' + ingredientId;
+    const before = recipeChanges.get(key)?.before ?? (state.recipes[pizzaId][30][ingredientId] || 0);
+    const amount = input.validity.badInput ? NaN : Number(input.value);
+    if (amount === before) recipeChanges.delete(key); else recipeChanges.set(key, {pizzaId, ingredientId, before, amount});
+    input.closest('td').classList.toggle('edited', recipeChanges.has(key)); recipeSaveStatus();
+  }
+  if (event.target.id === 'pizza-search') { pizzaSearch = event.target.value; renderMatrix(); }
+  if (event.target.id === 'ingredient-search') { ingredientSearch = event.target.value; renderMatrix(); }
   if (event.target.id === 'stock-search') { search = event.target.value; renderStockRows(); }
   if (event.target.closest('#restock-form') && event.target.name === 'amount') stockPreview();
 });
@@ -201,15 +256,15 @@ document.addEventListener('submit', async event => {
     const rawAmount = Number(data.get('amount')) * Number(data.get('unit'));
     const amount = Math.round(rawAmount);
     if (Math.abs(rawAmount - amount) > 0.000001) return showError(new Error('Nejmenší jednotka je 1 g nebo 1 ml.'));
-    if (await transact(current => restock(current, seed, branchId, data.get('ingredient'), amount, data.get('note')), 'Surovina byla naskladněna.')) dialog.close();
+    if (await transact(current => restock(current, seed, branchId, data.get('ingredient'), amount, {note:data.get('note'),lot:data.get('lot'),receivedOn:data.get('receivedOn'),expiresOn:data.get('expiresOn')}), 'Surovina byla naskladněna.')) dialog.close();
   }
-  if (form.id === 'recipe-form') {
-    const id = form.dataset.pizza;
-    const recipes = Object.fromEntries([30, 40].map(size => [size, Object.fromEntries(seed.ingredients.map(i => [i.id, Number(data.get(`${i.id}:${size}`))]).filter(([, amount]) => amount !== 0))]));
-    if (await transact(current => {
-      if (JSON.stringify(current.recipes[id]) !== recipeBase) throw new Error('Receptura se změnila v jiném okně. Zavřete ji a otevřete znovu.');
-      return saveRecipe(saveRecipe(current, site, seed, id, 30, recipes[30]), site, seed, id, 40, recipes[40]);
-    }, 'Receptura pro 30 a 40 cm byla uložena.')) dialog.close();
+  if (form.id === 'batch-form') {
+    const id=form.dataset.batch;
+    if (await transact(current=>updateBatch(current,id,{lot:data.get('lot'),receivedOn:data.get('receivedOn'),expiresOn:data.get('expiresOn')}),'Šarže byla upravena.')) openBatches(state.batches.find(b=>b.id===id).ingredientId);
+  }
+  if (form.id === 'discard-batch-form') {
+    const id=form.dataset.batch, ingredientId=state.batches.find(b=>b.id===id).ingredientId;
+    if (await transact(current=>discardBatch(current,id,data.get('reason')),'Zásoba byla vyřazena a zapsána do historie.')) openBatches(ingredientId);
   }
   if (form.id === 'new-order-form') {
     if (await transact(current => addOrder(current, site, {branchId, source: data.get('source'), fulfillment: data.get('fulfillment'), payment: data.get('payment'), label: data.get('label'), lines: draft}).state, 'Nová objednávka čeká na potvrzení.')) { dialog.close(); setView('orders'); sourceFilter = 'all'; render(); }
@@ -217,7 +272,7 @@ document.addEventListener('submit', async event => {
 });
 window.addEventListener('storage', event => {
   if (event.key !== STORAGE_KEY || !site) return;
-  try { state = restoreState(event.newValue, site, seed); render(); notify('Data aktualizována z jiného okna.'); }
+  try { state = restoreState(event.newValue, site, seed); if (!recipeChanges.size) render(); notify('Data aktualizována z jiného okna.'); }
   catch { notify('Uložená data se změnila. Obnovte administraci.', true); }
 });
 async function init() {
@@ -227,14 +282,18 @@ async function init() {
     [site, seed] = await Promise.all(responses.map(r => r.json()));
     await locked(async () => {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw !== null) state = restoreState(raw, site, seed);
+      if (raw !== null) { state = restoreState(raw, site, seed); if (JSON.parse(raw).version !== state.version) localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
       else { const initial = createDemoState(site, seed); localStorage.setItem(STORAGE_KEY, JSON.stringify(initial)); state = initial; }
     });
     $('#branch').innerHTML = site.branches.map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join('');
     const previousBranch = sessionStorage.getItem('pizza-visi-admin-branch');
     if (site.branches.some(b => b.id === previousBranch)) branchId = previousBranch;
     $('#branch').value = branchId;
-    const clock = () => { $('#clock').textContent = new Date().toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'}); };
+    let displayedDay = localDay();
+    const clock = () => {
+      $('#clock').textContent = new Date().toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'});
+      if (state && displayedDay !== localDay() && !dialog.open && !recipeChanges.size) { displayedDay = localDay(); render(); }
+    };
     clock(); setInterval(clock, 30000);
     setView(['orders', 'stock', 'recipes', 'history'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'orders');
   } catch (error) {
@@ -242,4 +301,5 @@ async function init() {
     $('#workspace').innerHTML = `<div class="empty-state"><h1>Administraci nelze otevřít</h1><p>${esc(error.message)}</p><p>Zkontrolujte připojení a povolení místního úložiště. Poškozená uložená data nepřepisujeme.</p><button class="secondary-button" onclick="location.reload()">Zkusit znovu</button></div>`;
   }
 }
+window.addEventListener('beforeunload', event => { if (recipeChanges.size) { event.preventDefault(); event.returnValue = ''; } });
 init();

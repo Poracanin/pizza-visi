@@ -9,6 +9,7 @@
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../fonts.css">
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./tablet.css">
   <script type="module" src="./app.js"></script>
 </head>
 <body>
@@ -16,18 +17,16 @@
   <div class="pos-app">
     <aside class="nav-rail">
       <a href="../" class="wordmark" aria-label="Pizza Visi — veřejný web">PIZZA <em>VISI</em><i></i></a>
-      <span class="rail-caption">PROVOZOVNA</span>
+      <div class="rail-branch"><label for="branch">Pobočka</label><select id="branch" aria-label="Pobočka"></select></div>
       <nav aria-label="Hlavní navigace">
         <button type="button" data-view="orders" aria-current="page"><span class="nav-icon">▤</span>Objednávky<span class="rail-count" id="rail-count">0</span></button>
         <button type="button" data-view="stock"><span class="nav-icon">▦</span>Sklad<span id="stock-alert" class="alert-dot" hidden></span></button>
         <button type="button" data-view="recipes"><span class="nav-icon">☷</span>Receptury</button>
         <button type="button" data-view="history"><span class="nav-icon">◷</span>Historie</button>
       </nav>
-      <div class="rail-bottom"><span class="demo-tag">DEMO PROVOZ</span><p>Wolt, foodora a Bolt jsou ukázkové kanály.</p><a href="../">Zpět na web ↗</a><small>Pizza Visi / obsluha</small></div>
+      <div class="rail-bottom"><span class="demo-tag">DEMO PROVOZ</span><p>Ukázkové objednávky.<br>Data v tomto prohlížeči.</p><div class="rail-clock"><time id="clock"></time><span id="save-state">Lokálně uloženo</span></div><a href="../">Zpět na web ↗</a><small>Pizza Visi / obsluha</small></div>
     </aside>
     <main class="main-stage" id="content">
-      <header class="topbar"><div class="branch-control"><span class="status-dot"></span><label for="branch">Pobočka</label><select id="branch" aria-label="Pobočka"></select></div><div class="topbar-right"><span id="save-state">Uloženo v tomto prohlížeči</span><time id="clock"></time></div></header>
-      <div class="demo-banner"><strong>Demo administrace</strong><span>Bez přihlášení a skutečných objednávek. Data zůstávají v tomto prohlížeči.</span></div>
       <section id="workspace" aria-live="polite"><p class="empty-state">Připravujeme provozovnu…</p></section>
     </main>
   </div>

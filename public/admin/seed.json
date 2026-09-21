@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "recipeNotice": "Ukázkové gramáže, nikoli ověřené receptury Pizza Visi. Nastavte vlastní normy pro obě velikosti. Těsto se eviduje jako polotovar. U Krémové byla chybná položka „mozarella balzamikový krém“ z exportu přiřazena k balzamikovému krému; mozzarella je samostatně.",
+  "version": 2,
+  "recipeNotice": "Ukázkové gramáže, nikoli ověřené receptury Pizza Visi. Nastavte vlastní normy pro pizzy 30 cm. Těsto se eviduje jako polotovar. U Krémové byla chybná položka „mozarella balzamikový krém“ z exportu přiřazena k balzamikovému krému; mozzarella je samostatně.",
   "ingredients": [
     {
       "id": "testo",
@@ -234,12 +234,6 @@
         "drcena-rajcata": 80,
         "mozzarella": 100,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "oregano": 3
       }
     },
     "2-sunkova": {
@@ -249,13 +243,6 @@
         "mozzarella": 100,
         "sunka-prosciutto-cotto": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "sunka-prosciutto-cotto": 66,
-        "oregano": 3
       }
     },
     "3-olivova": {
@@ -266,14 +253,6 @@
         "sunka-prosciutto-cotto": 40,
         "olivy": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "sunka-prosciutto-cotto": 66,
-        "olivy": 66,
-        "oregano": 3
       }
     },
     "4-zampionova": {
@@ -284,14 +263,6 @@
         "sunka-prosciutto-cotto": 40,
         "zampiony": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "smetana": 132,
-        "mozzarella": 165,
-        "sunka-prosciutto-cotto": 66,
-        "zampiony": 66,
-        "oregano": 3
       }
     },
     "5-ananasova": {
@@ -302,14 +273,6 @@
         "sunka-prosciutto-cotto": 40,
         "ananas": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "sunka-prosciutto-cotto": 66,
-        "ananas": 66,
-        "oregano": 3
       }
     },
     "6-syrova": {
@@ -321,15 +284,6 @@
         "gouda": 40,
         "grana-padano": 15,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "smetana": 132,
-        "mozzarella": 165,
-        "gorgonzola": 66,
-        "gouda": 66,
-        "grana-padano": 25,
-        "oregano": 3
       }
     },
     "7-salamova": {
@@ -340,14 +294,6 @@
         "salam-pepperoni": 40,
         "cibule": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "salam-pepperoni": 66,
-        "cibule": 66,
-        "oregano": 3
       }
     },
     "8-slaninova": {
@@ -358,14 +304,6 @@
         "anglicka-slanina": 40,
         "cibule": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "anglicka-slanina": 66,
-        "cibule": 66,
-        "oregano": 3
       }
     },
     "9-tunakova": {
@@ -376,14 +314,6 @@
         "tunak": 40,
         "cibule": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "smetana": 132,
-        "mozzarella": 165,
-        "tunak": 66,
-        "cibule": 66,
-        "oregano": 3
       }
     },
     "10-symfonie": {
@@ -396,16 +326,6 @@
         "cibule": 40,
         "spenat": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "smetana": 132,
-        "mozzarella": 165,
-        "gorgonzola": 66,
-        "anglicka-slanina": 66,
-        "cibule": 66,
-        "spenat": 66,
-        "oregano": 3
       }
     },
     "11-vegetarianska": {
@@ -418,16 +338,6 @@
         "zampiony": 40,
         "spenat": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "cibule": 66,
-        "paprika": 66,
-        "zampiony": 66,
-        "spenat": 66,
-        "oregano": 3
       }
     },
     "12-hermelinova": {
@@ -439,15 +349,6 @@
         "hermelin": 40,
         "brusinky": 20,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "smetana": 132,
-        "mozzarella": 165,
-        "sunka-prosciutto-cotto": 66,
-        "hermelin": 66,
-        "brusinky": 33,
-        "oregano": 3
       }
     },
     "13-mexicka": {
@@ -461,17 +362,6 @@
         "kozi-rohy": 40,
         "chilli": 2,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "salam-pepperoni": 66,
-        "cibule": 66,
-        "kukurice": 66,
-        "kozi-rohy": 66,
-        "chilli": 3,
-        "oregano": 3
       }
     },
     "14-uzenarska": {
@@ -484,16 +374,6 @@
         "salam-pepperoni": 40,
         "cibule": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "sunka-prosciutto-cotto": 66,
-        "anglicka-slanina": 66,
-        "salam-pepperoni": 66,
-        "cibule": 66,
-        "oregano": 3
       }
     },
     "15-tunakova-special": {
@@ -506,16 +386,6 @@
         "tunak": 40,
         "olivy": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "smetana": 132,
-        "mozzarella": 165,
-        "sunka-prosciutto-cotto": 66,
-        "zampiony": 66,
-        "tunak": 66,
-        "olivy": 66,
-        "oregano": 3
       }
     },
     "16-visi": {
@@ -531,19 +401,6 @@
         "jalapeno": 15,
         "grana-padano": 15,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "salam-pepperoni": 66,
-        "anglicka-slanina": 66,
-        "paprika": 66,
-        "cibule": 66,
-        "zampiony": 66,
-        "jalapeno": 25,
-        "grana-padano": 25,
-        "oregano": 3
       }
     },
     "17-dabelska": {
@@ -556,16 +413,6 @@
         "kozi-rohy": 40,
         "chilli": 2,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "smetana": 132,
-        "mozzarella": 165,
-        "sunka-prosciutto-cotto": 66,
-        "salam-pepperoni": 66,
-        "kozi-rohy": 66,
-        "chilli": 3,
-        "oregano": 3
       }
     },
     "18-ohniva": {
@@ -579,17 +426,6 @@
         "jalapeno": 15,
         "chilli": 2,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "salam-pepperoni": 66,
-        "ventricina-piccante": 66,
-        "anglicka-slanina": 66,
-        "jalapeno": 25,
-        "chilli": 3,
-        "oregano": 3
       }
     },
     "19-zeleninova": {
@@ -604,18 +440,6 @@
         "jalapeno": 15,
         "paprika": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "smetana": 132,
-        "mozzarella": 165,
-        "zampiony": 66,
-        "kukurice": 66,
-        "cibule": 66,
-        "olivy": 66,
-        "jalapeno": 25,
-        "paprika": 66,
-        "oregano": 3
       }
     },
     "20-z-komina": {
@@ -627,15 +451,6 @@
         "paprika": 40,
         "kukurice": 40,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "slanina-z-komina": 66,
-        "paprika": 66,
-        "kukurice": 66,
-        "oregano": 3
       }
     },
     "21-hovezi": {
@@ -647,15 +462,6 @@
         "cibule": 40,
         "grana-padano": 15,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "hovezi-roastbeef": 66,
-        "cibule": 66,
-        "grana-padano": 25,
-        "oregano": 3
       }
     },
     "22-susena-sunka": {
@@ -668,16 +474,6 @@
         "cherry-rajcata": 40,
         "grana-padano": 15,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "sunka-prosciutto-crudo": 66,
-        "rukola": 25,
-        "cherry-rajcata": 66,
-        "grana-padano": 25,
-        "oregano": 3
       }
     },
     "23-pikantni": {
@@ -688,14 +484,6 @@
         "ventricina-piccante": 40,
         "grana-padano": 15,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "ventricina-piccante": 66,
-        "grana-padano": 25,
-        "oregano": 3
       }
     },
     "24-kremova": {
@@ -708,16 +496,6 @@
         "balzamikovy-krem": 10,
         "bazalkove-pesto": 15,
         "oregano": 2
-      },
-      "40": {
-        "testo": 412,
-        "drcena-rajcata": 132,
-        "mozzarella": 165,
-        "rukola": 25,
-        "cherry-rajcata": 66,
-        "balzamikovy-krem": 16,
-        "bazalkove-pesto": 25,
-        "oregano": 3
       }
     }
   }

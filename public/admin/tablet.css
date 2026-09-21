@@ -1,0 +1,288 @@
+/* Touch-first operation: compact chrome, readable cards and work tables. */
+body { font-size: 16px; overflow: hidden; }
+button, input, select { touch-action: manipulation; }
+.pos-app { grid-template-columns: 176px minmax(0, 1fr); }
+.nav-rail { padding: 25px 10px 15px; }
+.wordmark { margin: 0 10px 24px; font-size: 35px; }
+.rail-branch { margin: 0 6px 20px; }
+.rail-branch label { display: block; font-size: 12px; color: var(--muted); margin: 0 6px 7px; }
+.rail-branch select { width: 100%; min-height: 46px; font-size: 16px; padding: 8px 10px; }
+.nav-rail nav { gap: 8px; }
+.nav-rail nav button { min-height: 56px; padding: 12px 9px; font-size: 14px; gap: 8px; }
+.rail-count { font-size: 12px; min-width: 22px; }
+.rail-bottom { padding: 15px 7px 0; font-size: 12px; }
+.rail-bottom p { margin: 12px 0; font-size: 12px; line-height: 1.6; }
+.demo-tag { font-size: 10px; }
+.rail-clock { display: grid; gap: 3px; padding-bottom: 18px; }
+.rail-clock time { font-size: 22px; color: var(--cream); font-variant-numeric: tabular-nums; }
+.rail-clock span { font-size: 10px; }
+.rail-bottom small { font-size: 11px; }
+.main-stage { height: 100dvh; background: #202327; overflow: hidden; }
+#workspace { height: 100%; padding: 16px 20px; overflow: auto; }
+.page-heading { min-height: 52px; margin: 0 0 14px; gap: 16px; }
+.page-heading h1 { font: 38px/1.1 'Bebas Neue', sans-serif; }
+.page-heading h1 small { font: 15px 'Work Sans', sans-serif; vertical-align: middle; margin-left: 12px; padding: 5px 9px; background: #d2a08719; color: var(--copper); border-radius: 4px; }
+.heading-actions { display: flex; align-items: center; gap: 12px; }
+.primary-button, .secondary-button { min-height: 48px; padding: 11px 20px; font-size: 16px; }
+.small-button { min-height: 44px; padding: 8px 12px; font-size: 14px; }
+.text-button { min-height: 44px; font-size: 14px; padding: 8px; }
+.close-button { width: 48px; height: 48px; font-size: 30px; }
+body[data-view=orders] #workspace { display: flex; flex-direction: column; overflow: hidden; }
+.orders-board { flex: 1; min-height: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+.order-column { display: flex; flex-direction: column; min-height: 0; }
+.column-header { flex: 0 0 42px; padding-bottom: 10px; margin-bottom: 12px; }
+.column-header strong { font-size: 17px; font-weight: 600; }
+.column-header span { font-size: 15px; }
+.column-header i { width: 8px; height: 8px; }
+.column-list { flex: 1; min-height: 0; overflow: auto; gap: 14px; padding-right: 4px; overscroll-behavior: contain; }
+.column-list, .table-scroll { scrollbar-width: auto; scrollbar-color: #747980 #25282c; }
+.column-list::-webkit-scrollbar, .table-scroll::-webkit-scrollbar { width: 11px; height: 13px; }
+.column-list::-webkit-scrollbar-thumb, .table-scroll::-webkit-scrollbar-thumb { background: #747980; border: 2px solid #25282c; border-radius: 8px; }
+.order-card { padding: 16px; border-radius: 10px; border: 1px solid #ffffff20; background: #454e59; color: #fff; flex-shrink: 0; box-shadow: 0 4px 10px #0002; }
+.order-card.is-wolt { background: #006f83; border-color: #4096a6; }
+.order-card.is-foodora { background: #ae1957; border-color: #d05b8b; }
+.order-card.is-bolt { background: #b8dfc8; color: #153c28; border-color: #c8e9d5; }
+.order-card.is-web { background: #cfaa91; color: #302117; border-color: #e0bea7; }
+.order-card.is-pos { background: #45515f; border-color: #657488; }
+.card-top { flex-wrap: nowrap; align-items: center; gap: 10px; }
+.card-top > strong { font-size: 23px; line-height: 1.2; }
+.card-top .source-badge { font-size: 12px; }
+.card-top .source-badge img { height: 22px; max-width: 85px; }
+.card-top .source-wolt img { max-width: 60px; }
+.card-top .source-wolt img, .card-top .source-foodora img { filter: brightness(0) invert(1); }
+.card-top .source-bolt img { filter: brightness(0) saturate(100%) invert(19%) sepia(25%) saturate(858%) hue-rotate(97deg) brightness(96%); }
+.order-card .source-web b, .order-card .source-pos { color: inherit; }
+.card-time { font-size: 13px; color: inherit; opacity: .88; margin-top: 8px; line-height: 1.5; }
+.order-items { margin: 13px 0 11px; padding-bottom: 12px; border-color: #ffffff30; gap: 10px; }
+.order-items > div { gap: 10px; }
+.order-items b { font-size: 15px; font-weight: 600; min-width: 33px; padding: 2px 5px; background: #ffffff20; border-color: transparent; }
+.order-items strong { font-size: 18px; line-height: 1.3; font-weight: 600; }
+.order-items small { font-size: 13px; color: inherit; opacity: .85; }
+.fulfillment { font-size: 14px; color: inherit; opacity: .9; margin-bottom: 12px; }
+.payment-line { flex-direction: row; align-items: center; gap: 8px; }
+.payment-line > span { font-size: 13px; color: inherit; padding: 4px 7px; background: #ffffff18; }
+.payment-line > strong { font-size: 20px; font-weight: 600; }
+.deducted { font-size: 12px; color: inherit; opacity: .85; margin: 9px 0 0; }
+.advance-order, .order-column[data-column=new] .advance-order { min-height: 50px; margin-top: 13px; padding: 10px; font-size: 15px; font-weight: 600; background: #fff; color: #25323a; border: 1px solid #ffffff88; }
+.is-bolt .advance-order, .is-web .advance-order, .order-column[data-column=new] .is-web .advance-order, .order-column[data-column=new] .is-bolt .advance-order { background: #253a30; color: #fff; border-color: #253a30; }
+.is-bolt .order-items, .is-web .order-items { border-color: #0002; }
+.is-bolt .order-items b, .is-web .order-items b { background: #ffffff40; }
+.column-empty { font-size: 15px; padding: 30px 10px; }
+.orders-footer { flex-shrink: 0; margin-top: 12px; padding-top: 10px; gap: 12px; }
+.orders-footer .channel-toolbar { margin: 0; padding: 0; border: 0; gap: 7px; flex-wrap: nowrap; overflow-x: auto; }
+.channel-toolbar > button { min-height: 44px; height: auto; font-size: 14px; padding: 8px 12px; flex-shrink: 0; }
+.channel-toolbar > button > b { font-size: 13px; }
+.source-badge { font-size: 12px; }
+.source-badge img { height: 20px; max-width: 76px; }
+.source-wolt img { max-width: 50px; }
+.channels-note { display: none; }
+.orders-footer > .text-button { flex-shrink: 0; white-space: nowrap; }
+
+/* Inventory: operational data first, summaries below the table. */
+.panel { border-color: #50555b; background: #282c31; border-radius: 6px; }
+.panel-toolbar { padding: 10px 14px; gap: 20px; }
+.panel-toolbar > .muted { display: block; font-size: 13px; }
+.search-field { min-width: 240px; max-width: 330px; padding: 0; gap: 8px; }
+.search-field input { min-height: 44px; font-size: 16px; padding: 10px; }
+.panel-toolbar select { font-size: 15px; min-height: 44px; padding: 8px 12px; }
+.stock-scroll { max-height: calc(100dvh - 169px); overscroll-behavior: contain; }
+.stock-panel table { min-width: 1040px; }
+th { font-size: 12px; padding: 12px; color: #bfc3c8; letter-spacing: .35px; }
+td { padding: 8px 12px; font-size: 16px; height: 59px; border-top: 1px solid #ffffff12; }
+td strong { font-size: 16px; font-weight: 500; }
+td small { font-size: 12px; margin-top: 2px; color: #b4b8bd; }
+.stock-panel th { position: sticky; top: 0; z-index: 1; background: #343a40; }
+.stock-panel td:first-child { min-width: 175px; }
+.stock-panel td { white-space: nowrap; }
+.stock-panel tbody tr:nth-child(even) { background: #ffffff03; }
+.stock-panel tbody tr:hover { background: #ffffff06; }
+.numeric { text-align: right; font-variant-numeric: tabular-nums; }
+.stock-amount { font-weight: 600; }
+.stock-amount small { font-weight: 400; }
+.stock-status { font-size: 12px; padding: 5px 8px; border: 1px solid #86b39730; border-radius: 4px; color: #b0d6b9; }
+.stock-status.expired { color: #ffc2b9; border-color: #ed8e8050; background: #b6433425; }
+.stock-status.undated, .stock-status.low, .stock-status.soon { color: #f4d098; background: #ba843219; border-color: #ba843255; }
+.expiry-cell.expired, .expired { color: #ffada0; }
+.expiry-cell.soon, .soon { color: #f3d19d; }
+.expiry-cell.undated, .undated { color: #d6b4ed; }
+.row-actions { display: flex; gap: 8px; white-space: nowrap; }
+.plus-button { min-width: 46px; font-size: 23px; padding: 4px 10px; }
+.stock-summary { display: flex; flex-wrap: wrap; gap: 20px; padding: 16px 2px; font-size: 13px; color: #b0b6bc; }
+.stock-summary span:last-child { margin-left: auto; }
+.movement-details { margin: 10px 0 25px; border: 1px solid #454a50; border-radius: 6px; }
+.movement-details summary { font-size: 16px; padding: 16px; cursor: pointer; min-height: 50px; }
+.movement-details summary span { color: var(--muted); font-size: 13px; margin-left: 15px; }
+.movement-list { border: 0; border-top: 1px solid var(--line); border-radius: 0; }
+.movement { padding: 13px 16px; }
+.movement strong { font-size: 15px; }
+.movement p, .movement small, .movement time { font-size: 13px; }
+.movement-icon.waste { color: #ffada0; background: #a8383028; }
+.movement-icon.correction { color: #c9afe0; background: #604c7728; }
+
+/* Recipe spreadsheet: frozen pizza names, frozen ingredient headings. */
+body[data-view=recipes] #workspace { display: flex; flex-direction: column; overflow: hidden; }
+.recipe-tools { display: flex; gap: 16px; align-items: center; padding: 0 0 12px; }
+.recipe-tools .search-field { background: #2b3035; border: 1px solid #4b5056; border-radius: 5px; width: 285px; }
+#recipe-save-status { margin-left: auto; color: #cfc8bd; font-size: 14px; }
+.matrix-scroll { flex: 1; min-height: 0; border: 1px solid #535960; border-radius: 6px; overscroll-behavior: contain; background: #262b30; }
+.recipe-matrix { width: max-content; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+.recipe-matrix th, .recipe-matrix td { border-bottom: 1px solid #ffffff12; border-right: 1px solid #ffffff12; }
+.recipe-matrix thead th { width: 126px; min-width: 126px; max-width: 126px; height: 80px; padding: 10px; position: sticky; top: 0; z-index: 2; font-size: 14px; text-transform: none; letter-spacing: 0; font-weight: 500; white-space: normal; vertical-align: middle; line-height: 1.3; background: #384047; color: #f0efed; }
+.recipe-matrix th small { display: block; font-size: 12px; font-weight: 400; color: #b1b9c2; margin-top: 5px; }
+.recipe-matrix .pizza-column { position: sticky; left: 0; width: 228px; min-width: 228px; max-width: 228px; background: #30363c; color: var(--cream); box-shadow: 2px 0 0 #565e66; font-size: 15px; padding: 8px 12px; z-index: 1; white-space: normal; }
+.recipe-matrix thead .pizza-column { z-index: 3; background: #40474f; }
+.recipe-matrix tbody th span { display: inline-block; color: #9fa7b0; width: 27px; font-size: 12px; }
+.recipe-matrix td { padding: 4px 8px; height: 54px; text-align: center; background: #272d32; }
+.recipe-matrix tbody tr:nth-child(even) td { background: #2b3137; }
+.recipe-matrix td:focus-within { background: #d2a08720; outline: 2px solid var(--copper); outline-offset: -2px; }
+.recipe-matrix td.edited { background: #79593c45 !important; }
+.recipe-matrix input { width: 100%; min-width: 90px; padding: 7px; height: 44px; border: 1px solid transparent; background: transparent; color: #f2e4d8; border-radius: 3px; font-size: 17px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; }
+.recipe-matrix input::placeholder { color: #626e78; opacity: .7; }
+.recipe-matrix input:hover { border-color: #ffffff30; }
+.recipe-matrix input:focus { outline: none; background: #20272d; }
+.matrix-help { display: flex; align-items: center; gap: 20px; padding: 12px 2px 0; color: #afb7be; font-size: 12px; }
+.matrix-help strong { font-size: 13px; font-weight: 500; color: var(--cream); white-space: nowrap; }
+
+/* Touch targets and readable forms throughout the POS. */
+dialog { width: 650px; max-height: calc(100dvh - 30px); }
+.dialog-header { padding: 20px 24px; }
+.dialog-header h2 { font-size: 35px; }
+.dialog-header p:not(.eyebrow) { font-size: 14px; }
+.dialog-header .eyebrow { font-size: 11px; }
+.dialog-form { padding: 20px 24px 0; }
+.dialog-form .dialog-footer { margin-left: -24px; margin-right: -24px; }
+label, .form-columns label, .cart-pane label { font-size: 15px; }
+input, select, .cart-pane input, .cart-pane select { font-size: 16px; min-height: 46px; padding: 10px 12px; }
+.inline-note, .cart-pane .inline-note { font-size: 13px; }
+.dialog-footer { padding: 16px 24px; }
+.error-box { font-size: 15px; }
+.batches-dialog { width: 1080px; }
+.batch-panel { padding: 20px 24px; }
+.batches-table { min-width: 840px; }
+.batches-table td { font-size: 15px; }
+.batches-table th { font-size: 12px; }
+.order-dialog { width: 650px; }
+.order-dialog .dialog-footer button { font-size: 14px; }
+.order-detail { padding: 20px 24px; }
+.detail-items { font-size: 16px; gap: 12px; }
+.order-detail h3 { font-size: 16px; }
+.deduction-list > div { font-size: 14px; }
+.deduction-list small { font-size: 13px; }
+.stock-warning { font-size: 14px; }
+.eta-field { font-size: 15px; }
+.new-order-dialog { width: 1200px; }
+.new-order-layout { grid-template-columns: minmax(0, 1fr) 355px; }
+.catalog-tools select { font-size: 16px; }
+.fixed-size { font-size: 14px; color: var(--muted); }
+.product-grid { max-height: calc(100dvh - 245px); }
+.product-card > img { height: 110px; }
+.product-card > strong { font-size: 16px; }
+.product-card > span:not(.drink-placeholder) { font-size: 15px; }
+.product-card b { font-size: 24px; }
+.cart-pane h3 { font-size: 22px; }
+.cart-line { font-size: 15px; }
+.cart-line small { font-size: 13px; }
+.quantity-control button { height: 44px; width: 38px; font-size: 18px; }
+.quantity-control span { min-width: 26px; font-size: 16px; }
+#draft-total > div { font-size: 14px; }
+#draft-total > div:last-child { font-size: 23px; }
+.empty-state { font-size: 16px; }
+#toast { font-size: 16px; z-index: 10; }
+@media (min-width: 761px) {
+  .new-order-dialog { height: calc(100dvh - 30px); overflow: hidden; }
+  .new-order-dialog #dialog-content { height: 100%; display: flex; flex-direction: column; }
+  .new-order-dialog .dialog-header { flex-shrink: 0; padding: 16px 24px; }
+  #new-order-form { flex: 1; min-height: 0; }
+  .new-order-layout { height: 100%; min-height: 0; }
+  .catalog-pane { display: flex; flex-direction: column; min-height: 0; }
+  .catalog-tools { flex-shrink: 0; }
+  .product-grid { flex: 1; min-height: 0; max-height: none; grid-auto-rows: minmax(198px, auto); align-content: start; }
+  .product-card > img { flex-shrink: 0; }
+  .cart-pane { display: flex; flex-direction: column; min-height: 0; padding: 16px; }
+  .cart-form { flex: 1; min-height: 0; overflow: auto; padding-right: 5px; }
+  .cart-form > label { display: grid; gap: 6px; margin-bottom: 12px; }
+  .cart-form > label > .muted { font-size: 12px; }
+  .cart-form .form-columns { margin-bottom: 12px; }
+  #cart-lines { max-height: 140px; margin-bottom: 12px; }
+  #cart-lines .empty-state { padding: 14px 5px; font-size: 14px; }
+  .cart-checkout { flex-shrink: 0; background: #282b2f; }
+  #draft-total { margin-top: 8px; padding-top: 10px; }
+  #draft-total > div { margin-bottom: 7px; }
+  .cart-checkout .inline-note { margin: 0 0 9px; padding: 0; font-size: 12px; }
+}
+.cart-form > label { display: grid; gap: 6px; margin-bottom: 12px; }
+@media (max-width: 1250px) and (min-width: 761px) {
+  .pos-app { grid-template-columns: 155px minmax(0, 1fr); }
+  #workspace { padding: 14px; }
+  .nav-rail nav button { font-size: 13px; padding: 10px 6px; }
+  .orders-board { gap: 11px; }
+  .order-card { padding: 13px; }
+  .card-top > strong { font-size: 21px; }
+  .card-top .source-badge { font-size: 10px; }
+  .card-top .source-badge img { height: 19px; max-width: 68px; }
+  .order-items strong { font-size: 17px; }
+  .fulfillment { font-size: 13px; }
+  .advance-order { font-size: 14px; }
+  .orders-footer > .text-button { display: none; }
+}
+@media (max-width: 760px) {
+  body { overflow: auto; }
+  .pos-app { display: block; padding-bottom: 82px; }
+  .main-stage { height: auto; min-height: 100dvh; overflow: visible; }
+  #workspace { height: auto; padding: 14px 12px; overflow: visible; }
+  body[data-view=orders] #workspace { display: block; overflow: visible; }
+  .nav-rail { display: grid; grid-template-columns: 95px minmax(0,1fr); align-items: center; gap: 5px; padding: 5px; height: 76px; }
+  .rail-branch { margin: 0; }
+  .rail-branch label { display: none; }
+  .rail-branch select { padding: 5px; min-height: 48px; font-size: 13px; }
+  .nav-rail nav button { min-height: 58px; padding: 7px 3px; font-size: 10px; gap: 5px; }
+  .nav-rail > .wordmark, .rail-bottom { display: none; }
+  .rail-count { font-size: 9px; min-width: 15px; right: 2px; }
+  .page-heading h1 { font-size: 33px; }
+  .page-heading h1 small { font-size: 12px; margin-left: 5px; }
+  .heading-actions { gap: 6px; }
+  .heading-actions .primary-button, .heading-actions .secondary-button { min-height: 44px; font-size: 13px; padding: 9px; }
+  .orders-board { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px 10px; }
+  .column-list { overflow: visible; padding-right: 0; }
+  .column-header strong { font-size: 14px; }
+  .order-card { padding: 11px; }
+  .card-top { flex-wrap: wrap; }
+  .card-top > strong { font-size: 21px; }
+  .order-items strong { font-size: 16px; }
+  .order-items b { min-width: 26px; font-size: 13px; }
+  .fulfillment, .card-time { font-size: 12px; }
+  .payment-line { flex-wrap: wrap; }
+  .payment-line > strong { font-size: 18px; }
+  .advance-order { font-size: 13px; padding: 8px; }
+  .orders-footer > .text-button { display: none; }
+  .stock-scroll { max-height: 70dvh; }
+  .panel-toolbar { gap: 8px; padding: 8px; }
+  .panel-toolbar .search-field { min-width: 150px; }
+  .panel-toolbar > .muted { display: none; }
+  .stock-summary { gap: 9px; font-size: 12px; }
+  .stock-summary span:last-child { margin-left: 0; }
+  body[data-view=recipes] #workspace { height: calc(100dvh - 76px); }
+  body[data-view=recipes] .page-heading { flex-wrap: wrap; }
+  body[data-view=recipes] .heading-actions { width: 100%; }
+  .recipe-tools { flex-wrap: wrap; gap: 6px; }
+  .recipe-tools .search-field { width: calc(50% - 3px); min-width: 0; }
+  .recipe-tools input { font-size: 16px; }
+  #recipe-save-status { margin-left: 0; font-size: 12px; }
+  .recipe-matrix .pizza-column { width: 155px; min-width: 155px; max-width: 155px; font-size: 13px; padding: 8px; }
+  .recipe-matrix thead th { min-width: 110px; width: 110px; }
+  .recipe-matrix tbody th span { width: 21px; }
+  .matrix-help { display: block; font-size: 11px; padding-top: 8px; }
+  .matrix-help span { display: none; }
+  .new-order-layout { display: flex; flex-direction: column; }
+  .product-grid { max-height: 285px; }
+  .product-card > img { height: 74px; }
+  .product-card > strong { font-size: 12px; }
+  .product-card > span:not(.drink-placeholder) { font-size: 12px; }
+  .catalog-tools { flex-wrap: wrap; }
+  .dialog-header, .order-detail, .batch-panel { padding: 18px; }
+  .dialog-form { padding: 18px 18px 0; }
+  .dialog-form .dialog-footer { margin-left: -18px; margin-right: -18px; }
+  .dialog-footer { padding: 14px 18px; }
+  .dialog-header h2 { font-size: 30px; }
+  .dialog-header p:not(.eyebrow) { font-size: 13px; }
+}
