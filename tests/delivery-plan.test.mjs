@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {createState, addOrder, transitionOrder, restoreState} from '../public/admin/model.js';
+import {createState, createDemoState, ensureDemoDeliveryOrders, addOrder, transitionOrder, restoreState} from '../public/admin/model.js';
 import {deliveryPlan, deliveryAssignment, deliveryOrders, saveDeliveryPlan, toggleDeliveryStop, platformCourier} from '../public/admin/delivery.js';
 const site = JSON.parse(fs.readFileSync(new URL('../public/data/site.json', import.meta.url)));
 const seed = JSON.parse(fs.readFileSync(new URL('../public/admin/seed.json', import.meta.url)));
@@ -138,4 +138,35 @@ test('Dřívější záznam předání externí objednávky se při opravě plá
   state=saveDeliveryPlan(state,'rudna',[[a],[],[]],empty());state=transitionOrder(state,a,'completed',seed,now);
   state.orders.find(o=>o.id===a).source='wolt';delete state.courierPolicyVersion;
   assert.deepEqual(restore(state).orders.find(o=>o.id===a).handoff,{courierId:1,position:1,at:now});
+});
+test('Ukázkové rozvozy doplní šest objednávek každé pobočce a zachovají dosavadní data', () => {
+  let {state,ids:[a]}=fixture();
+  state=saveDeliveryPlan(state,'rudna',[[a],[],[]],empty());
+  const next=ensureDemoDeliveryOrders(state,site,now), samples=next.orders.filter(o=>o.demoDeliverySample);
+  assert.equal(samples.length,18); assert.equal(next.sequence,state.sequence+18);
+  assert.equal(new Set(next.orders.map(o=>o.id)).size,next.orders.length);
+  assert.deepEqual(next.orders.filter(o=>!o.demoDeliverySample),state.orders);
+  assert.deepEqual(next.stocks,state.stocks); assert.deepEqual(next.batches,state.batches); assert.deepEqual(next.movements,state.movements);
+  assert.deepEqual(next.deliveryPlans,state.deliveryPlans);
+  for(const branch of site.branches) {
+    const orders=samples.filter(o=>o.branchId===branch.id);
+    assert.equal(orders.length,6);
+    assert.ok(orders.every(o=>o.fulfillment==='delivery' && !platformCourier(o) && o.label.endsWith('· demo') && o.deliveryAddress.endsWith(branch.name) && !o.deduction));
+    const ids=deliveryOrders(next,branch.id).map(o=>o.id);
+    assert.ok(orders.every(o=>ids.includes(o.id)));
+  }
+  assert.deepEqual(restore(next),next);
+});
+test('Obnovení nevytvoří duplikáty ani nevrátí vyřízené demo objednávky', () => {
+  const seeded=ensureDemoDeliveryOrders(fixture().state,site,now);
+  assert.equal(ensureDemoDeliveryOrders(seeded,site,now),seeded);
+  const cancelled=transitionOrder(seeded,seeded.orders[0].id,'cancelled',seed,now);
+  const loaded=restore(cancelled);
+  assert.equal(ensureDemoDeliveryOrders(loaded,site,now),loaded);
+  assert.equal(loaded.orders[0].status,'cancelled'); assert.equal(loaded.orders.length,seeded.orders.length);
+});
+test('Nové demo má vlastní objednávky k plánování hned od prvního spuštění', () => {
+  const state=createDemoState(site,seed);
+  for(const branch of site.branches) assert.equal(deliveryOrders(state,branch.id).filter(o=>o.demoDeliverySample).length,6);
+  assert.equal(ensureDemoDeliveryOrders(state,site),state);
 });

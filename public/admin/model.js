@@ -129,7 +129,30 @@ export function createDemoState(site, seed) {
       if (status === 'ready') state = transitionOrder(state, result.order.id, 'ready', seed, now);
     });
   }
-  return state;
+  return ensureDemoDeliveryOrders(state, site);
+}
+export function ensureDemoDeliveryOrders(state, site, now = new Date().toISOString()) {
+  if (state.demoDeliverySamplesVersion === 1) return state;
+  const samples = [
+    ['Jan Novák', 'Ukázková 12', 0, 'web', 'confirmed'],
+    ['Tereza Svobodová', 'Vzorová 8', 1, 'pos', 'new'],
+    ['Martin Černý', 'Cvičná 5', 5, 'web', 'confirmed'],
+    ['Petra Dvořáková', 'Modelová 24', 10, 'pos', 'confirmed'],
+    ['Lucie Veselá', 'Ukázková 31', 3, 'web', 'new'],
+    ['Tomáš Procházka', 'Vzorová 17', 14, 'pos', 'confirmed'],
+  ];
+  let next = state;
+  const menu = pizzas(site);
+  for (const branch of site.branches) for (const [index, [name, street, pizzaIndex, source, status]] of samples.entries()) {
+    const createdAt = new Date(Date.parse(now) - (samples.length - index) * 120000).toISOString();
+    const result = addOrder(next, site, {branchId: branch.id, source, fulfillment: 'delivery', payment: source === 'web' ? 'online' : 'cash', label: `${name} · demo`, deliveryAddress: `${street}, ${branch.name}`, lines: [{pizzaId: menu[pizzaIndex].id, size: 30, quantity: index % 3 === 0 ? 2 : 1}]}, createdAt);
+    next = result.state;
+    result.order.demoDeliverySample = true;
+    result.order.status = status; // Pending demo orders do not consume existing inventory.
+  }
+  next.demoDeliverySamplesVersion = 1;
+  next.revision = state.revision + 1;
+  return next;
 }
 export function restoreState(raw, site, seed) {
   let state = JSON.parse(raw);

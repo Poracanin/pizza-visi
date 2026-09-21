@@ -1,5 +1,5 @@
 import {stockSummary, batchStatus, daysLeft, localDay, updateBatch, discardBatch} from './inventory.js';
-import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=abb8c34c';
+import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, ensureDemoDeliveryOrders, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=c90b50e8';
 import {normalizeSearch, itemPrice} from '../menu-utils.js';
 import {COURIERS, deliveryOrders, deliveryPlan, deliveryAssignment, saveDeliveryPlan, platformCourier, toggleDeliveryStop} from './delivery.js?v=bb45e9a7';
 
@@ -378,7 +378,11 @@ async function init() {
     [site, seed] = await Promise.all(responses.map(r => r.json()));
     await locked(async () => {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw !== null) { state = restoreState(raw, site, seed); if (JSON.parse(raw).version !== state.version || JSON.parse(raw).courierPolicyVersion !== state.courierPolicyVersion) localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+      if (raw !== null) {
+        const restored = restoreState(raw, site, seed);
+        state = ensureDemoDeliveryOrders(restored, site);
+        if (state !== restored || JSON.parse(raw).version !== state.version || JSON.parse(raw).courierPolicyVersion !== state.courierPolicyVersion) localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }
       else { const initial = createDemoState(site, seed); localStorage.setItem(STORAGE_KEY, JSON.stringify(initial)); state = initial; }
     });
     $('#branch').innerHTML = site.branches.map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join('');
