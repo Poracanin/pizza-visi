@@ -9,10 +9,11 @@ Samostatná mobilní stránka `public/rozvoz.html` s lokálními fonty, tmavou, 
 - **Trasa:** vlastní objednávky z webu a pokladny, na cestě nebo na pobočce; detail položek, balného a dopravy, poznámka zákazníka. Nepřebírá kurýry Woltu, foodory a Boltu.
 - Převzetí funguje jen pro připravenou objednávku přiřazenou danému kurýrovi a pobočce. Použije existující předání v POS, bez dalšího odečtu skladu.
 - Skutečné doručení v rámci dema je samostatný záznam `courierDelivery` na objednávce. POS status `completed` nadále znamená předání kurýrovi; sám o sobě není doručením zákazníkovi.
-- Hotovost a platba kartou vyžadují potvrzení úhrady; online demo už platbu nepřebírá. Žádné peníze se neúčtují a Comgate/terminál nejsou připojené.
+- **Platba a dýško:** na cestě lze zvolit hotovost, ukázkový QR nebo terminál s přiložením karty. Dýško má předvolby 0 / 20 / 50 / 100 Kč i vlastní částku v celých korunách (0–10 000 Kč). Částka se přepočítá před potvrzením. U online zaplacené objednávky se vybírá pouze dobrovolné dýško; bez něj lze rovnou potvrdit doručení. Žádné peníze se neúčtují a Comgate/terminál nejsou připojené.
+- Potvrzená ukázková úhrada `courierPayment` se uloží ještě před doručením, zachová po obnovení stránky a brání opakovanému účtování či změně dýška po potvrzení. Původní `order.payment` z POS zůstává zachované; skutečnou volbu v demu nese potvrzení. Předání zákazníkovi je stále samostatný krok.
 - Problém s doručením zůstává na trase, dokud jej kurýr neoznačí jako vyřešený. Záznam neposílá oznámení na pobočku; k tomu je k dispozici skutečný telefonní odkaz pobočky.
 - **Doručené:** historie pouze vybraného kurýra a pobočky.
-- **Přehled:** dnešní hotovost, karta, online platby a hotovost ještě k vybrání. Den se počítá v Europe/Prague. Nejde o účetní uzávěrku.
+- **Přehled:** dnešní potvrzená hotovost, karta, QR, online platby, dýško a hotovost ještě k vybrání. Dýško je zahrnuté v částkách plateb a zároveň vyčíslené zvlášť. Započítají se i úhrady objednávek ještě na cestě; platba změněná z hotovosti na QR se už nepočítá do hotovosti. Den úhrady se počítá v Europe/Prague (starší záznamy podle doručení). Nejde o účetní uzávěrku.
 - V profilu K1/K2/K3 je výběr pobočky, kurýra a zdroje dat.
 
 ## Dva zdroje dat
@@ -23,11 +24,11 @@ Samostatná mobilní stránka `public/rozvoz.html` s lokálními fonty, tmavou, 
 
 Zápisy používají stejný Web Lock jako administrace a načítají aktuální data před každou změnou. Otevřený detail kontroluje, zda se objednávka mezitím nezměnila. Změny jiných objednávek se zachovávají. Událost `storage` obnovuje jiná okna; při změně dat zavře otevřený detail. Bez Web Locks používejte jedno okno. Poškozený záznam aplikace ohlásí, nenahradí jej novou ukázkou.
 
-Jde o veřejný prototyp bez ověřování identity. Přepnutí kurýra není přihlášení. Data se sdílejí pouze v jednom prohlížeči na stejném originu; pro propojení telefonu a POS v provozu je potřeba backend, přihlášení a serverová synchronizace. QR platba se bez potvrzeného účtu Pizza Visi nevytváří.
+Jde o veřejný prototyp bez ověřování identity. Přepnutí kurýra není přihlášení. Data se sdílejí pouze v jednom prohlížeči na stejném originu; pro propojení telefonu a POS v provozu je potřeba backend, přihlášení a serverová synchronizace. QR je vykreslený lokálně přes [qrcode-generator 1.4.4](https://github.com/kazuhikoarase/qrcode-generator) s přibalenou MIT licencí. Obsahuje pouze text „DEMO ONLY“, číslo objednávky a částku, bez účtu, jména nebo adresy zákazníka. Není to bankovní platební příkaz; žádné údaje se neodesílají generátoru QR. Skutečná bankovní QR platba vyžaduje potvrzený účet Pizza Visi.
 
 ## Ověření
 
-`tests/courier.test.mjs` ověřuje oddělení poboček a kurýrů, filtr externích platforem, obnovení uloženého stavu, životní cyklus převzetí a doručení, opakované akce bez dalšího odečtu skladu, potvrzení plateb, problémy s doručením a zamítnutí poškozených záznamů. UI se ověřuje na mobilních šířkách 390 a 320 px, včetně detailu a spodní navigace. Všechny prostředky a odkazy jsou relativní pro publikaci pod `/pizza-visi/`.
+`tests/courier.test.mjs` ověřuje oddělení poboček a kurýrů, filtr externích platforem, obnovení uloženého stavu, životní cyklus převzetí a doručení, opakované akce bez dalšího odečtu skladu, potvrzení plateb a dýška, změnu metody, ochranu před dvojí úhradou, online dýško bez opakované úhrady objednávky, problémy s doručením a zamítnutí poškozených záznamů. UI se ověřuje na mobilních šířkách 390 a 320 px, včetně detailu a spodní navigace. Všechny prostředky a odkazy jsou relativní pro publikaci pod `/pizza-visi/`.
 
 ## Podklady pro ukázkové mapy
 

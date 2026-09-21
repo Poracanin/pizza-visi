@@ -32,6 +32,43 @@ const validTime = value => typeof value === 'string' && Number.isFinite(Date.par
 export const deliveryStatus = order => order.courierDelivery?.deliveredAt ? 'delivered' : order.courierDelivery?.issue ? 'issue' : handed(order) ? 'driving' : order.status === 'ready' ? 'ready' : 'waiting';
 export const ISSUE_REASONS = ['Zákazník není k zastižení', 'Adresa se nedaří najít', 'Problém s platbou', 'Jiný problém s doručením'];
 
+export function courierPaymentQuote(order, method, tip = 0) {
+  if (!['cash', 'card', 'qr'].includes(method)) fail('Vyberte hotovost, kartu nebo QR platbu.');
+  if (!Number.isSafeInteger(tip) || tip < 0 || tip > 10000) fail('Dýško zadejte v celých korunách od 0 do 10 000 Kč.');
+  const base = order.payment === 'online' ? 0 : order.total;
+  return {method, base, tip, amount: Math.round((base + tip) * 100) / 100};
+}
+
+export function collectDemoPayment(state, id, branchId, courierId, method, tip, now = new Date().toISOString()) {
+  const order = assignedOrder(state, id, branchId, courierId);
+  if (!handed(order) || order.courierDelivery?.deliveredAt) fail('Platbu lze potvrdit jen u probíhajícího rozvozu.');
+  if (order.courierDelivery?.issue) fail('Nejdříve vyřešte problém s doručením.');
+  const quote = courierPaymentQuote(order, method, tip);
+  if (order.courierPayment) {
+    if (order.courierPayment.method === method && order.courierPayment.tip === tip) return state;
+    fail('Úhrada už je potvrzená. Další platbu nelze zadat.');
+  }
+  if (quote.amount <= 0) fail('Objednávka je zaplacená online. Zadejte pouze případné dýško.');
+  if (!validTime(now) || Date.parse(now) < Date.parse(order.handoff.at)) fail('Čas platby není platný.');
+  const next = structuredClone(state), target = next.orders.find(o => o.id === id);
+  target.courierPayment = {...quote, demo: true, confirmedAt: now};
+  target.updatedAt = now;
+  return next;
+}
+
+export function courierPaymentTotals(orders) {
+  const totals = {cash: 0, card: 0, qr: 0, online: 0, tips: 0};
+  for (const order of orders) {
+    const receipt = order.courierPayment;
+    if (receipt) {
+      totals[receipt.method] += receipt.amount;
+      totals.tips += receipt.tip;
+      if (order.payment === 'online') totals.online += order.total;
+    } else if (order.courierDelivery?.deliveredAt) totals[order.payment] += order.total;
+  }
+  return totals;
+}
+
 export function courierOrders(state, branchId, courierId) {
   if (!COURIERS.includes(courierId)) return [];
   const assigned = deliveryPlan(state, branchId)[courierId - 1];
@@ -65,10 +102,11 @@ export function finishDelivery(state, id, branchId, courierId, paymentConfirmed,
   if (order.courierDelivery?.deliveredAt) return state;
   if (order.courierDelivery?.issue) fail('Nejdříve vyřešte problém s doručením.');
   if (!['cash', 'card', 'online'].includes(order.payment)) fail('Způsob platby není platný.');
-  if (order.payment !== 'online' && paymentConfirmed !== true) fail('Potvrďte převzetí hotovosti nebo úhradu na terminálu.');
+  if (order.payment !== 'online' && !order.courierPayment && paymentConfirmed !== true) fail('Potvrďte převzetí hotovosti nebo úhradu na terminálu.');
   if (!validTime(now) || Date.parse(now) < Date.parse(order.handoff.at)) fail('Čas doručení není platný.');
+  if (order.courierPayment && Date.parse(now) < Date.parse(order.courierPayment.confirmedAt)) fail('Čas doručení nesmí předcházet platbě.');
   const next = structuredClone(state), target = next.orders.find(o => o.id === id);
-  target.courierDelivery = {...target.courierDelivery, deliveredAt: now, payment: order.payment, paymentConfirmedAt: now};
+  target.courierDelivery = {...target.courierDelivery, deliveredAt: now, payment: order.payment === 'online' ? 'online' : order.courierPayment?.method || order.payment, paymentConfirmedAt: order.courierPayment?.confirmedAt || now};
   target.updatedAt = now;
   return next;
 }
@@ -84,11 +122,18 @@ export function setDeliveryIssue(state, id, branchId, courierId, issue, now = ne
 }
 export function validateCourierState(state) {
   for (const order of state.orders) {
+    const receipt = order.courierPayment;
+    if (receipt !== undefined) {
+      if (!receipt || typeof receipt !== 'object' || Array.isArray(receipt) || !handed(order) || receipt.demo !== true) fail('Uložená ukázková úhrada není platná.');
+      const quote = courierPaymentQuote(order, receipt.method, receipt.tip);
+      if (receipt.tip === undefined || receipt.base !== quote.base || receipt.amount !== quote.amount || receipt.amount <= 0 || !validTime(receipt.confirmedAt) || Date.parse(receipt.confirmedAt) < Date.parse(order.handoff.at)) fail('Uložená ukázková úhrada není platná.');
+    }
     const record = order.courierDelivery;
     if (record === undefined) continue;
     if (!record || typeof record !== 'object' || Array.isArray(record) || !handed(order)) fail('Uložený záznam rozvozu není platný.');
     if (record.issue != null && (!ISSUE_REASONS.includes(record.issue) || !validTime(record.issueAt) || Date.parse(record.issueAt) < Date.parse(order.handoff.at))) fail('Uložený problém rozvozu není platný.');
-    if (record.deliveredAt !== undefined && (!validTime(record.deliveredAt) || Date.parse(record.deliveredAt) < Date.parse(order.handoff.at) || record.issue || !['cash', 'card', 'online'].includes(record.payment) || record.payment !== order.payment || !validTime(record.paymentConfirmedAt) || record.paymentConfirmedAt !== record.deliveredAt)) fail('Uložené potvrzení doručení není platné.');
+    const payment = order.payment === 'online' ? 'online' : receipt?.method || order.payment;
+    if (record.deliveredAt !== undefined && (!validTime(record.deliveredAt) || Date.parse(record.deliveredAt) < Date.parse(order.handoff.at) || record.issue || record.payment !== payment || !validTime(record.paymentConfirmedAt) || record.paymentConfirmedAt !== (receipt?.confirmedAt || record.deliveredAt) || Date.parse(record.paymentConfirmedAt) > Date.parse(record.deliveredAt))) fail('Uložené potvrzení doručení není platné.');
   }
   return state;
 }

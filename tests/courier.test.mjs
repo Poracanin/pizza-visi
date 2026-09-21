@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {restoreState, addOrder, transitionOrder} from '../public/admin/model.js';
 import {saveDeliveryPlan, deliveryPlan} from '../public/admin/delivery.js';
-import {createCourierPreview, upgradeCourierPreviewAddresses, courierOrders, courierHistory, deliveryStatus, takeOrder, finishDelivery, setDeliveryIssue, validateCourierState, ISSUE_REASONS} from '../public/courier-model.js';
+import {createCourierPreview, upgradeCourierPreviewAddresses, courierOrders, courierHistory, deliveryStatus, takeOrder, finishDelivery, setDeliveryIssue, validateCourierState, ISSUE_REASONS, courierPaymentQuote, collectDemoPayment, courierPaymentTotals} from '../public/courier-model.js';
 const site = JSON.parse(fs.readFileSync(new URL('../public/data/site.json', import.meta.url)));
 const seed = JSON.parse(fs.readFileSync(new URL('../public/admin/seed.json', import.meta.url)));
 const now = '2026-09-21T11:00:00.000Z', later = '2026-09-21T11:15:00.000Z';
@@ -139,4 +139,54 @@ test('Sample maps update legacy preview addresses without resetting delivered or
   assert.deepEqual(safe.orders[0],custom.orders[0]);
   assert.deepEqual(safe.orders[1],custom.orders[1]);
   assert.equal(courierOrders(migrated,'rudna',1)[0].deliveryAddress,'Riegerova 527/50, Rudná');
+});
+
+test('QR/card/cash receipts include the tip, persist before delivery and do not collect twice', () => {
+  for (const method of ['qr','card','cash']) {
+    const state = fixture(), order = courierOrders(state,'rudna',1)[0];
+    const paid = collectDemoPayment(state,order.id,'rudna',1,method,50,later);
+    assert.deepEqual(restore(paid),paid);
+    assert.equal(courierOrders(paid,'rudna',1).length,3);
+    const receipt = paid.orders.find(o=>o.id===order.id).courierPayment;
+    assert.deepEqual(receipt,{method,base:order.total,tip:50,amount:order.total+50,demo:true,confirmedAt:later});
+    assert.equal(collectDemoPayment(paid,order.id,'rudna',1,method,50,later),paid);
+    assert.throws(()=>collectDemoPayment(paid,order.id,'rudna',1,method,100,later),/už je potvrzená/);
+    const delivered = finishDelivery(paid,order.id,'rudna',1,false,'2026-09-21T11:16:00Z');
+    assert.equal(courierHistory(delivered,'rudna',1)[0].courierDelivery.payment,method);
+    assert.deepEqual(restore(delivered),delivered);
+    assert.deepEqual(delivered.stocks,state.stocks); assert.deepEqual(delivered.movements,state.movements);
+    const totals = courierPaymentTotals(courierHistory(delivered,'rudna',1));
+    assert.equal(totals[method],order.total+50); assert.equal(totals.tips,50);
+    if (method !== 'cash') assert.equal(totals.cash,0);
+    assert.throws(()=>collectDemoPayment(delivered,order.id,'rudna',1,method,50,later),/probíhajícího/);
+    assert.equal(order.courierPayment,undefined);
+  }
+});
+test('Online orders charge only optional tips; an online order can still finish without a tip', () => {
+  const state = fixture(), order = courierOrders(state,'rudna',1)[1];
+  assert.deepEqual(courierPaymentQuote(order,'card',30),{method:'card',base:0,tip:30,amount:30});
+  assert.throws(()=>collectDemoPayment(state,order.id,'rudna',1,'qr',0,later),/zaplacená online/);
+  const paid = collectDemoPayment(state,order.id,'rudna',1,'card',30,later);
+  const delivered = finishDelivery(paid,order.id,'rudna',1,false,later);
+  assert.equal(courierHistory(delivered,'rudna',1)[0].courierDelivery.payment,'online');
+  assert.deepEqual(courierPaymentTotals(courierHistory(delivered,'rudna',1)),{cash:0,card:30,qr:0,online:order.total,tips:30});
+  assert.deepEqual(restore(delivered),delivered);
+});
+test('Payment validates tips, ownership, delivery stage, timing, and stored amount integrity', () => {
+  const state = fixture(), [order,,ready] = courierOrders(state,'rudna',1);
+  for (const tip of [-1,0.5,10001,NaN,Infinity,'50',null]) assert.throws(()=>courierPaymentQuote(order,'qr',tip),/Dýško/);
+  assert.throws(()=>courierPaymentQuote(order,'online',0),/Vyberte/);
+  for (const [b,c] of [['beroun',1],['rudna',2]]) assert.throws(()=>collectDemoPayment(state,order.id,b,c,'qr',0,later));
+  assert.throws(()=>collectDemoPayment(state,ready.id,'rudna',1,'card',0,later),/probíhajícího/);
+  const issue = setDeliveryIssue(state,order.id,'rudna',1,ISSUE_REASONS[0],later);
+  assert.throws(()=>collectDemoPayment(issue,order.id,'rudna',1,'qr',0,later),/vyřešte/);
+  assert.throws(()=>collectDemoPayment(state,order.id,'rudna',1,'card',0,'bad'),/Čas/);
+  const paid = collectDemoPayment(state,order.id,'rudna',1,'qr',20,later);
+  assert.throws(()=>finishDelivery(paid,order.id,'rudna',1,false,now),/předcházet/);
+  for (const patch of [{tip:-1},{tip:undefined},{base:1},{amount:1},{demo:false},{method:'online'},{confirmedAt:'bad'},{confirmedAt:'2020-01-01'}]) {
+    const broken = structuredClone(paid); Object.assign(broken.orders.find(o=>o.id===order.id).courierPayment,patch);
+    assert.throws(()=>restore(broken));
+  }
+  const legacy = finishDelivery(state,order.id,'rudna',1,true,later);
+  assert.deepEqual(courierPaymentTotals(courierHistory(legacy,'rudna',1)),{cash:order.total,card:0,qr:0,online:0,tips:0});
 });
