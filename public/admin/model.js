@@ -31,6 +31,14 @@ export function addOrder(state, site, input, now = new Date().toISOString()) {
   if (!Object.hasOwn(state.stocks, input.branchId) || !SOURCES.includes(input.source)) fail('Vyberte pobočku a zdroj objednávky.');
   if (!['pickup', 'delivery'].includes(input.fulfillment) || !['cash', 'card', 'online'].includes(input.payment)) fail('Vyberte předání a platbu.');
   const fulfillment = platformCourier(input) ? 'delivery' : input.fulfillment;
+  const phone = String(input.phone || '').trim();
+  const note = String(input.note || '').trim();
+  const minutes = input.minutes === undefined ? 30 : Number(input.minutes);
+  const requestedAt = input.requestedAt || null;
+  if (phone && (!/^[+\d\s()\-]{6,25}$/.test(phone) || phone.replace(/\D/g, '').length < 6)) fail('Zkontrolujte telefonní číslo.');
+  if (note.length > 300) fail('Poznámka může mít nejvýše 300 znaků.');
+  if (!integer(minutes, 10, 180) || minutes % 10) fail('Vyberte čas po 10 minutách v rozmezí 10 až 180 minut.');
+  if (requestedAt && (!Number.isFinite(Date.parse(requestedAt)) || Date.parse(requestedAt) <= Date.parse(now) || Date.parse(requestedAt) > Date.parse(now) + 7 * 86400000)) fail('Vyberte budoucí čas nejvýše 7 dní dopředu.');
   if (!Array.isArray(input.lines) || !input.lines.length || input.lines.length > 100) fail('Přidejte pizzu do objednávky.');
   const menu = products(site);
   const lines = input.lines.map(line => {
@@ -46,7 +54,7 @@ export function addOrder(state, site, input, now = new Date().toISOString()) {
   const order = {id: `VISI-${++next.sequence}`, branchId: input.branchId, source: input.source,
     fulfillment, payment: input.payment, label: String(input.label || 'Demo objednávka').trim().slice(0, 80),
     status: 'new', lines, subtotal, packaging, delivery, total: subtotal + packaging + delivery,
-    createdAt: now, updatedAt: now, minutes: 30, deduction: null,
+    createdAt: now, updatedAt: now, minutes, phone, note, requestedAt, deduction: null,
     deliveryAddress: fulfillment === 'delivery' ? String(input.deliveryAddress || '').trim().slice(0, 180) : ''};
   next.orders.unshift(order);
   return {state: next, order};

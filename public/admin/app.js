@@ -1,5 +1,5 @@
 import {stockSummary, batchStatus, daysLeft, localDay, updateBatch, discardBatch} from './inventory.js';
-import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, ensureDemoDeliveryOrders, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=c90b50e8';
+import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, ensureDemoDeliveryOrders, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=16388c99';
 import {normalizeSearch, itemPrice} from '../menu-utils.js';
 import {COURIERS, deliveryOrders, deliveryPlan, deliveryAssignment, saveDeliveryPlan, platformCourier, toggleDeliveryStop} from './delivery.js?v=bb45e9a7';
 
@@ -74,7 +74,7 @@ function renderOrders() {
 }
 function orderCard(order) {
   const action = {new: 'Potvrdit objednávku', confirmed: 'Začít připravovat', preparing: 'Hotovo → k předání', ready: handoffAction(order)}[order.status];
-  return `<article class="order-card is-${order.source}"><div class="card-top"><strong>#${esc(order.id.split('-')[1])}</strong>${sourceBadge(order.source)}</div><div class="card-time">${when(order.createdAt)}${order.fulfillment === 'pickup' ? ` · ${esc(order.label)}` : ''}</div><div class="order-items">${order.lines.map(l => `<div><b>${l.quantity}×</b><span><strong>${esc(l.name)}</strong><small>${l.size ? `${l.size} cm` : 'nápoj'}</small></span></div>`).join('')}</div>${order.fulfillment === 'delivery' ? `<div class="card-recipient"><strong>${esc(order.label || 'Jméno neuvedeno')}</strong><span>${esc(order.deliveryAddress || 'Adresa neuvedena')}</span></div>` : '<p class="fulfillment">↗ Vyzvednutí na pobočce</p>'}<div class="payment-line"><span>${{cash: 'Hotově', card: 'Karta · demo', online: 'Online · demo'}[order.payment]}</span><strong>${money(order.total)}</strong></div>${order.deduction ? '<p class="deducted">✓ Suroviny odečteny</p>' : ''}<button class="advance-order" data-order="${esc(order.id)}">${action}</button></article>`;
+  return `<article class="order-card is-${order.source}"><div class="card-top"><strong>#${esc(order.id.split('-')[1])}</strong>${sourceBadge(order.source)}</div><div class="card-time">${when(order.createdAt)}${order.fulfillment === 'pickup' ? ` · ${esc(order.label)}` : ''}</div>${order.requestedAt ? `<p class="card-schedule">Na čas · ${when(order.requestedAt)}</p>` : ''}<div class="order-items">${order.lines.map(l => `<div><b>${l.quantity}×</b><span><strong>${esc(l.name)}</strong><small>${l.size ? `${l.size} cm` : 'nápoj'}</small></span></div>`).join('')}</div>${order.fulfillment === 'delivery' ? `<div class="card-recipient"><strong>${esc(order.label || 'Jméno neuvedeno')}</strong><span>${esc(order.deliveryAddress || 'Adresa neuvedena')}</span></div>` : '<p class="fulfillment">↗ Vyzvednutí na pobočce</p>'}<div class="payment-line"><span>${{cash: 'Hotově', card: 'Karta · demo', online: 'Online · demo'}[order.payment]}</span><strong>${money(order.total)}</strong></div>${order.deduction ? '<p class="deducted">✓ Suroviny odečteny</p>' : ''}<button class="advance-order" data-order="${esc(order.id)}">${action}</button></article>`;
 }
 function handoffAction(order) {
   const provider = platformCourier(order);
@@ -203,6 +203,15 @@ function stockPreview() {
   const addition = Number(form.elements.amount.value) * Number(form.elements.unit.value);
   $('#restock-preview').textContent = `Nyní ${quantity(state.stocks[branchId][i.id], i.unit)} → po naskladnění ${quantity(state.stocks[branchId][i.id] + (Number.isFinite(addition) ? addition : 0), i.unit)}`;
 }
+function timePicker(id, minutes, label) {
+  return `<div class="eta-picker"><div class="eta-heading"><label for="${id}">${label}</label><output id="${id}-value" for="${id}">${minutes} <span>min</span></output></div><div class="eta-controls"><button type="button" class="eta-step" data-time-step="-10" data-time-target="${id}" aria-label="Ubrat 10 minut">−10</button><input id="${id}" name="minutes" type="range" min="10" max="180" step="10" value="${minutes}" aria-valuetext="${minutes} minut" style="--eta-progress:${(minutes - 10) / 170 * 100}%"><button type="button" class="eta-step" data-time-step="10" data-time-target="${id}" aria-label="Přidat 10 minut">+10</button></div><div class="eta-scale"><span>10 min</span><span>Po 10 minutách</span><span>180 min</span></div></div>`;
+}
+function updateTimePicker(input) {
+  const minutes = Number(input.value);
+  $(`#${input.id}-value`).innerHTML = `${minutes} <span>min</span>`;
+  input.setAttribute('aria-valuetext', `${minutes} minut`);
+  input.style.setProperty('--eta-progress', `${(minutes - 10) / 170 * 100}%`);
+}
 function openOrder(id) {
   const order = state.orders.find(o => o.id === id);
   if (!order || ['completed', 'cancelled'].includes(order.status)) return;
@@ -210,49 +219,73 @@ function openOrder(id) {
   let needs;
   try { needs = order.deduction ? Object.entries(order.deduction.amounts).map(([id, needed]) => ({...ingredient(id), needed})) : requirements(state, order, seed); }
   catch (error) { return notify(error.message, true); }
-  const shortage = needs.some(i => i.missing > 0);
-  const stockCaption = order.deduction ? 'Odečtené suroviny · záznam při zahájení' : 'Odečte se při zahájení přípravy';
+  const shortage = needs.some(i => i.missing > 0), editable = ['new', 'confirmed'].includes(order.status);
   const minutes = Math.max(10, Math.min(180, Math.round((Number(order.minutes) || 30) / 10) * 10));
-  const stockDetail = `<section class="order-stock"><details><summary><span>Suroviny a sklad</span><span class="stock-overview">${order.deduction ? 'Odečteno' : shortage ? 'K doplnění' : 'Skladem'}</span></summary><p class="stock-caption">${stockCaption}</p><div class="deduction-list">${needs.map(i => `<div><span>${esc(i.name)}</span><strong>−${quantity(i.needed, i.unit)}</strong>${i.missing ? `<small>Chybí ${quantity(i.missing, i.unit)}</small>` : ''}</div>`).join('') || '<p class="muted">Nápoje neodečítají suroviny pro pizzu.</p>'}</div></details>${shortage ? '<p class="stock-warning">Před přípravou doplňte chybějící suroviny. Objednávku lze zatím potvrdit.</p>' : ''}</section>`;
-  const timePicker = ['new', 'confirmed'].includes(order.status)
-    ? `<div class="eta-picker"><div class="eta-heading"><label for="order-minutes">Připravit za</label><output id="order-minutes-value" for="order-minutes">${minutes} <span>min</span></output></div><input id="order-minutes" type="range" min="10" max="180" step="10" value="${minutes}" aria-valuetext="${minutes} minut" aria-describedby="order-minutes-help" style="--eta-progress:${(minutes - 10) / 170 * 100}%"><div class="eta-scale"><span>10 min</span><span id="order-minutes-help">Po 10 minutách</span><span>180 min</span></div></div>`
-    : '<p class="inline-note">Sklad už byl odečten. Posun objednávky jej znovu nezmění.</p>';
   const assignment = deliveryAssignment(state, order);
-  const deliveryDetail = order.fulfillment === 'delivery' ? `<div class="order-delivery"><div><span>${esc(order.deliveryAddress || 'Adresa není vyplněná')}</span><strong>${courierCaption(order)}</strong></div>${platformCourier(order) ? '' : `<button class="small-button" data-plan-delivery>${assignment ? 'Upravit rozvoz' : 'Vybrat kurýra'}</button>`}</div>` : '';
+  const stages = ['new', 'confirmed', 'preparing', 'ready'];
+  const stockDetail = `<section class="order-stock"><details><summary><span>Suroviny a sklad</span><span class="stock-overview">${order.deduction ? 'Odečteno' : shortage ? 'K doplnění' : 'Skladem'}</span></summary><p class="stock-caption">${order.deduction ? 'Odečteno při zahájení přípravy' : 'Odečte se při zahájení přípravy'}</p><div class="deduction-list">${needs.map(i => `<div><span>${esc(i.name)}</span><strong>−${quantity(i.needed, i.unit)}</strong>${i.missing ? `<small>Chybí ${quantity(i.missing, i.unit)}</small>` : ''}</div>`).join('') || '<p class="muted">Nápoje neodečítají suroviny pro pizzu.</p>'}</div></details>${shortage ? '<p class="stock-warning">Před přípravou doplňte chybějící suroviny. Objednávku lze zatím potvrdit.</p>' : ''}</section>`;
   let buttons = '';
-  if (order.status === 'new') buttons = `<button class="secondary-button" data-transition="confirmed">Jen potvrdit</button><button class="primary-button" data-transition="preparing">Potvrdit a připravovat</button>`;
-  if (order.status === 'confirmed') buttons = '<button class="primary-button" data-transition="preparing">Začít přípravu a odečíst sklad</button>';
+  if (order.status === 'new') buttons = '<button class="secondary-button" data-transition="confirmed">Jen potvrdit</button><button class="primary-button" data-transition="preparing">Potvrdit a připravovat</button>';
+  if (order.status === 'confirmed') buttons = '<button class="primary-button" data-transition="preparing">Začít připravovat</button>';
   if (order.status === 'preparing') buttons = '<button class="primary-button" data-transition="ready">Hotovo → k předání</button>';
   if (order.status === 'ready') buttons = `<button class="primary-button" data-transition="completed" ${order.fulfillment === 'delivery' && !platformCourier(order) && !assignment ? 'disabled' : ''}>${handoffAction(order)}</button>`;
-  openDialog(`Objednávka #${esc(id.split('-')[1])}`, `${esc(order.label)} · ${statusNames[order.status]} · ${when(order.createdAt)}`, `<div class="order-detail"><div class="detail-source">${sourceBadge(order.source)}<strong>${money(order.total)}</strong></div><div class="detail-items">${order.lines.map(l => `<div><span>${l.quantity}× ${esc(l.name)} ${l.size ? `· ${l.size} cm` : ''}</span><strong>${money(l.quantity * l.unitPrice)}</strong></div>`).join('')}<div class="muted"><span>Krabice / rozvoz</span><span>${money(order.packaging)} / ${money(order.delivery)}</span></div></div>${deliveryDetail}${stockDetail}${timePicker}</div><footer class="dialog-footer">${['new', 'confirmed'].includes(order.status) ? '<button class="text-button danger-text" data-cancel-order>Zrušit objednávku</button>' : ''}<div class="footer-actions">${buttons}</div></footer>`, 'order-dialog');
+  dialog.className = 'order-dialog order-review';
+  $('#dialog-content').innerHTML = `<header class="review-head"><div class="review-customer"><div class="review-meta"><span class="review-status">${statusNames[order.status]}</span><span>${when(order.createdAt)}</span></div><h2 id="dialog-title">${esc(order.label)}</h2><p>${order.fulfillment === 'delivery' ? esc(order.deliveryAddress || 'Adresa není vyplněná') : `Vyzvednutí na pobočce · ${esc(branch().name)}`}</p>${order.phone ? `<p class="review-phone">Tel. ${esc(order.phone)}</p>` : ''}${order.requestedAt ? `<span class="review-schedule">Na čas · ${when(order.requestedAt)}</span>` : ''}</div><div class="review-summary"><span>Objednávka #${esc(id.split('-')[1])}</span><strong>${money(order.total)}</strong><span class="review-payment">${{cash:'Hotově',card:'Kartou · demo',online:'Online · demo'}[order.payment]}</span>${sourceBadge(order.source)}</div><button type="button" class="close-button" data-close aria-label="Zavřít okno">×</button></header><div class="review-body"><p id="dialog-error" role="alert" class="error-box" hidden></p><h3 class="order-section-title">Položky objednávky</h3><div class="review-items">${order.lines.map(l => {
+    const p = products(site).find(p => p.id === l.pizzaId);
+    return `<div class="review-item">${p?.image ? `<img src="../${esc(p.image)}" alt="">` : '<span class="review-placeholder" aria-hidden="true">◒</span>'}<div><strong>${esc(l.name)}</strong><p>${l.size ? `${l.size} cm · ` : ''}${esc(p?.description || 'Nápoj')}</p></div><span class="review-quantity">${l.quantity}×</span><strong class="review-line-price">${money(l.quantity * l.unitPrice)}</strong></div>`;
+  }).join('')}</div><div class="review-fees"><span>Krabice</span><strong>${money(order.packaging)}</strong></div><div class="review-fees"><span>${order.fulfillment === 'delivery' ? 'Doručení' : 'Vyzvednutí na pobočce'}</span><strong>${money(order.delivery)}</strong></div>${order.note ? `<div class="review-note"><span>Poznámka k objednávce</span><p>${esc(order.note)}</p></div>` : ''}${order.fulfillment === 'delivery' ? `<div class="review-courier"><span>${courierCaption(order)}</span>${platformCourier(order) ? '' : `<button class="small-button" data-plan-delivery>${assignment ? 'Upravit rozvoz' : 'Vybrat kurýra'}</button>`}</div>` : ''}<section class="review-progress"><h3 class="order-section-title">Průběh objednávky</h3><ol>${stages.map((s, i) => `<li class="${i <= stages.indexOf(order.status) ? 'is-reached' : ''}" ${s === order.status ? 'aria-current="step"' : ''}><span>${{new:'Přijato',confirmed:'Potvrzeno',preparing:'Příprava',ready:'K předání'}[s]}</span><i></i></li>`).join('')}</ol></section>${editable ? timePicker('order-minutes', minutes, 'Čas přípravy') : ''}${stockDetail}</div><footer class="review-footer">${editable ? '<button class="text-button danger-text" data-cancel-order>Zrušit objednávku</button>' : '<span class="review-footer-note">Suroviny už byly odečteny.</span>'}<div class="footer-actions">${buttons}</div></footer>`;
+  if (!dialog.open) dialog.showModal();
 }
 function openNewOrder() {
   draft = []; catalogSize = 30; catalogCategory = 'pizzy';
-  openDialog('Nová objednávka', 'Ukázkový prodej na pobočce nebo z libovolného kanálu.', `<form id="new-order-form"><div class="new-order-layout"><section class="catalog-pane" aria-label="Nabídka"><div class="catalog-tools"><select id="catalog-category" aria-label="Kategorie"><option value="pizzy">Pizzy · 24</option><option value="napoje">Nápoje</option><option value="vino-prosecco">Víno a prosecco</option></select><span class="fixed-size">Pizzy pouze 30 cm</span></div><div id="product-grid" class="product-grid"></div></section><aside class="cart-pane"><div class="cart-form"><h3>Košík</h3><div id="cart-lines"></div><div class="form-columns"><label>Zdroj<select name="source" id="order-source">${SOURCES.map(s => `<option value="${s}" ${s === 'pos' ? 'selected' : ''}>${sourceNames[s]}</option>`).join('')}</select></label><label>Předání<select name="fulfillment" id="fulfillment"><option value="pickup">Vyzvednutí</option><option value="delivery">Doručení</option></select></label></div><label id="delivery-address-field" hidden>Adresa doručení <span class="muted">nepovinné · demo</span><input name="deliveryAddress" maxlength="180" placeholder="Ulice, číslo domu, obec"></label><label><span id="order-label-caption">Označení</span><input name="label" value="Demo objednávka" maxlength="80" placeholder="Označení objednávky" required></label><label>Platba<select name="payment"><option value="cash">Hotově</option><option value="card">Kartou · demo</option><option value="online">Online · demo</option></select></label></div><footer class="cart-checkout"><div id="draft-total"></div><p class="inline-note">Demo platba · sklad se odečte při přípravě.</p><button class="primary-button" id="create-order" type="submit" disabled>Vytvořit objednávku</button></footer></aside></div></form>`, 'new-order-dialog');
-  renderCatalog(); renderDraft();
+  openDialog('Nová objednávka', `${esc(branch().name)} · telefonická nebo osobní objednávka`, `<form id="new-order-form"><div class="order-entry-layout"><aside class="customer-pane" aria-label="Zákazník a předání"><h3 class="order-section-title">Zákazník</h3><label class="entry-search"><span class="sr-only">Najít zákazníka v objednávkách</span><input id="customer-search" placeholder="Hledat jméno nebo telefon" autocomplete="off"></label><div id="customer-results" hidden></div><div class="entry-divider"><span>nebo nový zákazník</span></div><label>Telefon <span class="field-optional">nepovinné</span><input name="phone" type="tel" maxlength="25" placeholder="Např. 777 123 456" autocomplete="off"></label><label>Jméno zákazníka<input name="label" maxlength="80" placeholder="Jméno a příjmení" required autocomplete="off"></label><h3 class="order-section-title">Předání objednávky</h3><input type="hidden" name="fulfillment" id="fulfillment" value="delivery"><div class="entry-choice" aria-label="Předání objednávky"><button type="button" data-fulfillment="delivery" aria-pressed="true">Doručit</button><button type="button" data-fulfillment="pickup" aria-pressed="false">Vyzvednout</button></div><label id="delivery-address-field">Adresa doručení<input name="deliveryAddress" maxlength="180" placeholder="Ulice, číslo domu, obec" required autocomplete="off"></label><label>Zdroj objednávky<select name="source" id="order-source">${SOURCES.map(s => `<option value="${s}" ${s === 'pos' ? 'selected' : ''}>${sourceNames[s]}</option>`).join('')}</select></label><p id="entry-courier-hint" class="entry-hint" hidden></p><h3 class="order-section-title">Platba</h3><input type="hidden" name="payment" id="entry-payment" value="cash"><div class="entry-choice payment-choices" aria-label="Způsob platby"><button type="button" data-payment="cash" aria-pressed="true">Hotově</button><button type="button" data-payment="card" aria-pressed="false">Kartou</button><button type="button" data-payment="online" aria-pressed="false">Online</button></div><p class="entry-hint">Ukázková platba · bez skutečné transakce.</p><h3 class="order-section-title">Čas objednávky</h3><input type="hidden" name="timeMode" id="entry-time-mode" value="asap"><div class="entry-choice"><button type="button" data-time-mode="asap" aria-pressed="true">Co nejdřív</button><button type="button" data-time-mode="exact" aria-pressed="false">Na konkrétní čas</button></div><div id="entry-asap">${timePicker('new-order-minutes', 30, 'Připravit za')}</div><label id="entry-exact" hidden>Datum a čas předání<input name="requestedAt" type="datetime-local"><span class="entry-hint">Zvolte čas v následujících 7 dnech.</span></label><label class="entry-note-label">Poznámka <span class="field-optional">nepovinné</span><textarea name="note" rows="2" maxlength="300" placeholder="Např. zavolat při příjezdu"></textarea></label></aside><section class="entry-menu" aria-label="Nabídka a košík"><div class="entry-menu-tools"><div class="entry-tabs" aria-label="Kategorie nabídky"><button type="button" data-category="pizzy" aria-pressed="true">Pizzy <span>30 cm</span></button><button type="button" data-category="napoje" aria-pressed="false">Nápoje</button><button type="button" data-category="vino-prosecco" aria-pressed="false">Víno</button></div><input id="catalog-search" type="search" placeholder="Najít položku…" aria-label="Najít položku v nabídce"></div><div id="product-grid" class="entry-products"></div><section class="entry-cart" aria-label="Košík"><div class="entry-cart-head"><h3>Objednávka <span id="entry-cart-count">0</span></h3><span>Pizzy 30 cm</span></div><div id="cart-lines"></div><footer class="entry-checkout"><div id="draft-total"></div><button class="primary-button" id="create-order" type="submit" disabled>Vytvořit objednávku →</button></footer></section></section></div></form>`, 'new-order-dialog order-entry');
+  $('.order-entry .close-button').innerHTML = '<span aria-hidden="true">×</span> Zavřít';
+  renderDraft();
 }
 function renderCatalog() {
-  $('#product-grid').innerHTML = products(site).filter(p => p.category === catalogCategory).map(p => `<button type="button" class="product-card" data-add="${p.id}" aria-label="Přidat ${esc(pizzaName(p))}${p.category === 'pizzy' ? ` ${catalogSize} cm` : ''}">${p.image ? `<img src="../${esc(p.image)}" alt="" loading="lazy">` : '<span class="drink-placeholder">◒</span>'}<strong>${esc(pizzaName(p))}</strong><span>${money(itemPrice(p, catalogSize))}<b>＋</b></span></button>`).join('');
-  document.querySelectorAll('[data-size]').forEach(b => b.setAttribute('aria-pressed', Number(b.dataset.size) === catalogSize));
+  const query = normalizeSearch($('#catalog-search')?.value || '');
+  const focused = document.activeElement?.closest('[data-add], [data-product-dec]');
+  const focusKey = focused ? [focused.hasAttribute('data-add') ? 'data-add' : 'data-product-dec', focused.dataset.add || focused.dataset.productDec] : null;
+  $('#product-grid').innerHTML = products(site).filter(p => p.category === catalogCategory && normalizeSearch(p.name + ' ' + p.description).includes(query)).map(p => {
+    const count = draft.find(l => l.pizzaId === p.id)?.quantity || 0;
+    return `<article class="entry-product ${count ? 'is-in-cart' : ''}">${p.image ? `<img class="${p.category !== 'pizzy' ? 'is-drink' : ''}" src="../${esc(p.image)}" alt="" loading="lazy">` : '<div class="entry-product-placeholder" aria-hidden="true">◒</div>'}<div class="entry-product-info"><div class="entry-product-title"><h4>${esc(pizzaName(p))}</h4><span>${money(itemPrice(p, catalogSize))}</span></div><p>${esc(p.description || (p.category === 'pizzy' ? 'Pizza 30 cm' : ''))}</p><div class="entry-product-actions">${count ? `<button type="button" data-product-dec="${p.id}" aria-label="Ubrat ${esc(pizzaName(p))}">−</button><span aria-label="${count} kusů">${count}</span><button type="button" data-add="${p.id}" aria-label="Přidat ${esc(pizzaName(p))}" ${count >= 20 ? 'disabled' : ''}>＋</button>` : `<button type="button" class="entry-product-add" data-add="${p.id}" aria-label="Přidat ${esc(pizzaName(p))}">＋ Přidat</button>`}</div></div></article>`;
+  }).join('') || '<p class="entry-no-results">Žádná položka neodpovídá hledání.</p>';
+  if (focusKey) $(`[${focusKey[0]}="${focusKey[1]}"]`)?.focus({preventScroll:true});
 }
 function renderDraft() {
-  $('#cart-lines').innerHTML = draft.map((l, index) => {const p = products(site).find(p => p.id === l.pizzaId); return `<div class="cart-line"><div><strong>${esc(pizzaName(p))}</strong><small>${l.size ? `${l.size} cm` : 'nápoj'} · ${money(itemPrice(p, l.size))}</small></div><div class="quantity-control"><button type="button" data-quantity="${index}" data-delta="-1" aria-label="Ubrat ${esc(pizzaName(p))}">−</button><span>${l.quantity}</span><button type="button" data-quantity="${index}" data-delta="1" aria-label="Přidat kus ${esc(pizzaName(p))}" ${l.quantity >= 20 ? 'disabled' : ''}>＋</button></div></div>`;}).join('') || '<p class="empty-state">Vyberte něco dobrého.<br>Klepnutím přidáte položku.</p>';
+  const count = draft.reduce((sum, l) => sum + l.quantity, 0);
+  $('#entry-cart-count').textContent = count;
+  $('#cart-lines').innerHTML = draft.map((l, index) => {
+    const p = products(site).find(p => p.id === l.pizzaId);
+    return `<div class="entry-cart-line"><div><strong>${esc(pizzaName(p))}</strong><small>${l.size ? `${l.size} cm` : 'nápoj'}</small></div><div class="quantity-control"><button type="button" data-quantity="${index}" data-delta="-1" aria-label="Ubrat kus ${esc(pizzaName(p))}">−</button><span>${l.quantity}</span><button type="button" data-quantity="${index}" data-delta="1" aria-label="Přidat kus ${esc(pizzaName(p))}" ${l.quantity >= 20 ? 'disabled' : ''}>＋</button></div><strong>${money(itemPrice(p, l.size) * l.quantity)}</strong><button type="button" class="entry-remove" data-remove-line="${index}" aria-label="Odebrat ${esc(pizzaName(p))}">×</button></div>`;
+  }).join('') || '<p class="entry-cart-empty">Objednávka je zatím prázdná. Přidejte položky z nabídky.</p>';
   const subtotal = draft.reduce((sum, l) => sum + itemPrice(products(site).find(p => p.id === l.pizzaId), l.size) * l.quantity, 0);
-  const packaging = draft.reduce((sum, l) => sum + (l.size ? (l.size === 40 ? 23 : 16) * l.quantity : 0), 0);
+  const packaging = draft.reduce((sum, l) => sum + (l.size ? 16 * l.quantity : 0), 0);
   const delivery = draft.length && $('#fulfillment').value === 'delivery' ? site.delivery.price_czk : 0;
-  $('#draft-total').innerHTML = `<div><span>Krabice / rozvoz</span><span>${money(packaging)} / ${money(delivery)}</span></div><div><strong>Celkem</strong><strong>${money(subtotal + packaging + delivery)}</strong></div>`;
+  $('#draft-total').innerHTML = `<span>${$('#fulfillment').value === 'delivery' ? 'Doručení' : 'Vyzvednutí'} · krabice ${money(packaging)} · rozvoz ${money(delivery)}</span><strong>${money(subtotal + packaging + delivery)}</strong>`;
   $('#create-order').disabled = !draft.length;
+  renderCatalog();
 }
 function syncDraftFulfillment() {
-  const provider = platformCourier({source: $('#order-source').value});
-  const field = $('#fulfillment');
-  field.disabled = Boolean(provider);
+  const provider = platformCourier({source: $('#order-source').value}), field = $('#fulfillment');
   if (provider) field.value = 'delivery';
-  field.querySelector('option[value="delivery"]').textContent = provider ? `Kurýr ${sourceNames[provider]}` : 'Doručení';
+  document.querySelectorAll('[data-fulfillment]').forEach(b => {b.disabled = Boolean(provider) && b.dataset.fulfillment === 'pickup'; b.setAttribute('aria-pressed', b.dataset.fulfillment === field.value);});
   $('#delivery-address-field').hidden = field.value !== 'delivery';
-  $('#order-label-caption').textContent = field.value === 'delivery' ? 'Jméno příjemce' : 'Označení';
-  $('#new-order-form').elements.label.placeholder = field.value === 'delivery' ? 'Jméno a příjmení' : 'Označení objednávky';
+  $('#new-order-form').elements.deliveryAddress.required = field.value === 'delivery';
+  $('#entry-courier-hint').hidden = !provider;
+  $('#entry-courier-hint').textContent = provider ? `Doručení zajišťuje vlastní kurýr ${sourceNames[provider]}.` : '';
   renderDraft();
+}
+function searchCustomers() {
+  const query = normalizeSearch($('#customer-search').value);
+  const seen = new Set();
+  const matches = query.length < 2 ? [] : branchOrders().filter(o => {
+    const key = `${o.label}|${o.phone || ''}|${o.deliveryAddress || ''}`;
+    if (seen.has(key) || !normalizeSearch(`${o.label} ${o.phone || ''}`).includes(query)) return false;
+    seen.add(key); return true;
+  }).slice(0, 5);
+  $('#customer-results').hidden = query.length < 2;
+  $('#customer-results').innerHTML = matches.map(o => `<button type="button" data-customer="${o.id}"><strong>${esc(o.label)}</strong><span>${esc([o.phone,o.deliveryAddress].filter(Boolean).join(' · ') || 'Z předchozí objednávky')}</span></button>`).join('') || '<p>Zákazník nenalezen. Vyplňte údaje níže.</p>';
 }
 function setView(next) { if (!['orders', 'stock', 'recipes', 'history'].includes(next)) return; if (recipeChanges.size && next !== 'recipes') { notify('Nejdřív uložte nebo zrušte změny receptur.', true); return; } view = next; history.replaceState(null, '', `#${next}`); render(); $('#workspace').scrollTop = 0; window.scrollTo({top: 0, behavior: 'instant'}); }
 
@@ -275,6 +308,44 @@ document.addEventListener('click', async event => {
   }
   if (button.hasAttribute('data-order')) return openOrder(button.dataset.order);
   if (button.hasAttribute('data-new-order')) return openNewOrder();
+  if (button.hasAttribute('data-category')) {
+    catalogCategory = button.dataset.category;
+    document.querySelectorAll('[data-category]').forEach(b => b.setAttribute('aria-pressed', b.dataset.category === catalogCategory));
+    $('#product-grid').scrollTop = 0;
+    return renderCatalog();
+  }
+  if (button.hasAttribute('data-fulfillment')) { $('#fulfillment').value = button.dataset.fulfillment; return syncDraftFulfillment(); }
+  if (button.hasAttribute('data-payment')) {
+    $('#entry-payment').value = button.dataset.payment;
+    document.querySelectorAll('[data-payment]').forEach(b => b.setAttribute('aria-pressed', b === button));
+    return;
+  }
+  if (button.hasAttribute('data-time-step')) {
+    const input = $(`#${button.dataset.timeTarget}`);
+    input.value = Math.max(10, Math.min(180, Number(input.value) + Number(button.dataset.timeStep)));
+    return updateTimePicker(input);
+  }
+  if (button.hasAttribute('data-time-mode')) {
+    const exact = button.dataset.timeMode === 'exact';
+    $('#entry-time-mode').value = button.dataset.timeMode;
+    document.querySelectorAll('[data-time-mode]').forEach(b => b.setAttribute('aria-pressed', b === button));
+    $('#entry-asap').hidden = exact; $('#entry-exact').hidden = !exact;
+    $('#new-order-form').elements.requestedAt.required = exact;
+    return;
+  }
+  if (button.hasAttribute('data-customer')) {
+    const customer = state.orders.find(o => o.id === button.dataset.customer), fields = $('#new-order-form').elements;
+    fields.label.value = customer.label; fields.phone.value = customer.phone || ''; fields.deliveryAddress.value = customer.deliveryAddress || '';
+    $('#customer-search').value = ''; $('#customer-results').hidden = true;
+    return;
+  }
+  if (button.hasAttribute('data-remove-line')) { draft.splice(Number(button.dataset.removeLine), 1); return renderDraft(); }
+  if (button.hasAttribute('data-product-dec')) {
+    const line = draft.find(l => l.pizzaId === button.dataset.productDec);
+    if (line) line.quantity--;
+    draft = draft.filter(l => l.quantity > 0);
+    return renderDraft();
+  }
   if (button.hasAttribute('data-plan-delivery')) return openDeliveryPlanner();
   if (button.hasAttribute('data-courier')) {
     selectedCourier = Number(button.dataset.courier);
@@ -323,16 +394,12 @@ document.addEventListener('change', event => {
   if (event.target.id === 'stock-filter') { stockFilter = event.target.value; renderStockRows(); }
   if (event.target.id === 'stock-ingredient') stockUnits();
   if (event.target.id === 'stock-unit') stockPreview();
-  if (event.target.id === 'catalog-category') { catalogCategory = event.target.value; renderCatalog(); }
   if (['fulfillment', 'order-source'].includes(event.target.id)) syncDraftFulfillment();
 });
 document.addEventListener('input', event => {
-  if (event.target.id === 'order-minutes') {
-    const minutes = Number(event.target.value);
-    $('#order-minutes-value').innerHTML = `${minutes} <span>min</span>`;
-    event.target.setAttribute('aria-valuetext', `${minutes} minut`);
-    event.target.style.setProperty('--eta-progress', `${(minutes - 10) / 170 * 100}%`);
-  }
+  if (['order-minutes', 'new-order-minutes'].includes(event.target.id)) updateTimePicker(event.target);
+  if (event.target.id === 'customer-search') searchCustomers();
+  if (event.target.id === 'catalog-search') renderCatalog();
   if (event.target.hasAttribute('data-cell-pizza')) {
     const input = event.target, pizzaId = input.dataset.cellPizza, ingredientId = input.dataset.cellIngredient, key = pizzaId + ':' + ingredientId;
     const before = recipeChanges.get(key)?.before ?? (state.recipes[pizzaId][30][ingredientId] || 0);
@@ -363,7 +430,9 @@ document.addEventListener('submit', async event => {
     if (await transact(current=>discardBatch(current,id,data.get('reason')),'Zásoba byla vyřazena a zapsána do historie.')) openBatches(ingredientId);
   }
   if (form.id === 'new-order-form') {
-    if (await transact(current => addOrder(current, site, {branchId, source: data.get('source'), fulfillment: form.elements.fulfillment.value, payment: data.get('payment'), label: data.get('label'), deliveryAddress: data.get('deliveryAddress'), lines: draft}).state, 'Nová objednávka čeká na potvrzení.')) { dialog.close(); setView('orders'); sourceFilter = 'all'; render(); }
+    const requestedTime = data.get('timeMode') === 'exact' ? new Date(data.get('requestedAt')) : null;
+    if (requestedTime && !Number.isFinite(requestedTime.getTime())) return showError(new Error('Vyplňte datum a čas předání.'));
+    if (await transact(current => addOrder(current, site, {branchId, source: data.get('source'), fulfillment: form.elements.fulfillment.value, payment: data.get('payment'), label: data.get('label'), phone: data.get('phone'), note: data.get('note'), minutes: Number(data.get('minutes')), requestedAt: requestedTime?.toISOString(), deliveryAddress: data.get('deliveryAddress'), lines: draft}).state, 'Nová objednávka čeká na potvrzení.')) { dialog.close(); setView('orders'); sourceFilter = 'all'; render(); }
   }
 });
 window.addEventListener('storage', event => {

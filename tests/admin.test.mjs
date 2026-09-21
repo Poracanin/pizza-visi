@@ -14,6 +14,24 @@ function empty(state,id='mozzarella') { state.stocks.rudna[id]=0; for (const b o
 const start = created => transitionOrder(created.state,created.order.id,'preparing',seed,now);
 const saved = state => restoreState(JSON.stringify(state),site,seed);
 
+test('Nová objednávka uchová kontakt, poznámku a zvolený čas i po potvrzení', () => {
+ const original=initial();
+ const c=order(original,undefined,{source:'pos',fulfillment:'delivery',phone:'+420 777 123 456',note:'Zavolat při příjezdu.',minutes:50,requestedAt:'2026-09-21T13:00:00.000Z',deliveryAddress:'Ukázková 12, Rudná'});
+ assert.equal(c.order.phone,'+420 777 123 456'); assert.equal(c.order.note,'Zavolat při příjezdu.'); assert.equal(c.order.minutes,50);
+ assert.equal(c.order.requestedAt,'2026-09-21T13:00:00.000Z');
+ const confirmed=transitionOrder(c.state,c.order.id,'confirmed',seed,now,60);
+ const restored=saved(confirmed).orders.find(o=>o.id===c.order.id);
+ assert.equal(restored.minutes,60); assert.equal(restored.phone,c.order.phone); assert.equal(restored.requestedAt,c.order.requestedAt); assert.equal(restored.note,c.order.note);
+ assert.equal(original.orders.length,0); assert.deepEqual(confirmed.stocks,original.stocks);
+});
+test('Neplatný kontakt nebo čas nevytvoří objednávku; prázdný kontakt je v demu nepovinný', () => {
+ const state=initial();
+ for(const override of [{phone:'neplatné'}, {phone:'123'}, {note:'x'.repeat(301)}, {minutes:0}, {minutes:35}, {minutes:190}, {requestedAt:'chybný čas'}, {requestedAt:'2026-09-20T10:00:00Z'}, {requestedAt:'2026-10-21T10:00:00Z'}]) assert.throws(()=>order(state,undefined,override));
+ assert.equal(state.orders.length,0);
+ const c=order(state); assert.equal(c.order.phone,''); assert.equal(c.order.note,''); assert.equal(c.order.requestedAt,null); assert.equal(c.order.minutes,30);
+ assert.deepEqual(saved(c.state),c.state);
+});
+
 test('24 receptur používá pouze 30 cm, všechny suroviny mají šarži a stav se obnoví',()=>{
  const state=initial(); assert.equal(pizzas(site).length,24);assert.equal(seed.ingredients.length,32);
  for(const p of pizzas(site)){assert.deepEqual(Object.keys(state.recipes[p.id]),['30']);assert.ok(state.recipes[p.id][30].testo);const c=order(state,[{pizzaId:p.id,size:30,quantity:1}]);assert.ok(requirements(state,c.order,seed,now).every(i=>!i.missing));}
