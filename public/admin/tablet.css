@@ -80,7 +80,9 @@ body[data-view=orders] #workspace { display: flex; flex-direction: column; overf
 .channels-note { display: none; }
 .orders-footer > .text-button { flex-shrink: 0; white-space: nowrap; }
 .delivery-plan-button { white-space: nowrap; }
-.card-courier { font-size: 13px; font-weight: 500; padding: 7px 9px; margin: -3px 0 12px; background: #ffffff20; border-radius: 5px; }
+.card-recipient { display: grid; gap: 3px; margin-bottom: 14px; overflow-wrap: anywhere; }
+.card-recipient strong { font-size: 15px; font-weight: 500; line-height: 1.4; }
+.card-recipient span { font-size: 14px; line-height: 1.45; opacity: .9; }
 .order-delivery { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
 .order-delivery > div { min-width: 0; }
 .order-delivery span { display: block; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
