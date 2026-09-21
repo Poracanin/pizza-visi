@@ -192,10 +192,30 @@ input, select, .cart-pane input, .cart-pane select { font-size: 16px; min-height
 .order-detail { padding: 20px 24px; }
 .detail-items { font-size: 16px; gap: 12px; }
 .order-detail h3 { font-size: 16px; }
-.deduction-list > div { font-size: 14px; }
-.deduction-list small { font-size: 13px; }
-.stock-warning { font-size: 14px; }
-.eta-field { font-size: 15px; }
+.order-stock { padding-bottom: 12px; border-bottom: 1px solid #d2a08720; }
+.order-stock summary { display: flex; align-items: center; gap: 10px; min-height: 44px; color: #bcb6ad; font-size: 14px; cursor: pointer; list-style: none; }
+.order-stock summary::-webkit-details-marker { display: none; }
+.order-stock summary::after { content: ''; width: 7px; height: 7px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg); margin: -4px 3px 0 2px; }
+.order-stock details[open] summary::after { transform: rotate(225deg); margin-top: 4px; }
+.stock-overview { margin-left: auto; font-size: 12px; color: #b9a18d; }
+.stock-caption { font-size: 12px; color: #a9a49c; margin: 4px 0 8px; }
+.order-stock .deduction-list { gap: 0 20px; margin-bottom: 8px; }
+.order-stock .deduction-list > div { font-size: 13px; color: #bcb6ad; padding: 6px 0; border-color: #ffffff0b; }
+.order-stock .deduction-list strong { font-weight: 400; color: #c8c0b5; }
+.order-stock .deduction-list small { font-size: 12px; color: #b9a18d; }
+.order-stock .stock-warning { margin: 0; font-size: 12px; line-height: 1.6; color: #c6af97; }
+.eta-picker { margin-top: 20px; }
+.eta-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.eta-heading label { color: var(--cream); font-size: 15px; }
+.eta-heading output { color: var(--copper); font-size: 24px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.eta-heading output span { font-size: 14px; font-weight: 400; }
+.eta-picker input[type=range] { display: block; width: 100%; height: 48px; min-height: 48px; margin: 4px 0 0; padding: 0; border: 0; background: transparent; appearance: none; cursor: pointer; accent-color: var(--copper); }
+.eta-picker input[type=range]::-webkit-slider-runnable-track { height: 5px; border-radius: 8px; background: linear-gradient(to right, var(--copper) var(--eta-progress), #ffffff20 var(--eta-progress)); }
+.eta-picker input[type=range]::-moz-range-track { height: 5px; border-radius: 8px; background: #ffffff20; }
+.eta-picker input[type=range]::-moz-range-progress { height: 5px; border-radius: 8px; background: var(--copper); }
+.eta-picker input[type=range]::-webkit-slider-thumb { appearance: none; width: 28px; height: 28px; margin-top: -11.5px; background: var(--copper); border: 3px solid #e7c2a9; border-radius: 50%; box-shadow: 0 2px 8px #0003; }
+.eta-picker input[type=range]::-moz-range-thumb { box-sizing: border-box; width: 28px; height: 28px; background: var(--copper); border: 3px solid #e7c2a9; border-radius: 50%; box-shadow: 0 2px 8px #0003; }
+.eta-scale { display: flex; justify-content: space-between; gap: 12px; color: #aaa59c; font-size: 11px; }
 .new-order-dialog { width: 1200px; }
 .new-order-layout { grid-template-columns: minmax(0, 1fr) 355px; }
 .catalog-tools select { font-size: 16px; }

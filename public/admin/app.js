@@ -165,12 +165,17 @@ function openOrder(id) {
   catch (error) { return notify(error.message, true); }
   const shortage = needs.some(i => i.missing > 0);
   const stockCaption = order.deduction ? 'Odečtené suroviny · záznam při zahájení' : 'Odečte se při zahájení přípravy';
+  const minutes = Math.max(10, Math.min(180, Math.round((Number(order.minutes) || 30) / 10) * 10));
+  const stockDetail = `<section class="order-stock"><details><summary><span>Suroviny a sklad</span><span class="stock-overview">${order.deduction ? 'Odečteno' : shortage ? 'K doplnění' : 'Skladem'}</span></summary><p class="stock-caption">${stockCaption}</p><div class="deduction-list">${needs.map(i => `<div><span>${esc(i.name)}</span><strong>−${quantity(i.needed, i.unit)}</strong>${i.missing ? `<small>Chybí ${quantity(i.missing, i.unit)}</small>` : ''}</div>`).join('') || '<p class="muted">Nápoje neodečítají suroviny pro pizzu.</p>'}</div></details>${shortage ? '<p class="stock-warning">Před přípravou doplňte chybějící suroviny. Objednávku lze zatím potvrdit.</p>' : ''}</section>`;
+  const timePicker = ['new', 'confirmed'].includes(order.status)
+    ? `<div class="eta-picker"><div class="eta-heading"><label for="order-minutes">Připravit za</label><output id="order-minutes-value" for="order-minutes">${minutes} <span>min</span></output></div><input id="order-minutes" type="range" min="10" max="180" step="10" value="${minutes}" aria-valuetext="${minutes} minut" aria-describedby="order-minutes-help" style="--eta-progress:${(minutes - 10) / 170 * 100}%"><div class="eta-scale"><span>10 min</span><span id="order-minutes-help">Po 10 minutách</span><span>180 min</span></div></div>`
+    : '<p class="inline-note">Sklad už byl odečten. Posun objednávky jej znovu nezmění.</p>';
   let buttons = '';
   if (order.status === 'new') buttons = `<button class="secondary-button" data-transition="confirmed">Jen potvrdit</button><button class="primary-button" data-transition="preparing">Potvrdit a připravovat</button>`;
   if (order.status === 'confirmed') buttons = '<button class="primary-button" data-transition="preparing">Začít přípravu a odečíst sklad</button>';
   if (order.status === 'preparing') buttons = '<button class="primary-button" data-transition="ready">Hotovo → k výdeji</button>';
   if (order.status === 'ready') buttons = `<button class="primary-button" data-transition="completed">${order.fulfillment === 'pickup' ? 'Předat zákazníkovi' : 'Předat kurýrovi'}</button>`;
-  openDialog(`Objednávka #${esc(id.split('-')[1])}`, `${esc(order.label)} · ${statusNames[order.status]} · ${when(order.createdAt)}`, `<div class="order-detail"><div class="detail-source">${sourceBadge(order.source)}<strong>${money(order.total)}</strong></div><div class="detail-items">${order.lines.map(l => `<div><span>${l.quantity}× ${esc(l.name)} ${l.size ? `· ${l.size} cm` : ''}</span><strong>${money(l.quantity * l.unitPrice)}</strong></div>`).join('')}<div class="muted"><span>Krabice / rozvoz</span><span>${money(order.packaging)} / ${money(order.delivery)}</span></div></div><h3>${stockCaption}</h3>${shortage ? '<p class="stock-warning">Některé suroviny chybí. Objednávku lze potvrdit, příprava začne až po naskladnění.</p>' : ''}<div class="deduction-list">${needs.map(i => `<div class="${i.missing ? 'is-missing' : ''}"><span>${esc(i.name)}</span><strong>−${quantity(i.needed, i.unit)}</strong>${i.missing ? `<small>Chybí ${quantity(i.missing, i.unit)}</small>` : ''}</div>`).join('') || '<p class="muted">Nápoje neodečítají suroviny pro pizzu.</p>'}</div>${['new', 'confirmed'].includes(order.status) ? `<label class="eta-field">Připravit za <input id="order-minutes" type="number" min="5" max="180" step="5" value="${order.minutes}"> minut</label>` : '<p class="inline-note">Sklad už byl odečten. Posun objednávky jej znovu nezmění.</p>'}</div><footer class="dialog-footer">${['new', 'confirmed'].includes(order.status) ? '<button class="text-button danger-text" data-cancel-order>Zrušit objednávku</button>' : ''}<div class="footer-actions">${buttons}</div></footer>`, 'order-dialog');
+  openDialog(`Objednávka #${esc(id.split('-')[1])}`, `${esc(order.label)} · ${statusNames[order.status]} · ${when(order.createdAt)}`, `<div class="order-detail"><div class="detail-source">${sourceBadge(order.source)}<strong>${money(order.total)}</strong></div><div class="detail-items">${order.lines.map(l => `<div><span>${l.quantity}× ${esc(l.name)} ${l.size ? `· ${l.size} cm` : ''}</span><strong>${money(l.quantity * l.unitPrice)}</strong></div>`).join('')}<div class="muted"><span>Krabice / rozvoz</span><span>${money(order.packaging)} / ${money(order.delivery)}</span></div></div>${stockDetail}${timePicker}</div><footer class="dialog-footer">${['new', 'confirmed'].includes(order.status) ? '<button class="text-button danger-text" data-cancel-order>Zrušit objednávku</button>' : ''}<div class="footer-actions">${buttons}</div></footer>`, 'order-dialog');
 }
 function openNewOrder() {
   draft = []; catalogSize = 30; catalogCategory = 'pizzy';
@@ -237,6 +242,12 @@ document.addEventListener('change', event => {
   if (event.target.id === 'fulfillment') renderDraft();
 });
 document.addEventListener('input', event => {
+  if (event.target.id === 'order-minutes') {
+    const minutes = Number(event.target.value);
+    $('#order-minutes-value').innerHTML = `${minutes} <span>min</span>`;
+    event.target.setAttribute('aria-valuetext', `${minutes} minut`);
+    event.target.style.setProperty('--eta-progress', `${(minutes - 10) / 170 * 100}%`);
+  }
   if (event.target.hasAttribute('data-cell-pizza')) {
     const input = event.target, pizzaId = input.dataset.cellPizza, ingredientId = input.dataset.cellIngredient, key = pizzaId + ':' + ingredientId;
     const before = recipeChanges.get(key)?.before ?? (state.recipes[pizzaId][30][ingredientId] || 0);
