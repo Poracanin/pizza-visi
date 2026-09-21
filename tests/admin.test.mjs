@@ -100,7 +100,7 @@ test('Zrušení před přípravou nemění sklad a po přípravě není dovoleno
 });
 test('Kanály zůstávají oddělené a nápoj nemění ingredience ani krabice',()=>{
  const demo=createDemoState(site,seed);assert.equal(demo.orders.length,21);assert.deepEqual([...new Set(demo.orders.map(o=>o.source))].sort(),['bolt','foodora','pos','web','wolt']);assert.doesNotThrow(()=>saved(demo));
- const c=order(initial(),[{pizzaId:'nestea-zeleny-caj-0-5l',size:null,quantity:2}]);assert.equal(c.order.total,100);const state=start(c);assert.deepEqual(state.stocks,c.state.stocks);assert.deepEqual(state.batches,c.state.batches);assert.doesNotThrow(()=>saved(state));
+ const c=order(initial(),[{pizzaId:'nestea-zeleny-caj-0-5l',size:null,quantity:2}],{source:'pos'});assert.equal(c.order.total,100);const state=start(c);assert.deepEqual(state.stocks,c.state.stocks);assert.deepEqual(state.batches,c.state.batches);assert.doesNotThrow(()=>saved(state));
 });
 test('Migrace původních dat zachová stav a historický výdej; neznámá trvanlivost zůstane neznámá',()=>{
  const c=order(),old=start(c);old.version=1;delete old.batches;delete old.batchSequence;

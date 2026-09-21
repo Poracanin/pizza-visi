@@ -1,5 +1,5 @@
 import {stockSummary, makeInitialBatches, addBatch, allocateBatches, validateBatches} from './inventory.js';
-import {deliveryAssignment, removeDeliveryOrder, validateDeliveryPlans} from './delivery.js?v=b58c57dc';
+import {deliveryAssignment, removeDeliveryOrder, validateDeliveryPlans, platformCourier, migrateCourierPolicy} from './delivery.js?v=bb45e9a7';
 // Amounts are whole grams or millilitres. Mutations are pure: one complete state
 // is persisted only after the entire operation succeeds.
 export const SOURCES = ['web', 'pos', 'wolt', 'foodora', 'bolt'];
@@ -21,7 +21,7 @@ export function validateRecipe(recipe, seed) {
   return true;
 }
 export function createState(site, seed, now = new Date().toISOString()) {
-  const state = {version: 2, revision: 0, sequence: 1040, recipes: clone(seed.recipes), stocks: {}, orders: [], movements: []};
+  const state = {version: 2, courierPolicyVersion: 1, revision: 0, sequence: 1040, recipes: clone(seed.recipes), stocks: {}, orders: [], movements: []};
   for (const branch of site.branches) state.stocks[branch.id] = Object.fromEntries(seed.ingredients.map(i => [i.id, i.initial]));
   for (const recipe of Object.values(state.recipes)) delete recipe[40];
   makeInitialBatches(state, seed, now);
@@ -30,6 +30,7 @@ export function createState(site, seed, now = new Date().toISOString()) {
 export function addOrder(state, site, input, now = new Date().toISOString()) {
   if (!Object.hasOwn(state.stocks, input.branchId) || !SOURCES.includes(input.source)) fail('Vyberte pobočku a zdroj objednávky.');
   if (!['pickup', 'delivery'].includes(input.fulfillment) || !['cash', 'card', 'online'].includes(input.payment)) fail('Vyberte předání a platbu.');
+  const fulfillment = platformCourier(input) ? 'delivery' : input.fulfillment;
   if (!Array.isArray(input.lines) || !input.lines.length || input.lines.length > 100) fail('Přidejte pizzu do objednávky.');
   const menu = products(site);
   const lines = input.lines.map(line => {
@@ -41,12 +42,12 @@ export function addOrder(state, site, input, now = new Date().toISOString()) {
   const next = clone(state);
   const subtotal = lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
   const packaging = lines.reduce((sum, l) => sum + (l.size ? (l.size === 40 ? 23 : 16) * l.quantity : 0), 0);
-  const delivery = input.fulfillment === 'delivery' ? site.delivery.price_czk : 0;
+  const delivery = fulfillment === 'delivery' ? site.delivery.price_czk : 0;
   const order = {id: `VISI-${++next.sequence}`, branchId: input.branchId, source: input.source,
-    fulfillment: input.fulfillment, payment: input.payment, label: String(input.label || 'Demo objednávka').trim().slice(0, 80),
+    fulfillment, payment: input.payment, label: String(input.label || 'Demo objednávka').trim().slice(0, 80),
     status: 'new', lines, subtotal, packaging, delivery, total: subtotal + packaging + delivery,
     createdAt: now, updatedAt: now, minutes: 30, deduction: null,
-    deliveryAddress: input.fulfillment === 'delivery' ? String(input.deliveryAddress || '').trim().slice(0, 180) : ''};
+    deliveryAddress: fulfillment === 'delivery' ? String(input.deliveryAddress || '').trim().slice(0, 180) : ''};
   next.orders.unshift(order);
   return {state: next, order};
 }
@@ -79,9 +80,13 @@ export function transitionOrder(state, id, target, seed, now = new Date().toISOS
   const next = clone(state);
   const order = next.orders.find(o => o.id === id);
   if (target === 'completed' && order.fulfillment === 'delivery') {
-    const assignment = deliveryAssignment(next, order);
-    if (!assignment) fail('Nejprve přiřaďte objednávku kurýrovi v plánu rozvozu.');
-    order.handoff = {...assignment, at: now};
+    const provider = platformCourier(order);
+    if (provider) order.handoff = {provider, at: now};
+    else {
+      const assignment = deliveryAssignment(next, order);
+      if (!assignment) fail('Nejprve přiřaďte objednávku kurýrovi v plánu rozvozu.');
+      order.handoff = {...assignment, at: now};
+    }
   }
   if (target === 'preparing') {
     if (order.deduction) fail('Suroviny už byly odečteny.');
@@ -141,7 +146,10 @@ export function restoreState(raw, site, seed) {
       if (!item || (item.category === 'pizzy' ? ![30, 40].includes(line.size) : line.size !== null) || !integer(line.quantity, 1, 20)) fail('Položka objednávky je neplatná.');
     }
     const deducted = ['preparing', 'ready', 'completed'].includes(order.status);
-    if (order.handoff && (order.status !== 'completed' || order.fulfillment !== 'delivery' || !integer(order.handoff.courierId, 1, 3) || !integer(order.handoff.position, 1, Number.MAX_SAFE_INTEGER) || !Number.isFinite(Date.parse(order.handoff.at)))) fail('Záznam předání kurýrovi je neplatný.');
+    if (order.handoff) {
+      const validCourier = order.handoff.provider ? order.handoff.provider === platformCourier(order) && order.handoff.courierId === undefined && order.handoff.position === undefined : integer(order.handoff.courierId, 1, 3) && integer(order.handoff.position, 1, Number.MAX_SAFE_INTEGER);
+      if (order.status !== 'completed' || order.fulfillment !== 'delivery' || !validCourier || !Number.isFinite(Date.parse(order.handoff.at))) fail('Záznam předání kurýrovi je neplatný.');
+    }
     if (deducted !== Boolean(order.deduction)) fail('Záznam odečtu skladu je neplatný.');
     if (deducted && (!order.deduction.amounts || Object.entries(order.deduction.amounts).some(([id, qty]) => !seed.ingredients.some(i => i.id === id) || !integer(qty, 1, 1000000000)))) fail('Množství v odečtu je neplatné.');
   }
@@ -149,6 +157,7 @@ export function restoreState(raw, site, seed) {
     if (!Object.hasOwn(state.stocks, move.branchId) || !['in', 'out', 'waste', 'correction'].includes(move.type) || !move.amounts || Object.entries(move.amounts).some(([id, qty]) => !seed.ingredients.some(i => i.id === id) || !integer(qty, 1, 1000000000))) fail('Historie skladu je neplatná.');
   }
   validateBatches(state, seed, site);
+  migrateCourierPolicy(state);
   validateDeliveryPlans(state);
   return state;
 }

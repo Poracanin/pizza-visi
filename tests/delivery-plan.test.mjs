@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createState, addOrder, transitionOrder, restoreState} from '../public/admin/model.js';
-import {deliveryPlan, deliveryAssignment, deliveryOrders, saveDeliveryPlan} from '../public/admin/delivery.js';
+import {deliveryPlan, deliveryAssignment, deliveryOrders, saveDeliveryPlan, toggleDeliveryStop, platformCourier} from '../public/admin/delivery.js';
 const site = JSON.parse(fs.readFileSync(new URL('../public/data/site.json', import.meta.url)));
 const seed = JSON.parse(fs.readFileSync(new URL('../public/admin/seed.json', import.meta.url)));
 const now = '2026-09-21T10:00:00.000Z';
@@ -85,4 +85,57 @@ test('Starší uložené demo funguje bez plánů, doručovací adresa patří p
   assert.equal(state.deliveryPlans,undefined); assert.deepEqual(restore(state),state);
   assert.equal(state.orders.find(o=>o.id===a).deliveryAddress,'Testovací 12, Rudná');
   assert.equal(state.orders.find(o=>o.id===pickup).deliveryAddress,'');
+});
+test('Kliknutí na jiného kurýra nesmí převzít již přiřazenou objednávku', () => {
+  const plan = toggleDeliveryStop(empty(),1,'VISI-1041');
+  assert.throws(()=>toggleDeliveryStop(plan,2,'VISI-1041'),/již má kurýr 1/);
+  assert.throws(()=>toggleDeliveryStop(plan,3,'VISI-1041'),/již má kurýr 1/);
+  assert.deepEqual(plan,[['VISI-1041'],[],[]]);
+  const removed = toggleDeliveryStop(plan,1,'VISI-1041');
+  assert.deepEqual(toggleDeliveryStop(removed,2,'VISI-1041'),[[],['VISI-1041'],[]]);
+});
+test('Wolt, Bolt a foodora mají vlastní kurýry, nelze je přiřadit do našich tras', () => {
+  for (const source of ['wolt','bolt','foodora']) {
+    const {state} = fixture();
+    const added = addOrder(state,site,{branchId:'rudna',source,fulfillment:'pickup',payment:'online',lines:[{pizzaId:'1-margherita',size:30,quantity:1}]},now);
+    assert.equal(added.order.fulfillment,'delivery');
+    assert.equal(platformCourier(added.order),source);
+    assert.ok(!deliveryOrders(added.state,'rudna').some(o=>o.id===added.order.id));
+    assert.equal(deliveryAssignment(added.state,added.order),null);
+    assert.throws(()=>saveDeliveryPlan(added.state,'rudna',[[added.order.id],[],[]],empty()),/není dostupná/);
+    let next = transitionOrder(added.state,added.order.id,'preparing',seed,now);
+    next = transitionOrder(next,added.order.id,'ready',seed,now);
+    const handed = transitionOrder(next,added.order.id,'completed',seed,now);
+    assert.deepEqual(handed.orders.find(o=>o.id===added.order.id).handoff,{provider:source,at:now});
+    assert.deepEqual(handed.stocks,next.stocks); assert.deepEqual(handed.movements,next.movements);
+    assert.deepEqual(restore(handed),handed);
+    assert.equal(transitionOrder(handed,added.order.id,'completed',seed,now),handed);
+    const corrupt = structuredClone(handed); corrupt.orders.find(o=>o.id===added.order.id).handoff.provider='web';
+    assert.throws(()=>restore(corrupt),/předání kurýrovi/);
+  }
+});
+test('Staré plány odstraní externí služby a zachovají vlastní zastávky, ceny a historii', () => {
+  let {state,ids:[a,b,c]} = fixture();
+  const external=[];
+  for(const source of ['wolt','bolt','foodora']) {
+    const added=addOrder(state,site,{branchId:'rudna',source,fulfillment:'delivery',payment:'online',lines:[{pizzaId:'1-margherita',size:30,quantity:1}]},now);
+    state=added.state; external.push(added.order.id);
+  }
+  delete state.courierPolicyVersion;
+  state.deliveryPlans={rudna:[[external[0],a],[external[1],b],[external[2],c]]};
+  state.orders.find(o=>o.id===external[2]).fulfillment='pickup'; // Legacy sample order.
+  const migrated=restore(state);
+  assert.equal(migrated.courierPolicyVersion,1);
+  assert.deepEqual(deliveryPlan(migrated,'rudna'),[[a],[b],[c]]);
+  assert.equal(migrated.orders.find(o=>o.id===external[2]).fulfillment,'delivery');
+  assert.deepEqual(migrated.orders.map(o=>o.total),state.orders.map(o=>o.total));
+  assert.deepEqual(migrated.stocks,state.stocks); assert.deepEqual(migrated.movements,state.movements);
+  assert.deepEqual(restore(migrated),migrated);
+});
+test('Dřívější záznam předání externí objednávky se při opravě plánů nepřepíše', () => {
+  let {state,ids:[a]}=fixture();
+  state=transitionOrder(state,a,'preparing',seed,now);state=transitionOrder(state,a,'ready',seed,now);
+  state=saveDeliveryPlan(state,'rudna',[[a],[],[]],empty());state=transitionOrder(state,a,'completed',seed,now);
+  state.orders.find(o=>o.id===a).source='wolt';delete state.courierPolicyVersion;
+  assert.deepEqual(restore(state).orders.find(o=>o.id===a).handoff,{courierId:1,position:1,at:now});
 });
