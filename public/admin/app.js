@@ -109,9 +109,9 @@ function renderRecipes() {
 function renderMatrix() {
   const cols = seed.ingredients.filter(i=>normalizeSearch(i.name).includes(normalizeSearch(ingredientSearch)));
   const rows = pizzas(site).filter(p=>normalizeSearch(pizzaName(p)).includes(normalizeSearch(pizzaSearch)));
-  $('#recipe-matrix').innerHTML = `<thead><tr><th class="pizza-column">Pizza / 30 cm</th>${cols.map(i=>`<th scope="col">${esc(i.name)}<small>${i.unit}</small></th>`).join('')}</tr></thead><tbody>${rows.map(p=>`<tr><th scope="row" class="pizza-column"><span>${String(p.number).padStart(2,'0')}</span>${esc(pizzaName(p))}</th>${cols.map(i=>{
+  $('#recipe-matrix').innerHTML = `<thead><tr><th class="pizza-column">Pizza / 30 cm</th>${cols.map(i=>`<th scope="col">${esc(i.name)}</th>`).join('')}</tr></thead><tbody>${rows.map(p=>`<tr><th scope="row" class="pizza-column"><span>${String(p.number).padStart(2,'0')}</span>${esc(pizzaName(p))}</th>${cols.map(i=>{
     const key=p.id+':'+i.id, change=recipeChanges.get(key), amount=change?change.amount:(state.recipes[p.id][30][i.id]||0);
-    return `<td class="${change?'edited':''}"><input type="number" inputmode="numeric" min="0" max="10000" step="1" placeholder="—" value="${amount||''}" data-cell-pizza="${p.id}" data-cell-ingredient="${i.id}" aria-label="${esc(pizzaName(p))} / ${esc(i.name)} (${i.unit})"></td>`;
+    return `<td class="${change?'edited':''}"><label class="recipe-quantity"><input type="number" inputmode="numeric" min="0" max="10000" step="1" placeholder="—" value="${amount||''}" data-cell-pizza="${p.id}" data-cell-ingredient="${i.id}" aria-label="${esc(pizzaName(p))} / ${esc(i.name)} (${i.unit})"><span class="recipe-unit" aria-hidden="true">${esc(i.unit)}</span></label></td>`;
   }).join('')}</tr>`).join('') || `<tr><td colspan="${cols.length+1}">Žádná pizza neodpovídá hledání.</td></tr>`}</tbody>`;
 }
 function recipeSaveStatus() {

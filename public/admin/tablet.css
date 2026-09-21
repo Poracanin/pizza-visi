@@ -87,17 +87,26 @@ body[data-view=orders] #workspace { display: flex; flex-direction: column; overf
 .search-field { min-width: 240px; max-width: 330px; padding: 0; gap: 8px; }
 .search-field input { min-height: 44px; font-size: 16px; padding: 10px; }
 .panel-toolbar select { font-size: 15px; min-height: 44px; padding: 8px 12px; }
-.stock-scroll { max-height: calc(100dvh - 169px); overscroll-behavior: contain; }
+.stock-scroll { max-height: calc(100dvh - 169px); overscroll-behavior: contain; scrollbar-color: #776b5f #252522; }
+.stock-scroll::-webkit-scrollbar-thumb { background: #776b5f; border-color: #252522; }
+.stock-panel { background: #252522; border-color: #d2a0872e; border-radius: 9px; }
+.stock-panel .panel-toolbar { background: #282724; border-color: #d2a08726; }
+.stock-panel .panel-toolbar select { background: #252522; border-color: #d2a08726; }
+.stock-panel .panel-toolbar select option { background: #252522; }
+.stock-panel .search-field input::placeholder { color: #a39c93; }
+.stock-panel .muted, .stock-panel td small { color: #b6ada2; }
+.stock-panel .small-button { background: #302b252e; border-color: #d2a08730; }
+.stock-panel .expiry-cell.undated { color: #ddbcaa; }
 .stock-panel table { min-width: 1040px; }
 th { font-size: 12px; padding: 12px; color: #bfc3c8; letter-spacing: .35px; }
 td { padding: 8px 12px; font-size: 16px; height: 59px; border-top: 1px solid #ffffff12; }
 td strong { font-size: 16px; font-weight: 500; }
 td small { font-size: 12px; margin-top: 2px; color: #b4b8bd; }
-.stock-panel th { position: sticky; top: 0; z-index: 1; background: #343a40; }
+.stock-panel th { position: sticky; top: 0; z-index: 1; background: #302b27; color: #ddbcaa; border-bottom: 1px solid #d2a08744; }
 .stock-panel td:first-child { min-width: 175px; }
-.stock-panel td { white-space: nowrap; }
-.stock-panel tbody tr:nth-child(even) { background: #ffffff03; }
-.stock-panel tbody tr:hover { background: #ffffff06; }
+.stock-panel td { white-space: nowrap; border-color: #f3ece20c; }
+.stock-panel tbody tr:nth-child(even) { background: #282724; }
+.stock-panel tbody tr:hover { background: #302b25; }
 .numeric { text-align: right; font-variant-numeric: tabular-nums; }
 .stock-amount { font-weight: 600; }
 .stock-amount small { font-weight: 400; }
@@ -109,9 +118,11 @@ td small { font-size: 12px; margin-top: 2px; color: #b4b8bd; }
 .expiry-cell.undated, .undated { color: #d6b4ed; }
 .row-actions { display: flex; gap: 8px; white-space: nowrap; }
 .plus-button { min-width: 46px; font-size: 23px; padding: 4px 10px; }
-.stock-summary { display: flex; flex-wrap: wrap; gap: 20px; padding: 16px 2px; font-size: 13px; color: #b0b6bc; }
+.stock-summary { display: flex; flex-wrap: wrap; gap: 20px; padding: 16px 2px; font-size: 13px; color: #b6ada2; }
 .stock-summary span:last-child { margin-left: auto; }
-.movement-details { margin: 10px 0 25px; border: 1px solid #454a50; border-radius: 6px; }
+.movement-details { margin: 10px 0 25px; border: 1px solid #d2a0872e; border-radius: 9px; background: #252522; }
+.movement-details .movement-list { background: #252522; }
+.movement-details .movement { border-color: #f3ece20c; }
 .movement-details summary { font-size: 16px; padding: 16px; cursor: pointer; min-height: 50px; }
 .movement-details summary span { color: var(--muted); font-size: 13px; margin-left: 15px; }
 .movement-list { border: 0; border-top: 1px solid var(--line); border-radius: 0; }
@@ -122,7 +133,7 @@ td small { font-size: 12px; margin-top: 2px; color: #b4b8bd; }
 .movement-icon.correction { color: #c9afe0; background: #604c7728; }
 
 /* Recipe spreadsheet: warm Pizza Visi palette and light, compact typography. */
-body[data-view=recipes] .main-stage { background: #20211f; }
+body[data-view=recipes] .main-stage, body[data-view=stock] .main-stage { background: #20211f; }
 body[data-view=recipes] #workspace { display: flex; flex-direction: column; overflow: hidden; }
 body[data-view=recipes] .heading-actions button { font-size: 14px; font-weight: 500; border-radius: 7px; }
 body[data-view=recipes] .heading-actions .secondary-button { background: #2a2825; border-color: #d2a08724; }
@@ -136,8 +147,7 @@ body[data-view=recipes] .heading-actions .secondary-button { background: #2a2825
 .matrix-scroll::-webkit-scrollbar-thumb { background: #776b5f; border-color: #252522; }
 .recipe-matrix { width: max-content; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
 .recipe-matrix th, .recipe-matrix td { border-bottom: 1px solid #f3ece20c; border-right: 1px solid #f3ece208; }
-.recipe-matrix thead th { width: 132px; min-width: 132px; max-width: 132px; height: 64px; padding: 8px 12px; position: sticky; top: 0; z-index: 2; font-size: 12px; text-transform: none; letter-spacing: .1px; font-weight: 400; white-space: normal; vertical-align: middle; line-height: 1.35; background: #302b27; color: #ddbcaa; border-bottom-color: #d2a08744; }
-.recipe-matrix th small { display: block; font-size: 10px; font-weight: 400; color: #a99a8b; margin-top: 3px; }
+.recipe-matrix thead th { width: 132px; min-width: 132px; max-width: 132px; height: 52px; padding: 8px 12px; position: sticky; top: 0; z-index: 2; font-size: 12px; text-transform: none; letter-spacing: .1px; font-weight: 400; white-space: normal; vertical-align: middle; line-height: 1.35; background: #302b27; color: #ddbcaa; border-bottom-color: #d2a08744; }
 .recipe-matrix .pizza-column { position: sticky; left: 0; width: 218px; min-width: 218px; max-width: 218px; background: #2b2926; color: var(--cream); box-shadow: 1px 0 0 #d2a0872e; font-size: 14px; font-weight: 400; text-transform: none; letter-spacing: 0; padding: 6px 14px; z-index: 1; white-space: normal; }
 .recipe-matrix thead .pizza-column { z-index: 3; background: #352d27; font-size: 12px; color: #ddbcaa; }
 .recipe-matrix tbody th span { display: inline-block; color: #ac917c; width: 27px; font-size: 10px; font-weight: 400; }
@@ -148,7 +158,10 @@ body[data-view=recipes] .heading-actions .secondary-button { background: #2a2825
 .recipe-matrix tbody tr:hover th, .recipe-matrix tbody tr:focus-within th { background: #373028; }
 .recipe-matrix td:focus-within { outline: 1px solid var(--copper); outline-offset: -1px; }
 .recipe-matrix td.edited { background: #77533740 !important; }
-.recipe-matrix input { width: 100%; min-width: 90px; padding: 7px; height: 44px; border: 1px solid transparent; background: transparent; color: #e6dfd4; border-radius: 4px; font-size: 16px; font-weight: 400; text-align: right; font-variant-numeric: tabular-nums; appearance: textfield; }
+.recipe-quantity { display: block; position: relative; }
+.recipe-unit { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); color: #b9a18d; font-size: 11px; font-weight: 400; pointer-events: none; }
+.recipe-matrix input:placeholder-shown + .recipe-unit { visibility: hidden; }
+.recipe-matrix input { width: 100%; min-width: 90px; padding: 7px 30px 7px 7px; height: 44px; border: 1px solid transparent; background: transparent; color: #e6dfd4; border-radius: 4px; font-size: 16px; font-weight: 400; text-align: right; font-variant-numeric: tabular-nums; appearance: textfield; }
 .recipe-matrix input::-webkit-inner-spin-button, .recipe-matrix input::-webkit-outer-spin-button { appearance: none; margin: 0; }
 .recipe-matrix input::placeholder { color: #837969; opacity: .65; }
 .recipe-matrix input:hover { border-color: #d2a08724; }
