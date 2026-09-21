@@ -24,6 +24,19 @@ npm run preview
 
 Veřejný demo web: https://poracanin.github.io/pizza-visi/.
 
+Přímé odkazy na vytvořené části projektu:
+
+- [Web Pizza Visi](https://poracanin.github.io/pizza-visi/)
+- [Administrace / POS — demo](https://poracanin.github.io/pizza-visi/admin/)
+- [Cenová nabídka](https://poracanin.github.io/pizza-visi/cenova-nabidka.html), včetně [cen po pobočkách a platebních podmínek](https://poracanin.github.io/pizza-visi/cenova-nabidka.html#branches)
+- [Mapa rozvozu](https://poracanin.github.io/pizza-visi/mapa-rozvozu.html)
+- [Srovnání nákladů systémů](https://poracanin.github.io/pizza-visi/naklady-systemu.html)
+- [Prezentace navrženého systému](https://poracanin.github.io/pizza-visi/prezentace-systemu.html)
+
+Cenová nabídka má upravitelné ceny, rozpočet po pobočkách, 20% zálohu pouze z realizace, plnou úhradu zařízení před objednáním a jednorázovou integraci EET 2.0 zdarma. Uložené změny cen platí v konkrétním prohlížeči; pro předání upravené varianty použijte tlačítko **Stáhnout vyplněné HTML**. Výchozí nabídku lze znovu sestavit příkazem `python3 .artifacts/cenova-nabidka/build.py`.
+
+Zdrojové podklady, generátory a kontroly jsou v `.artifacts/`; tiskové výstupy prezentace jsou v [`output/pdf/`](output/pdf/). GitHub Pages zveřejňuje pouze obsah `public/` zkopírovaný při buildu do `dist/`.
+
 Workflow `.github/workflows/pages.yml` po každém pushi do `main` spustí testy, sestaví web a nasadí obsah `dist/` do kořene této adresy. Lze ho spustit i ručně v záložce Actions. V Settings → Pages musí být jako zdroj nastaveno **GitHub Actions**. Kořen repozitáře se nepublikuje; archiv podkladů a zdrojové skripty nejsou součástí nasazeného webu. Relativní cesty k souborům podporují umístění pod `/pizza-visi/`.
 
 ## Co funguje

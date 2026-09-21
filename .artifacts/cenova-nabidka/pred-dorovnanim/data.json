@@ -1,0 +1,127 @@
+{
+  "id": "pizza-visi-cn-20260921-v1",
+  "work": [
+    {
+      "key": "web",
+      "name": "Objednávkový web",
+      "scope": "Responzivní web, menu, varianty pizzy a přílohy, košík, objednávka, výběr pobočky podle rozvozové zóny, osobní odběr a stav objednávky.",
+      "price": 6000
+    },
+    {
+      "key": "pos",
+      "name": "Aplikace pro POS",
+      "scope": "Příjem webových i telefonických objednávek, potvrzení, příprava a předání. Platby, hotovost, uzávěrka a tisk účtenek. Jedna aplikace pro všechny 3 pobočky.",
+      "price": 5000
+    },
+    {
+      "key": "driver",
+      "name": "Aplikace pro řidiče",
+      "scope": "Android aplikace: vlastní účet řidiče, přiřazené rozvozy, spuštění navigace, stav doručení a přehled úhrad. Párování terminálu s pobočkou.",
+      "price": 3000
+    },
+    {
+      "key": "admin",
+      "name": "Centrální systém",
+      "scope": "Společný backend, databáze a administrace. Produkty, ceny, dostupnost, zóny, pobočky, role uživatelů, řidiči, historie a základní přehled tržeb.",
+      "price": 1500
+    },
+    {
+      "key": "wolt",
+      "name": "Wolt · API",
+      "scope": "Příjem objednávek do správné pobočky, mapování položek, potvrzení a změny stavů v rozsahu zpřístupněného partnerského API.",
+      "price": 1000
+    },
+    {
+      "key": "foodora",
+      "name": "Foodora · API",
+      "scope": "Napojení objednávek a položek, přiřazení pobočky a stavy podle schváleného integračního režimu Foodory / Delivery Hero.",
+      "price": 1000
+    },
+    {
+      "key": "bolt",
+      "name": "Bolt Food · API",
+      "scope": "Příjem objednávek, mapování položek a stavů, vlastní rozvoz nebo předání kurýrovi podle objednávky a smlouvy s platformou.",
+      "price": 1000
+    },
+    {
+      "key": "gateway",
+      "name": "Comgate · web",
+      "scope": "Jedna online brána pro celou síť. Založení platby, bezpečné potvrzení úhrady, párování objednávky a zpracování neúspěšné platby.",
+      "price": 1000
+    },
+    {
+      "key": "softpos",
+      "name": "Comgate POS · terminál",
+      "scope": "Předání částky z aplikace řidiče do Comgate POS, převzetí výsledku, kontrola již zaplacených objednávek a integrační test platby i storna.",
+      "price": 1500
+    },
+    {
+      "key": "migration",
+      "name": "Převod dat a nastavení",
+      "scope": "Import dodaného menu, cen a alergenů. Nastavení tří provozoven, rozvozových zón, uživatelů a zařízení. Bez migrace historického účetnictví.",
+      "price": 1500
+    },
+    {
+      "key": "launch",
+      "name": "Testy a spuštění",
+      "scope": "Nastavení serveru, test od objednání po doručení a úhradu, pilotní pobočka, nasazení na zbývající dvě, školení obsluhy a předání dokumentace.",
+      "price": 2000
+    }
+  ],
+  "hardware": [
+    {
+      "key": "posDevice",
+      "name": "Hlavní POS 15,6″",
+      "scope": "iMin Swan 2, IMI095 · Android 13, 4/64 GB, GMS. Jeden pultový POS na pobočku; tiskárna je samostatně níže.",
+      "price": 11034,
+      "qty": 3,
+      "source": "https://www.satomar.shop/imin-swan2/",
+      "kind": "Ceník distributora"
+    },
+    {
+      "key": "printer",
+      "name": "Tiskárna účtenek",
+      "scope": "80mm termální tiskárna s USB / LAN a řezačkou. Model se vybere podle ověřeného způsobu tisku z POS aplikace.",
+      "price": 3000,
+      "qty": 3,
+      "kind": "Rozpočtová rezerva"
+    },
+    {
+      "key": "driverDevice",
+      "name": "Terminál řidiče",
+      "scope": "iMin Swift 1 Pro, IMI072 · 6,5″, Android 13, GMS, NFC a 4G. Jeden řidičský terminál na pobočku. Příjem bezkontaktních plateb přes Comgate POS po ověření kompatibility.",
+      "price": 9098,
+      "qty": 3,
+      "source": "https://www.satomar.shop/imin-swift-1-pro/",
+      "kind": "Ceník distributora"
+    },
+    {
+      "key": "dock",
+      "name": "Nabíjecí kolíbky",
+      "scope": "Nabíjecí kolíbka iMin Swift 1 Pro pro každý řidičský terminál. Bez tiskového a skenovacího modulu.",
+      "price": 835,
+      "qty": 3,
+      "source": "https://www.satomar.shop/imin-swift-1-pro-kolibka/",
+      "kind": "Ceník distributora"
+    },
+    {
+      "key": "accessories",
+      "name": "Kabeláž a příslušenství",
+      "scope": "Rezerva na kabeláž k POS a tiskárně, ochranné pouzdro terminálu a drobné příslušenství za jednu pobočku.",
+      "price": 1000,
+      "qty": 3,
+      "kind": "Rozpočtová rezerva"
+    }
+  ],
+  "operating": {
+    "server": 1200,
+    "support": 500,
+    "simPrice": 150,
+    "other": 300,
+    "onlineVolume": 283500,
+    "terminalVolume": 189000,
+    "platformVolume": 472500,
+    "platformRate": 25,
+    "apiMonthly": ""
+  }
+}

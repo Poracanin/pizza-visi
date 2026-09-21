@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Pizza Visi - Husovo náměstí 60, Hostivice</name>
+    <description>Pizza Visi - Husovo náměstí 60, Hostivice</description>
+    <Style id="icon-1577-F57C00-normal">
+      <IconStyle>
+        <color>ff007cf5</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-1577-F57C00-highlight">
+      <IconStyle>
+        <color>ff007cf5</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-1577-F57C00">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1577-F57C00-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1577-F57C00-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="poly-C2185B-1701-77-normal">
+      <LineStyle>
+        <color>ff5b18c2</color>
+        <width>1.701</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>4d5b18c2</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+    </Style>
+    <Style id="poly-C2185B-1701-77-highlight">
+      <LineStyle>
+        <color>ff5b18c2</color>
+        <width>2.5515</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>4d5b18c2</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+    </Style>
+    <StyleMap id="poly-C2185B-1701-77">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-C2185B-1701-77-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-C2185B-1701-77-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Folder>
+      <name>Vrstva bez názvu</name>
+      <Placemark>
+        <name>Pizza Visi - Hostivice
+</name>
+        <description>Objednávky: +420 606 518 565</description>
+        <styleUrl>#icon-1577-F57C00</styleUrl>
+        <Point>
+          <coordinates>
+            14.2572491,50.0799443,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hranice rozvozu</name>
+        <description>Rozvoz pouze vně obrazce.</description>
+        <styleUrl>#poly-C2185B-1701-77</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                14.2701167,50.0851461,0
+                14.218879,50.0998519,0
+                14.2227096,50.1093254,0
+                14.2538077,50.1164837,0
+                14.2600371,50.1154667,0
+                14.2669531,50.1163206,0
+                14.2723244,50.1176696,0
+                14.2758079,50.1202292,0
+                14.258356,50.1297573,0
+                14.2292431,50.1138347,0
+                14.2225846,50.1193005,0
+                14.2150924,50.1232713,0
+                14.2207876,50.1287234,0
+                14.2291285,50.1300185,0
+                14.2327057,50.1275721,0
+                14.2479964,50.1325394,0
+                14.2342016,50.1379612,0
+                14.2243803,50.1332919,0
+                14.2244913,50.1301454,0
+                14.2202251,50.1296674,0
+                14.1901225,50.1161973,0
+                14.1903492,50.1125979,0
+                14.1940089,50.1089986,0
+                14.2016702,50.1024601,0
+                14.2049737,50.0878417,0
+                14.1636979,50.0763436,0
+                14.155426,50.0729597,0
+                14.1426936,50.064066,0
+                14.1507724,50.0540517,0
+                14.1652121,50.0599505,0
+                14.1781109,50.0678312,0
+                14.1795565,50.0726803,0
+                14.2073569,50.0830638,0
+                14.2179786,50.0784513,0
+                14.2097146,50.0614697,0
+                14.2124384,50.0548463,0
+                14.2275667,50.0501403,0
+                14.244057,50.0604608,0
+                14.2571172,50.0604197,0
+                14.2725885,50.0558743,0
+                14.2866839,50.0517679,0
+                14.3101139,50.0567199,0
+                14.3277545,50.0718688,0
+                14.3250753,50.0853918,0
+                14.3132955,50.0909831,0
+                14.2701167,50.0851461,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+    </Folder>
+  </Document>
+</kml>

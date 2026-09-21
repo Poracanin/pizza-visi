@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Pizza Visi - Riegerova 527/50, Rudná (u Prahy)</name>
+    <description>Pizza Visi -  Riegerova 527/50, Rudná (u Prahy)</description>
+    <Style id="icon-1577-F57C00-normal">
+      <IconStyle>
+        <color>ff007cf5</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-1577-F57C00-highlight">
+      <IconStyle>
+        <color>ff007cf5</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-1577-F57C00">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1577-F57C00-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1577-F57C00-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="poly-C2185B-1901-85-normal">
+      <LineStyle>
+        <color>ff5b18c2</color>
+        <width>1.901</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>555b18c2</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+    </Style>
+    <Style id="poly-C2185B-1901-85-highlight">
+      <LineStyle>
+        <color>ff5b18c2</color>
+        <width>2.8515</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>555b18c2</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+    </Style>
+    <StyleMap id="poly-C2185B-1901-85">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-C2185B-1901-85-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-C2185B-1901-85-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Folder>
+      <name>Vrstva bez názvu</name>
+      <Placemark>
+        <name>Pizza Visi - Rudná</name>
+        <description>Objednávky: +420 606 918 942</description>
+        <styleUrl>#icon-1577-F57C00</styleUrl>
+        <Point>
+          <coordinates>
+            14.2367666,50.0360741,0
+          </coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+    <Folder>
+      <name>rectangle_highlight.kml</name>
+      <Placemark>
+        <name>Hranice rozvozu</name>
+        <description>Rozvoz pouze vně obrazce.</description>
+        <styleUrl>#poly-C2185B-1901-85</styleUrl>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                14.1939952,50.0327139,0
+                14.1917564,50.0181339,0
+                14.1920981,50.0149097,0
+                14.1954027,50.0111765,0
+                14.1979345,50.0060092,0
+                14.1996939,49.9996008,0
+                14.1970102,49.993527,0
+                14.1959261,49.9905453,0
+                14.1960436,49.9876739,0
+                14.2022929,49.9868841,0
+                14.213091,49.9862045,0
+                14.2179534,49.988403,0
+                14.2185245,49.9924775,0
+                14.2461026,49.9925697,0
+                14.2662991,49.9996547,0
+                14.2802622,50.0106803,0
+                14.286742,50.0167498,0
+                14.2894462,50.0201718,0
+                14.2900042,50.0260868,0
+                14.2885021,50.0374606,0
+                14.3380465,50.0485704,0
+                14.3065607,50.0623929,0
+                14.2985393,50.0648936,0
+                14.2910328,50.0640882,0
+                14.2673944,50.0630603,0
+                14.2126805,50.0694017,0
+                14.2064242,50.0463183,0
+                14.1814293,50.0492847,0
+                14.1749746,50.0441466,0
+                14.179937,50.0402498,0
+                14.1939952,50.0327139,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+    </Folder>
+  </Document>
+</kml>
