@@ -15,7 +15,8 @@ for i,w in enumerate(d['work'],1):
 hardware=''
 for i,h in enumerate(d['hardware'],1):
  key=h['key']
- hardware+=f'<tr><th scope="row"><span class="number">{i:02}</span>{h["name"]}</th><td>{h["scope"]}<span class="kind">{h["kind"]}</span></td><td class="cost-cell"><strong class="product-total" id="total-{key}">{m(h["qty"]*h["price"])}</strong><span class="calculation" id="calc-{key}">{h["qty"]} ks × {m(h["price"])}</span><div class="qty-controls"><label>Počet<input data-field="{key}Qty" value="{h["qty"]}" inputmode="numeric" maxlength="6" aria-label="Počet: {h["name"]}"></label><label>Kč / kus<input data-field="{key}Price" value="{h["price"]}" inputmode="decimal" maxlength="14" aria-label="Cena za kus: {h["name"]}"></label></div></td></tr>'
+ product_link=f'<a class="device-link" href="{html.escape(h["source"],quote=True)}" target="_blank" rel="noopener noreferrer" aria-label="Zobrazit produkt: {html.escape(h["name"],quote=True)} (nová karta)">Zobrazit produkt ↗</a>' if h.get('source') else ''
+ hardware+=f'<tr><th scope="row"><span class="number">{i:02}</span>{h["name"]}{product_link}</th><td>{h["scope"]}<span class="kind">{h["kind"]}</span></td><td class="cost-cell"><strong class="product-total" id="total-{key}">{m(h["qty"]*h["price"])}</strong><span class="calculation" id="calc-{key}">{h["qty"]} ks × {m(h["price"])}</span><div class="qty-controls"><label>Počet<input data-field="{key}Qty" value="{h["qty"]}" inputmode="numeric" maxlength="6" aria-label="Počet: {h["name"]}"></label><label>Kč / kus<input data-field="{key}Price" value="{h["price"]}" inputmode="decimal" maxlength="14" aria-label="Cena za kus: {h["name"]}"></label></div></td></tr>'
 scenario=''
 for key,label in [('onlineVolume','Platby kartou na webu · Kč / měsíc'),('terminalVolume','Platby přes mobilní terminály · Kč / měsíc'),('platformVolume','Objem objednávek platforem · Kč / měsíc'),('platformRate','Modelová provize platforem · %')]:
  v=d['operating'][key]
