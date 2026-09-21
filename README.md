@@ -28,6 +28,7 @@ Přímé odkazy na vytvořené části projektu:
 
 - [Web Pizza Visi](https://poracanin.github.io/pizza-visi/)
 - [Administrace / POS — demo](https://poracanin.github.io/pizza-visi/admin/)
+- [Mobilní rozvoz pro kurýry — demo](https://poracanin.github.io/pizza-visi/rozvoz.html)
 - [Cenová nabídka](https://poracanin.github.io/pizza-visi/cenova-nabidka.html), včetně [cen po pobočkách a platebních podmínek](https://poracanin.github.io/pizza-visi/cenova-nabidka.html#branches)
 - [Mapa rozvozu](https://poracanin.github.io/pizza-visi/mapa-rozvozu.html)
 - [Srovnání nákladů systémů](https://poracanin.github.io/pizza-visi/naklady-systemu.html)
@@ -40,6 +41,8 @@ Zdrojové podklady, generátory a kontroly jsou v `.artifacts/`; tiskové výstu
 Workflow `.github/workflows/pages.yml` po každém pushi do `main` spustí testy, sestaví web a nasadí obsah `dist/` do kořene této adresy. Lze ho spustit i ručně v záložce Actions. V Settings → Pages musí být jako zdroj nastaveno **GitHub Actions**. Kořen repozitáře se nepublikuje; archiv podkladů a zdrojové skripty nejsou součástí nasazeného webu. Relativní cesty k souborům podporují umístění pod `/pizza-visi/`.
 
 ## Co funguje
+
+Mobilní stránka **[rozvoz.html](https://poracanin.github.io/pizza-visi/rozvoz.html)** navazuje na administraci: tři pobočky, tři kurýři, pořadí zastávek, převzetí připravené objednávky, navigace a volání, potvrzení úhrady a doručení, hlášení problému, historie a denní přehled hotovosti. Na počítači si zachovává mobilní šířku. Nastavení kurýra přepíná oddělenou ukázkovou trasu a objednávky přiřazené v administraci. Sdílení funguje ve stejném prohlížeči a na stejném originu; bez backendu se data nesdílejí mezi zařízeními. Podrobnosti: [docs/courier.md](docs/courier.md).
 
 Administrace / POS je dostupná na **https://poracanin.github.io/pizza-visi/admin/** (lokálně `/admin/`). Obsahuje objednávky podle kanálů včetně Woltu, samostatné sklady tří poboček, příjmy po šaržích s trvanlivostí a tabulku receptur 30 cm. Rozhraní je upravené pro tablet; při zahájení přípravy odečte suroviny jednou, ze šarží s nejbližší spotřebou. Jde o veřejné demo bez přihlášení a živých integrací, s ukládáním v prohlížeči a ukázkovými gramážemi. Podrobnosti: [docs/admin.md](docs/admin.md).
 
