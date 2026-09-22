@@ -1,5 +1,13 @@
 # Pizza Visi — směr návrhu
 
+## Aktuální vzhled hlavního webu · 22. 9. 2026
+
+Na přání uživatele je zákaznický web nově černý, bílý a červený. Pozadí `#050506`, povrchy `#101113`, text `#f6f6f7`, sekundární text `#a7a8b0`, červený textový akcent `#ff4d5d`, plná tlačítka `#df2034` s bílým textem a hover `#c9192b`. Vzhled dokončuje `public/theme.css`: dvouřádkový úvodní nadpis, karty se zaoblením 12–18 px, tlačítka 9–12 px, zaoblené filtry a decentní červené podbarvení. Fotografie poboček, italské linky a existující objednávkový proces zůstávají. Platí pouze pro hlavní web a jeho objednávkové dialogy; administrace, rozvoz, mapy a nabídky mají samostatné styly.
+
+Níže je původní návrhový podklad, jeho barevné a geometrické hodnoty jsou pro hlavní web nahrazené aktuálním směrem výše.
+
+## Původní reference
+
 Prohlédnuté reference: `Snímek obrazovky 2026-09-20 v 20.54.55.png` (tištěné menu) a `Snímek obrazovky 2026-09-20 v 20.55.01.png` (vývěsní štít). Fotografie poboček: `Rudna.png`, `hostivice.png`, `Beroun.png`. Referencemi jsou fotografie fyzických tiskovin a označení provozovny; rozmístění webu a všechny interakce jsou nově navržené.
 
 Pozorováno: antracitové plochy, světlé výrazné úzké nadpisy, měděný akcent v názvu VISI, linka v italských barvách a obrysové kresby pizzy/surovin. Písmo je vysoké a bezpatkové; přesný font z rastru nelze potvrdit. Pro realizaci bylo zvoleno Bebas Neue a Work Sans, dostupné také mezi písmy původního webu.

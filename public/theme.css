@@ -1,0 +1,141 @@
+/* Black, white and red visual finish for the customer website. */
+body{background:var(--bg)}
+.menu-section,.branches-section,.story-section,.delivery-section,.last-call,.site-footer{background:var(--bg)}
+.site-header{background:rgba(5,5,6,.94);border-color:var(--line)}
+.announcement{color:var(--muted);font-size:10px}
+.wordmark{transform:none;letter-spacing:.7px}
+.desktop-nav a{font-size:12px;font-weight:500}
+.desktop-nav a::after{height:2px;border-radius:2px}
+.button,.cart-trigger{border-radius:10px;font-weight:600}
+.button{box-shadow:0 4px 18px #df203414;transition:background .2s,transform .2s,box-shadow .2s}
+.button:hover{box-shadow:0 6px 24px #df203428}
+.button-outline{box-shadow:none;border-color:var(--line)}
+.button-outline:hover{border-color:var(--accent-solid)}
+.cart-trigger{background:var(--accent-solid);border-color:var(--accent-solid);color:#fff}
+.cart-trigger:hover{background:var(--accent-hover)}
+.cart-count{background:#fff;color:var(--accent-solid)}
+.eyebrow{font-weight:600}
+.hero-branch .hero-inner{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:48px;align-items:end;min-height:382px}
+.hero-branch .hero-copy{max-width:none;padding:44px 0}
+.hero-branch h1{font-size:clamp(60px,5.8vw,84px);line-height:1;letter-spacing:0;margin-top:20px}
+.hero-branch h1 em{display:block;font-style:normal;padding-right:0}
+.hero-branch .hero-description{margin-top:20px;color:#cfd0d6}
+.hero-branch .hero-actions{margin-top:26px}
+.hero-branch .hero-actions .button{min-height:50px;padding:14px 21px}
+.hero-shade{background:linear-gradient(90deg,#050506f5 0%,#050506b8 43%,#05050626 100%),linear-gradient(0deg,#050506 0%,#05050600 70%)}
+.hero-branch-image{opacity:.65}
+.hero-location{position:static;width:100%;margin-bottom:44px;max-width:none;gap:12px;padding:20px 16px;border-radius:14px;background:rgba(12,13,15,.8);border-color:rgba(255,255,255,.18);box-shadow:0 12px 32px #0003}
+.hero-location:hover{background:rgba(20,13,16,.95)}
+.hero-location-icon{display:grid;place-items:center;width:35px;height:39px;border-radius:10px;background:#ff4d5d12;flex-shrink:0}
+.hero-location>span:nth-child(2){min-width:0;flex:1;gap:6px}
+.hero-location-label{font-size:9px;line-height:1.5;max-width:none}
+.hero-location strong{font-size:25px;line-height:1.13;letter-spacing:0}
+.hero-location>.icon{margin-left:0;flex-shrink:0}
+.hero-branch .hero-bottom{border-color:var(--line);padding-block:16px}
+.manifesto-strip{padding-block:13px;border:0}
+.manifesto-strip>div{font-size:25px;letter-spacing:1px;gap:32px}
+.manifesto-strip span{font-size:16px;opacity:.65}
+.menu-section{background:radial-gradient(ellipse at 100% 0%,#df203408,transparent 45%),var(--bg)}
+.section-heading{margin-bottom:36px}
+.section-heading h2{letter-spacing:0}
+.size-toggle{background:var(--surface);border-radius:10px;padding:4px}
+.size-toggle button{border-radius:7px}
+.size-toggle button[aria-pressed=true]{background:var(--accent-solid);color:#fff}
+.filter-buttons{gap:8px}
+.filter-buttons button{border-radius:999px;min-height:38px;font-size:10px;padding:8px 14px}
+.filter-buttons button[aria-pressed=true]{background:#ff4d5d12;border-color:#ff4d5d66}
+.menu-search{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 13px;max-width:245px}
+.menu-search input{font-size:11px;padding:0}
+.pizza-card,.branch-card{background:linear-gradient(160deg,#141519,#0d0e10);border-color:var(--line);border-radius:16px;box-shadow:0 8px 25px #0002}
+.pizza-card:hover{border-color:#ff4d5d66;box-shadow:0 14px 36px #0004;transform:translateY(-4px)}
+.pizza-number{color:#9698a2;font:10px/1.5 var(--body);letter-spacing:1px}
+.pizza-card h3{font-size:34px}
+.pizza-card-copy>p{font-size:11px}
+.pizza-card-bottom{padding-top:18px;margin-top:13px}
+.pizza-select{border-radius:9px;min-height:40px;padding:10px 13px;background:#ff4d5d0d;border-color:#ff4d5d45;font-weight:500}
+.spicy-tag{color:#ff8b96}
+.story-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.story-grid>*,.delivery-grid>*{min-width:0}
+.story-image>img{border-radius:16px}
+.story-image::after{border-radius:16px;border-color:#ff4d5d40}
+.story-label{border-radius:10px;transform:rotate(-3deg);background:#0c0d0f}
+.story-signoff>span{font:500 14px/1.6 var(--body)}
+.delivery-card{background:radial-gradient(ellipse at top right,#df20340e,transparent 60%),var(--surface);border-radius:18px;padding:32px}
+.delivery-areas>span{border-radius:6px;background:#ffffff03}
+.branch-card-content{padding:24px}
+.branch-card-select{border-radius:8px}
+.branch-card.selected{border-color:#ff4d5d77}
+.selected-tag{border-radius:6px;background:#0c0d0feb}
+.last-call{border-top:1px solid var(--line);background:radial-gradient(ellipse at 50% 100%,#df20340e,transparent 65%),var(--bg)}
+.last-call::before{opacity:.018}
+.site-footer{border-top:1px solid var(--line)}
+dialog{background:#0b0c0e;border-color:#ffffff24;border-radius:18px;box-shadow:0 24px 90px #0009}
+dialog::backdrop{background:#000b;backdrop-filter:blur(8px)}
+.branch-option,.branch-dialog .branch-option{border-radius:12px;overflow:hidden}
+.branch-option:hover,.branch-option.selected{border-color:#ff4d5d88}
+.branch-dialog .branch-option.selected{background:#ff4d5d0d}
+.branch-dialog-inner::before{opacity:.02}
+#delivery-address{border-radius:10px;background:var(--surface)}
+.branch-selected-mark{border-radius:5px}
+.dialog-close{border-radius:50%;background:#101113e6}
+.customize-photo{background:radial-gradient(ellipse at center,#df20340d,transparent 75%),var(--surface)}
+.customize-footer,.cart-footer{background:#0b0c0e}
+.product-sizes>button,.addon-option,.fulfillment-options>button,.payment-options>label,.checkout-summary,.receipt-status{border-radius:10px}
+.quantity-stepper,.cart-upsell button{border-radius:8px}
+.customize-note textarea,.checkout-field input,.checkout-field textarea{border-radius:9px;background:var(--surface)}
+.demo-pill{color:#c6c7cf;border-color:#ffffff30;background:#ffffff05;border-radius:5px}
+.mobile-cart{border-radius:12px}
+@media(max-width:1000px){
+  .hero-branch .hero-inner{grid-template-columns:minmax(0,1fr) 280px;gap:25px}
+  .hero-branch h1{font-size:60px}
+  .hero-location{padding:17px 13px;gap:10px}
+  .hero-location strong{font-size:23px}
+  .hero-location-icon{display:none}
+}
+@media(max-width:800px){
+  .hero-branch .hero-inner{display:block;min-height:0;padding-bottom:22px}
+  .hero-branch .hero-copy{padding:32px 0 24px}
+  .hero-location{margin:0;padding:14px;width:100%;max-width:none}
+  .hero-location-icon{display:grid}
+  .hero-location strong{font-size:24px}
+  .hero-location>span:nth-child(2){gap:4px}
+  .hero-location>.icon{margin-left:auto}
+}
+@media(max-width:700px){
+  .story-grid{grid-template-columns:minmax(0,1fr)}
+  .announcement{font-size:8px}
+  .hero-branch h1{font-size:clamp(44px,12vw,64px);line-height:1.02;max-width:none;margin-top:17px}
+  .hero-branch .hero-copy .eyebrow{font-size:8px;letter-spacing:1.15px}
+  .hero-branch .hero-description{margin-top:16px;font-size:12px}
+  .hero-branch .hero-actions{margin-top:23px;gap:17px}
+  .hero-branch .hero-actions .button{min-height:48px;padding:12px 15px;font-size:11px}
+  .hero-branch .hero-bottom{font-size:8px;gap:8px}
+  .hero-location-label{font-size:8px}
+  .hero-location-icon{width:32px;height:35px}
+  .manifesto-strip{padding-block:11px}
+  .manifesto-strip>div{font-size:22px;gap:24px}
+  .section-heading{margin-bottom:27px}
+  .filter-buttons{gap:6px}
+  .filter-buttons button{min-height:36px;font-size:9px;padding:8px 10px}
+  .menu-search{padding:11px 12px;max-width:none}
+  .menu-search input{font-size:12px}
+  .pizza-card,.branch-card{border-radius:12px}
+  .pizza-card h3{font-size:27px}
+  .pizza-card-copy>p{font-size:10px}
+  .pizza-card-bottom{padding-top:13px;margin-top:10px}
+  .pizza-select{padding:8px 10px;min-height:38px;font-size:10px;border-radius:7px}
+  .story-image>img,.story-image::after{border-radius:12px}
+  .delivery-card{padding:25px;border-radius:14px}
+  .branch-card-content{padding:23px}
+  .cart-trigger{border-color:var(--accent-solid);border-radius:9px}
+  .cart-count{border-color:var(--bg)}
+  .cart-dialog{border-radius:0}
+}
+@media(max-width:370px){
+  .hero-branch .hero-actions{gap:12px}
+  .hero-branch .hero-actions .button{font-size:10px;padding-inline:12px;gap:8px}
+  .hero-branch .hero-actions .text-link{font-size:9px}
+  .pizza-card h3{font-size:24px}
+  .pizza-select{font-size:9px;padding:8px}
+}
+@media(prefers-reduced-motion:reduce){.pizza-card:hover,.button:hover{transform:none}}
