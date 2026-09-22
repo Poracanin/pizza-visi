@@ -1,35 +1,12 @@
-/* One continuous, quiet tabletop behind the page. Solid product surfaces keep
-   the menu legible; branch photography remains the hero background. */
+/* Continuous black page background; branch photography stays in the hero. */
 body {
-  background-color: #232427;
-  background-image:
-    linear-gradient(rgba(34, 35, 38, .79), rgba(34, 35, 38, .79)),
-    url('./assets/textures/smoked-wood-flour.webp');
-  background-size: auto, max(1200px, 100vw) auto;
-  background-position: center top;
-  background-repeat: repeat;
+  background: var(--bg);
 }
 .menu-section,
-.branches-section {
-  background: rgba(23, 25, 28, .18);
-}
-.story-section {
-  background: rgba(45, 46, 49, .22);
-}
-.delivery-section {
-  background: transparent;
-}
-.last-call {
-  background: rgba(45, 45, 47, .2);
-}
+.branches-section,
+.story-section,
+.delivery-section,
+.last-call,
 .site-footer {
-  background: rgba(18, 20, 23, .48);
-}
-@media (max-width: 700px) {
-  body {
-    background-size: auto, 760px auto;
-    background-image:
-      linear-gradient(rgba(34, 35, 38, .82), rgba(34, 35, 38, .82)),
-      url('./assets/textures/smoked-wood-flour.webp');
-  }
+  background: var(--bg);
 }
