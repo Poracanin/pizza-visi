@@ -1,6 +1,14 @@
-/* Black, white and red visual finish for the customer website. */
-body{background:var(--bg)}
-.menu-section,.branches-section,.story-section,.delivery-section,.last-call,.site-footer{background:var(--bg)}
+/* Black slate, white and red visual finish for the customer website. */
+body{
+  background-color:#181a1b;
+  background-image:linear-gradient(#08090a38,#08090a38),url('./assets/textures/charcoal-slate.webp');
+  background-position:center top;
+  background-size:auto,max(1440px,100%) auto;
+  background-repeat:repeat,repeat-y;
+}
+/* One continuous tabletop; wide cropping keeps ingredients outside mobile content. */
+.menu-section,.branches-section,.story-section,.delivery-section,.last-call{background:transparent}
+.site-footer{background:#08090aa6}
 .site-header{background:rgba(5,5,6,.94);border-color:var(--line)}
 .announcement{color:var(--muted);font-size:10px}
 .wordmark{transform:none;letter-spacing:.7px}
@@ -22,8 +30,9 @@ body{background:var(--bg)}
 .hero-branch .hero-description{margin-top:20px;color:#cfd0d6}
 .hero-branch .hero-actions{margin-top:26px}
 .hero-branch .hero-actions .button{min-height:50px;padding:14px 21px}
-.hero-shade{background:linear-gradient(90deg,#050506f5 0%,#050506b8 43%,#05050626 100%),linear-gradient(0deg,#050506 0%,#05050600 70%)}
-.hero-branch-image{opacity:.65}
+.hero-branch{background:transparent}
+.hero-shade{background:linear-gradient(90deg,#08090a38,transparent 70%)}
+.hero-branch-image{opacity:.48;mask-image:linear-gradient(90deg,transparent 15%,#000 80%)}
 .hero-location{position:static;width:100%;margin-bottom:44px;max-width:none;gap:12px;padding:20px 16px;border-radius:14px;background:rgba(12,13,15,.8);border-color:rgba(255,255,255,.18);box-shadow:0 12px 32px #0003}
 .hero-location:hover{background:rgba(20,13,16,.95)}
 .hero-location-icon{display:grid;place-items:center;width:35px;height:39px;border-radius:10px;background:#ff4d5d12;flex-shrink:0}
@@ -35,7 +44,7 @@ body{background:var(--bg)}
 .manifesto-strip{padding-block:13px;border:0}
 .manifesto-strip>div{font-size:25px;letter-spacing:1px;gap:32px}
 .manifesto-strip span{font-size:16px;opacity:.65}
-.menu-section{background:radial-gradient(ellipse at 100% 0%,#df203408,transparent 45%),var(--bg)}
+.menu-section{background:radial-gradient(ellipse at 100% 0%,#df203408,transparent 45%)}
 .section-heading{margin-bottom:36px}
 .section-heading h2{letter-spacing:0}
 .size-toggle{background:var(--surface);border-radius:10px;padding:4px}
@@ -66,8 +75,8 @@ body{background:var(--bg)}
 .branch-card-select{border-radius:8px}
 .branch-card.selected{border-color:#ff4d5d77}
 .selected-tag{border-radius:6px;background:#0c0d0feb}
-.last-call{border-top:1px solid var(--line);background:radial-gradient(ellipse at 50% 100%,#df20340e,transparent 65%),var(--bg)}
-.last-call::before{opacity:.018}
+.last-call{border-top:1px solid var(--line);background:radial-gradient(ellipse at 50% 100%,#df20340e,transparent 65%)}
+.last-call::before{display:none}
 .site-footer{border-top:1px solid var(--line)}
 dialog{background:#0b0c0e;border-color:#ffffff24;border-radius:18px;box-shadow:0 24px 90px #0009}
 dialog::backdrop{background:#000b;backdrop-filter:blur(8px)}

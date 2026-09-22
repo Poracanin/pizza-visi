@@ -4,6 +4,8 @@
 
 Na přání uživatele je zákaznický web nově černý, bílý a červený. Pozadí `#050506`, povrchy `#101113`, text `#f6f6f7`, sekundární text `#a7a8b0`, červený textový akcent `#ff4d5d`, plná tlačítka `#df2034` s bílým textem a hover `#c9192b`. Vzhled dokončuje `public/theme.css`: dvouřádkový úvodní nadpis, karty se zaoblením 12–18 px, tlačítka 9–12 px, zaoblené filtry a decentní červené podbarvení. Fotografie poboček, italské linky a existující objednávkový proces zůstávají. Platí pouze pro hlavní web a jeho objednávkové dialogy; administrace, rozvoz, mapy a nabídky mají samostatné styly.
 
+Pozdější úprava podle dodané reference: místo jednolitého pozadí je pod hlavním webem tmavá kamenná textura s rukolou, žampiony a pepřem u okrajů. Stávající červená paleta zůstává. Podrobnosti a prompt jsou v `docs/background-texture.md`.
+
 Níže je původní návrhový podklad, jeho barevné a geometrické hodnoty jsou pro hlavní web nahrazené aktuálním směrem výše.
 
 ## Původní reference
