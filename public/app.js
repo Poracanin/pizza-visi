@@ -3,7 +3,7 @@ import { createDeliveryDialog } from './delivery-dialog.js';
 import { createPrivacyBanner } from './privacy-banner.js';
 import { loadRuianAddresses } from './ruian-addresses.js';
 import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js';
-import { createOrdering } from './ordering.js';
+import { createOrdering } from './ordering.js?v=mobile-2';
 import { showCartFeedback } from './cart-feedback.js';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -13,7 +13,7 @@ const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': 
 const money = value => `${new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 0 }).format(value)} Kč`;
 const cleanName = item => item.name.replace(/^\d+\.\s*/, '').replace(/\s*🌶️?/gu, '').trim();
 const storageKey = 'pizza-visi-branch-v1';
-const state = { data: null, branch: null, category: 'pizza', filter: 'all', size: 30, cardSizes: new Map(), query: '', menuView: 'tiles', afterBranch: null };
+const state = { data: null, branch: null, category: 'pizza', filter: 'all', query: '', menuView: 'tiles', afterBranch: null };
 let ordering;
 let deliveryChoice;
 let privacyBanner;
@@ -146,16 +146,15 @@ function renderMenu() {
   grid.classList.toggle('pizza-grid', state.category === 'pizza');
   grid.innerHTML = items.length ? items.map(item => {
     const spicy = item.name.includes('🌶');
-    const size = state.cardSizes.get(item.id) || state.size;
-    const productPrice = itemPrice(item, size);
-    if (state.category === 'pizza') return `<article class="pizza-card pizza-menu-card" data-pizza-card="${item.id}" aria-labelledby="card-title-${item.id}">
+    const productPrice = itemPrice(item, 30);
+    if (state.category === 'pizza') return `<article class="pizza-card pizza-menu-card" data-pizza-card="${item.id}" data-menu-product="${item.id}" aria-labelledby="card-title-${item.id}">
       <button class="pizza-image-button" data-product="${item.id}" aria-label="Prohlédnout ${escape(cleanName(item))}"><img src="./${item.image}" alt="${escape(cleanName(item))}" width="600" height="600" loading="lazy"></button>
-      <div class="pizza-card-copy"><div class="pizza-card-heading"><span class="pizza-number">${String(item.number).padStart(2, '0')}</span><h3 id="card-title-${item.id}">${escape(cleanName(item))}</h3>${spicy ? `<span class="spicy-tag" role="img" aria-label="Pálivá">${icon('fire', 'icon-small')}</span>` : ''}</div>
+      <div class="pizza-card-copy"><div class="pizza-card-heading"><h3 id="card-title-${item.id}">${escape(cleanName(item))}</h3>${spicy ? `<span class="spicy-tag" role="img" aria-label="Pálivá">${icon('fire', 'icon-small')}</span>` : ''}</div>
       <p>${escape(item.description)}</p>
-      <div class="pizza-card-bottom"><strong class="pizza-card-price" aria-live="polite">${money(productPrice)}</strong><div class="card-size-toggle" role="group" aria-label="Velikost: ${escape(cleanName(item))}">${[30, 40].map(value => `<button data-card-size="${value}" data-card-id="${item.id}" aria-pressed="${size === value}">${value} <span>cm</span></button>`).join('')}</div></div>
-      <div class="pizza-card-actions"><button class="pizza-quick-add" data-quick-add="${item.id}" aria-label="Přidat ${escape(cleanName(item))} do košíku">${icon('plus', 'icon-small')} Přidat do košíku</button><button class="pizza-edit" data-product="${item.id}" aria-label="Upravit ${escape(cleanName(item))}">Upravit <span>podle sebe</span> ${icon('arrow', 'icon-small')}</button></div></div></article>`;
-    return `<article class="beverage-card"><button class="beverage-photo" data-product="${item.id}" aria-label="Prohlédnout ${escape(cleanName(item))}">${item.image ? `<img src="./${escape(item.image)}" alt="${escape(cleanName(item))}" width="300" height="300" loading="lazy">` : icon('bag')}</button><div class="beverage-copy"><span class="beverage-category">${state.category === 'wine' ? 'Víno & prosecco' : 'Nápoje'}</span><h3>${escape(cleanName(item))}</h3><div class="beverage-bottom"><strong>${money(productPrice)}</strong><button class="beverage-add" data-quick-add="${item.id}" aria-label="Přidat ${escape(cleanName(item))} do košíku">${icon('plus', 'icon-small')} Přidat do košíku</button></div></div></article>`;
-  }).join('') : `<div class="empty-menu">${icon('search')}<h3>TAHLE CHUŤ TU ZATÍM NENÍ.</h3><p>Zkus jiný název nebo surovinu.</p><button class="button button-outline" data-reset-search>Zobrazit celou nabídku</button></div>`;
+      <div class="pizza-card-bottom"><strong class="pizza-card-price">${itemPrice(item, 40) > productPrice ? '<small>od</small> ' : ''}${money(productPrice)}</strong><span class="pizza-size-note" aria-label="Průměr 30 nebo 40 centimetrů">⌀ 30 / 40 cm</span></div>
+      <div class="pizza-card-actions"><button class="pizza-quick-add" data-quick-add="${item.id}" aria-label="Přidat ${escape(cleanName(item))}, 30 cm, do košíku">${icon('plus', 'icon-small')} Přidat do košíku</button><button class="pizza-edit" data-product="${item.id}" aria-label="Upravit ${escape(cleanName(item))}">Upravit <span>podle sebe</span> ${icon('arrow', 'icon-small')}</button></div></div></article>`;
+    return `<article class="beverage-card" data-menu-product="${item.id}"><button class="beverage-photo" data-product="${item.id}" aria-label="Prohlédnout ${escape(cleanName(item))}">${item.image ? `<img src="./${escape(item.image)}" alt="${escape(cleanName(item))}" width="300" height="300" loading="lazy">` : icon('bag')}</button><div class="beverage-copy"><span class="beverage-category">${state.category === 'wine' ? 'Víno & prosecco' : 'Nápoje'}</span><h3>${escape(cleanName(item))}</h3><div class="beverage-bottom"><strong>${money(productPrice)}</strong><button class="beverage-add" data-quick-add="${item.id}" aria-label="Přidat ${escape(cleanName(item))} do košíku">${icon('plus', 'icon-small')} Přidat do košíku</button></div></div></article>`;
+  }).join('') : `<div class="empty-menu">${icon('search')}<h3>TAHLE CHUŤ TU ZATÍM NENÍ</h3><p>Zkus jiný název nebo surovinu.</p><button class="button button-outline" data-reset-search>Zobrazit celou nabídku</button></div>`;
   $('#menu-results').textContent = `Nalezeno ${items.length} položek. Zobrazení: ${state.menuView === 'rows' ? 'řádky' : 'dlaždice'}.`;
   $('#drink-photo-credit').hidden = state.category !== 'drinks';
   $('#menu-note').textContent = { pizza: 'Každou pizzu pečeme ve velikosti 30 nebo 40 cm.', drinks: 'Něco na osvěžení k tvé oblíbené pizze.', wine: 'Víno a prosecco z nabídky vinařství Valdo.' }[state.category];
@@ -179,7 +178,12 @@ function activateCategory(category) {
 
 document.addEventListener('click', event => {
   const target = event.target.closest('button, a');
-  if (!target) return;
+  if (!target) {
+    const card = event.target.closest('[data-menu-product]');
+    const interactive = event.target.closest('input, select, textarea, label, [role="button"], [contenteditable]');
+    if (card && !interactive && window.getSelection()?.isCollapsed !== false) ordering?.openProduct(card.dataset.menuProduct, 30);
+    return;
+  }
   if (target.hasAttribute('data-close-dialog')) target.closest('dialog').close();
   if (target.hasAttribute('data-choose-branch')) openBranchDialog();
   if (target.hasAttribute('data-open-delivery')) openBranchDialog(true);
@@ -191,39 +195,21 @@ document.addEventListener('click', event => {
     $$('[data-menu-view]').forEach(button => button.setAttribute('aria-pressed', button.dataset.menuView === state.menuView));
     renderMenu();
   }
-  if (target.dataset.cardSize) {
-    const size = Number(target.dataset.cardSize);
-    const id = target.dataset.cardId;
-    state.cardSizes.set(id, size);
-    const card = target.closest('[data-pizza-card]');
-    $$('[data-card-size]', card).forEach(button => button.setAttribute('aria-pressed', Number(button.dataset.cardSize) === size));
-    const item = state.data.categories.flatMap(category => category.items).find(item => item.id === id);
-    $('.pizza-card-price', card).textContent = money(itemPrice(item, size));
-  }
-  if (target.dataset.quickAdd) ordering?.quickAdd(target.dataset.quickAdd, state.cardSizes.get(target.dataset.quickAdd) || state.size);
+  if (target.dataset.quickAdd) { ordering?.quickAdd(target.dataset.quickAdd, 30); return; }
   if (target.dataset.filter) {
     state.filter = target.dataset.filter;
     $$('.filter-buttons button').forEach(button => button.setAttribute('aria-pressed', button === target));
     renderMenu();
   }
-  if (target.dataset.product) ordering?.openProduct(target.dataset.product, state.cardSizes.get(target.dataset.product) || state.size);
+  if (target.dataset.product) ordering?.openProduct(target.dataset.product, 30);
   if (target.hasAttribute('data-reset-search')) {
     state.query = ''; state.filter = 'all'; $('#menu-search').value = '';
     $$('.filter-buttons button').forEach(button => button.setAttribute('aria-pressed', button.dataset.filter === 'all'));
     renderMenu(); $('#menu-search').focus();
   }
-  if (target.closest('#mobile-nav')) {
-    $('#mobile-nav').hidden = true; $('.mobile-nav-toggle').setAttribute('aria-expanded', 'false');
-  }
 });
 
 $('#menu-search').addEventListener('input', event => { state.query = event.target.value; renderMenu(); });
-$('.mobile-nav-toggle').addEventListener('click', event => {
-  const open = $('#mobile-nav').hidden;
-  $('#mobile-nav').hidden = !open;
-  event.currentTarget.setAttribute('aria-expanded', String(open));
-  event.currentTarget.setAttribute('aria-label', open ? 'Zavřít navigaci' : 'Otevřít navigaci');
-});
 $('.category-tabs').addEventListener('keydown', event => {
   const tabs = $$('.category-tabs button');
   const index = tabs.indexOf(document.activeElement);
@@ -299,7 +285,7 @@ async function init() {
     $('#copyright-year').textContent = new Date().getFullYear();
     if (!restored && $('#product-page').hidden && $('#checkout-page').hidden) openBranchDialog({ initial: true });
   } catch (error) {
-    $('#menu-grid').innerHTML = '<div class="empty-menu"><h3>MENU SE TEĎ NEPODAŘILO NAČÍST.</h3><p>Zkus stránku obnovit, nebo nám zavolej.<br>Rudná: <a href="tel:+420606918942">606 918 942</a> · Hostivice: <a href="tel:+420606518565">606 518 565</a> · Beroun: <a href="tel:+420737857493">737 857 493</a></p><button class="button" onclick="location.reload()">Zkusit znovu</button></div>';
+    $('#menu-grid').innerHTML = '<div class="empty-menu"><h3>MENU SE TEĎ NEPODAŘILO NAČÍST</h3><p>Zkus stránku obnovit, nebo nám zavolej.<br>Rudná: <a href="tel:+420606918942">606 918 942</a> · Hostivice: <a href="tel:+420606518565">606 518 565</a> · Beroun: <a href="tel:+420737857493">737 857 493</a></p><button class="button" onclick="location.reload()">Zkusit znovu</button></div>';
     console.error('Pizza Visi: nepodařilo se načíst menu.', error);
   }
 }

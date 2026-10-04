@@ -1,7 +1,17 @@
-/* Both menu views share their controls and selected pizza sizes. */
+/* Both menu views share filters; pizza sizes are chosen in the editor. */
 .menu-section::before{color:#14141510}
 .filter-row{flex-wrap:wrap;gap:14px}
-.filter-buttons{flex:1 1 440px}
+.menu-section .filter-buttons{display:flex;flex:1 1 390px;flex-wrap:nowrap;align-items:center;gap:18px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.menu-section .filter-buttons::-webkit-scrollbar{display:none}
+.menu-section .filter-buttons button{position:relative;flex:none;min-height:40px;padding:9px 1px;border:0;border-radius:0;background:none;color:#625e58;font:500 12px/1.4 var(--body);white-space:nowrap}
+.menu-section .filter-buttons button::after{content:"";position:absolute;left:0;right:0;bottom:3px;height:2px;background:transparent}
+.menu-section .filter-buttons button:hover,.menu-section .filter-buttons button[aria-pressed=true]{background:none;color:#ba0e2d}
+.menu-section .filter-buttons button[aria-pressed=true]::after{background:currentColor}
+.menu-section .filter-buttons button:focus-visible{outline-offset:-2px}
+.menu-section .filter-buttons .icon{width:15px;height:15px}
+.pizza-menu-card{cursor:pointer}
+.pizza-menu-card .pizza-size-note{color:#a9a4a0;font:400 11px/1.4 var(--body);white-space:nowrap}
+.pizza-menu-card .pizza-card-price small{font:400 11px/1.4 var(--body);color:#bcb6b0;margin-right:4px}
 .menu-tools{display:flex;align-items:center;gap:12px;flex:1 1 400px;max-width:445px;margin-left:auto}
 .menu-tools .menu-search{flex:1;min-width:0;max-width:none;margin-left:0}
 .menu-view-toggle{display:flex;flex:none;gap:2px;padding:3px;border:1px solid #221e1833;border-radius:5px;background:#ffffff70}
@@ -43,7 +53,10 @@
 }
 @media(max-width:700px){
   .filter-row{gap:12px;padding-top:16px}
-  .filter-buttons{flex-basis:100%}
+  .menu-section .filter-buttons{flex-basis:100%;justify-content:space-between;gap:12px}
+  .menu-section .filter-buttons button{font-size:11px;min-height:40px}
+  .pizza-menu-card .pizza-size-note{font-size:10px}
+  .pizza-menu-card .pizza-card-bottom{flex-wrap:wrap;column-gap:8px;row-gap:5px}
   .menu-tools{flex-basis:100%;max-width:none;gap:9px}
   .menu-tools .menu-search{padding:11px 10px}
   .menu-view-toggle button{min-height:38px;padding:7px 8px;font-size:10px;gap:5px}
@@ -72,6 +85,9 @@
   .menu-list .beverage-add{min-width:0;min-height:40px;font-size:15px;padding:8px;gap:3px}
 }
 @media(max-width:370px){
+  .menu-section .filter-buttons{gap:8px}
+  .menu-section .filter-buttons button{font-size:10px}
+  .pizza-menu-card .pizza-size-note{font-size:9px}
   .menu-tools{flex-wrap:wrap}
   .menu-tools .menu-search{flex-basis:100%}
   .menu-view-toggle{margin-left:auto}

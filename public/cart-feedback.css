@@ -1,27 +1,25 @@
 .cart-feedback{
   position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);z-index:1000;
-  margin:0;width:min(440px,calc(100vw - 32px));max-width:none;box-sizing:border-box;
-  padding:25px;display:flex;align-items:center;gap:21px;overflow:visible;
-  border:1px solid #ff405e66;border-top:3px solid #e4113b;border-radius:12px;
-  background:#19191bf7;color:#fff;box-shadow:0 20px 80px #0007,0 2px 12px #0005;
+  margin:0;width:max-content;max-width:min(320px,calc(100vw - 28px));box-sizing:border-box;
+  padding:15px 17px;display:flex;align-items:center;gap:13px;overflow:visible;
+  border:1px solid #69cc9180;border-radius:10px;
+  background:#19191bf7;color:#fff;box-shadow:0 14px 45px #0006,0 2px 10px #0004;
   font-family:var(--body,sans-serif);pointer-events:none;
 }
 .cart-feedback[hidden]{display:none}
 .cart-feedback::backdrop{background:transparent;pointer-events:none}
-.cart-feedback-photo{position:relative;flex:none;width:92px;height:92px;background:#fff;border-radius:9px}
+.cart-feedback-photo{position:relative;flex:none;width:50px;height:50px;background:#fff;border-radius:6px}
 .cart-feedback-photo img{display:block;width:100%;height:100%;object-fit:contain;border-radius:inherit}
 .cart-feedback-photo.is-pizza{background:transparent;border-radius:50%}
-.cart-feedback-check{position:absolute;right:-5px;bottom:-3px;display:grid;place-items:center;width:32px;height:32px;border:3px solid #19191b;border-radius:50%;background:#e4113b;color:#fff}
-.cart-feedback-check svg{width:20px;height:20px}
-.cart-feedback-copy{display:flex;flex-direction:column;gap:9px;min-width:0}
-.cart-feedback-copy strong{font:400 31px/1.05 var(--display,sans-serif);letter-spacing:.5px;text-transform:uppercase}
-.cart-feedback-copy>span{font-size:13px;line-height:1.5;color:#d1cdc7;overflow-wrap:anywhere}
+.cart-feedback-check{position:absolute;right:-4px;bottom:-3px;display:grid;place-items:center;width:22px;height:22px;border:2px solid #19191b;border-radius:50%;background:#299653;color:#fff}
+.cart-feedback-check svg{width:14px;height:14px}
+.cart-feedback-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.cart-feedback-copy strong{font:400 24px/1.08 var(--display,sans-serif);letter-spacing:.3px;text-transform:uppercase}
+.cart-feedback-copy>span{font-size:12px;line-height:1.4;color:#d1cdc7;overflow-wrap:anywhere}
 .cart-just-added{animation:cart-added-pulse .6s ease-out}
-@keyframes cart-added-pulse{0%,100%{transform:scale(1)}40%{transform:scale(1.08);box-shadow:0 0 0 6px #e4113b25}}
+@keyframes cart-added-pulse{0%,100%{transform:scale(1)}40%{transform:scale(1.035);box-shadow:0 0 0 4px #69cc9125}}
 @media(max-width:500px){
-  .cart-feedback{padding:22px 19px;gap:17px}
-  .cart-feedback-photo{width:73px;height:73px}
-  .cart-feedback-copy strong{font-size:27px}
-  .cart-feedback-copy>span{font-size:12px}
+  .cart-feedback{padding:14px 15px;gap:12px}
+  .cart-feedback-copy strong{font-size:22px}
 }
 @media(prefers-reduced-motion:reduce){.cart-just-added{animation:none}}
