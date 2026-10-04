@@ -19,20 +19,16 @@
 .hero-slide-copy .button .icon{width:19px;height:19px}
 .hero-slide-branch .hero-slide-shade{background:linear-gradient(90deg,#101011eb,#10101180 46%,#10101105 85%),linear-gradient(0deg,#101011b5,transparent 40%)}
 .hero-slide-branch .hero-slide-photo{object-position:center 56%}
-.hero-carousel-footer{position:absolute;bottom:0;left:0;right:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:18px;height:44px;border-top:1px solid #ffffff26}
-.hero-opening{display:flex;align-items:center;gap:7px;font-size:9px;letter-spacing:.25px;color:#d8d4cf;white-space:nowrap}
-.hero-opening .status-dot{width:5px;height:5px;margin:0}
-.hero-carousel-controls{display:flex;align-items:center;gap:10px}
-.hero-slide-count{font:500 9px/1 var(--body);letter-spacing:1.5px;color:#cbc5bd;min-width:47px}
+.hero-carousel-footer{position:absolute;bottom:4px;left:0;right:0;z-index:2;display:flex;align-items:center;justify-content:center;height:32px}
+.hero-carousel-controls{display:flex;align-items:center;justify-content:center}
 .hero-slide-dots{display:flex;align-items:center}
-.hero-slide-dots button{display:grid;place-items:center;min-width:26px;min-height:38px;padding:4px}
-.hero-slide-dots button::after{content:'';display:block;width:5px;height:5px;border-radius:5px;background:#ffffff60;transition:width .25s,background .25s}
-.hero-slide-dots button[aria-current=true]::after{width:19px;background:var(--accent)}
-.hero-carousel-controls .hero-arrow,.hero-carousel-controls .hero-rotation{display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffff35;border-radius:50%;background:#11111250;color:#fff}
-.hero-carousel-controls .icon{width:15px;height:15px}
-.hero-carousel-controls button:hover{background:#ffffff12}
+.hero-slide-dots button{display:grid;place-items:center;min-width:28px;min-height:32px;padding:4px}
+.hero-slide-dots button::after{content:'';display:block;width:6px;height:6px;border-radius:50%;background:#ffffff75;box-shadow:0 1px 5px #0006;transition:background .25s,transform .25s}
+.hero-slide-dots button[aria-current=true]::after{background:var(--accent);transform:scale(1.2)}
+.hero-slide-dots button:hover::after{background:#fff}
 .hero-carousel-controls button:focus-visible{outline:2px solid #fff;outline-offset:2px}
-.hero-carousel-controls .hero-rotation{border:0;width:28px}
+/* Keyboard and screen-reader users can still pause the automatic motion. */
+.hero-rotation:focus-visible{clip-path:none;clip:auto;width:auto;height:auto;overflow:visible;white-space:normal;bottom:36px;padding:9px 12px;background:#111112;color:#fff;font:12px var(--body);border-radius:4px}
 @media(max-width:700px){
   .hero-slides{height:268px}
   .hero-slide-inner{padding-block:18px 46px}
@@ -44,19 +40,10 @@
   .hero-slide-photo{object-position:55% center}
   .hero-slide-branch .hero-slide-photo{object-position:57% center}
   .hero-slide-shade{background:linear-gradient(90deg,#101011ed,#10101195 48%,#10101110),linear-gradient(0deg,#101011b0,transparent 40%)}
-  .hero-carousel-footer{height:41px;gap:7px}
-  .hero-opening{font-size:8px;letter-spacing:0}
-  .hero-carousel-controls{gap:5px}
-  .hero-slide-count{font-size:8px;min-width:39px;letter-spacing:1px}
-  .hero-slide-dots button{min-width:21px;min-height:36px;padding:3px}
-  .hero-carousel-controls .hero-arrow{width:28px;height:28px;min-height:28px}
-  .hero-carousel-controls .hero-rotation{width:24px;height:28px;min-height:28px}
 }
 @media(max-width:370px){
   .hero-slides{height:260px}
   .hero-slide-copy{max-width:95%}
   .hero-slide-copy h1,.hero-slide-copy h2{font-size:31px}
-  .hero-opening{max-width:85px;white-space:normal;line-height:1.35}
-  .hero-slide-count{display:none}
 }
 @media(prefers-reduced-motion:reduce){.hero-slide-dots button::after{transition:none}}

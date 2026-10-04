@@ -15,15 +15,17 @@
   <link rel="stylesheet" href="./theme.css?v=checkout-3">
   <link rel="stylesheet" href="./ordering-theme.css?v=levantes-1">
   <link rel="stylesheet" href="./product-page.css?v=2">
-  <link rel="stylesheet" href="./checkout-page.css?v=checkout-3">
+  <link rel="stylesheet" href="./assets/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="./checkout-page.css?v=pickup-4">
   <link rel="stylesheet" href="./drink-photos.css?v=1">
   <link rel="stylesheet" href="./menu-view.css?v=checkout-3">
   <link rel="stylesheet" href="./cart-feedback.css?v=2">
   <link rel="stylesheet" href="./delivery-preferences.css?v=2">
   <link rel="stylesheet" href="./privacy-banner.css?v=1">
-  <link rel="stylesheet" href="./hero-carousel.css?v=1">
+  <link rel="stylesheet" href="./hero-carousel.css?v=2">
   <link rel="stylesheet" href="./menu-controls.css?v=1">
-  <script type="module" src="./app.js?v=carousel-1"></script>
+  <link rel="stylesheet" href="./compact-header.css?v=1">
+  <script type="module" src="./app.js?v=pickup-4"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu">Přejít na jídelní lístek</a>
@@ -122,18 +124,14 @@
         </article>
       </div>
       <div class="container hero-carousel-footer">
-        <span class="hero-opening"><span class="status-dot"></span> Po–So · 11:00–21:00</span>
         <div class="hero-carousel-controls" role="group" aria-label="Přepínání úvodních snímků">
-          <span class="hero-slide-count" aria-hidden="true">01 / 04</span>
           <div class="hero-slide-dots">
             <button type="button" data-hero-slide="0" aria-current="true" aria-label="Zobrazit pizzu" aria-controls="hero-slide-0" title="Pizza"></button>
             <button type="button" data-hero-slide="1" aria-current="false" aria-label="Zobrazit pobočku Rudná" aria-controls="hero-slide-1" title="Rudná"></button>
             <button type="button" data-hero-slide="2" aria-current="false" aria-label="Zobrazit pobočku Hostivice" aria-controls="hero-slide-2" title="Hostivice"></button>
             <button type="button" data-hero-slide="3" aria-current="false" aria-label="Zobrazit pobočku Beroun" aria-controls="hero-slide-3" title="Beroun"></button>
           </div>
-          <button type="button" class="hero-arrow" data-hero-prev aria-label="Předchozí snímek" aria-controls="hero-slides"><svg class="icon" aria-hidden="true"><use href="#i-back"/></svg></button>
-          <button type="button" class="hero-arrow" data-hero-next aria-label="Další snímek" aria-controls="hero-slides"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-          <button type="button" class="hero-rotation" data-hero-rotation aria-label="Pozastavit střídání snímků"><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg></button>
+          <button type="button" class="hero-rotation sr-only" data-hero-rotation>Pozastavit střídání snímků</button>
         </div>
       </div>
       <p class="hero-slide-status sr-only" role="status" aria-live="polite"></p>

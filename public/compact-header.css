@@ -1,0 +1,17 @@
+/* Keep the full header at the top; reduce its height by one third after scrolling. */
+.site-header{--header-full-height:89px;overflow-anchor:none}
+.site-header .header-inner{transition:height .22s ease}
+.site-header .wordmark{transition:font-size .22s ease,padding-bottom .22s ease}
+body .site-header.is-compact .header-inner{height:calc(var(--header-full-height) * 2 / 3)}
+body .site-header.is-compact .wordmark{font-size:27px;padding-bottom:5px}
+body .site-header.is-compact .cart-trigger{min-height:36px;padding:7px 13px;font-size:16px}
+.site-header.is-compact .cart-trigger-label{font-size:16px}
+body:is(.checkout-open,.product-open) .site-header{--header-full-height:60px}
+body:is(.checkout-open,.product-open) .site-header.is-compact .wordmark{font-size:24px;padding-bottom:4px}
+@media(max-width:900px){.site-header{--header-full-height:77px}}
+@media(max-width:700px){
+  .site-header{--header-full-height:72px}
+  body .site-header.is-compact .wordmark{font-size:24px}
+  body .site-header.is-compact .cart-trigger{padding:6px 12px}
+}
+@media(prefers-reduced-motion:reduce){.site-header .header-inner,.site-header .wordmark{transition:none}}

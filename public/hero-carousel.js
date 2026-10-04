@@ -17,7 +17,6 @@ export function createHeroCarousel({ branches, icon, escape }) {
   const slides = [...stage.children];
   const dots = [...root.querySelectorAll('[data-hero-slide]')];
   const rotation = root.querySelector('[data-hero-rotation]');
-  const counter = root.querySelector('.hero-slide-count');
   const status = root.querySelector('.hero-slide-status');
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   let index = 0;
@@ -32,8 +31,7 @@ export function createHeroCarousel({ branches, icon, escape }) {
   function syncRotation() {
     clearTimeout(timer);
     rotation.setAttribute('aria-label', paused ? 'Spustit střídání snímků' : 'Pozastavit střídání snímků');
-    rotation.title = rotation.getAttribute('aria-label');
-    rotation.innerHTML = icon(paused ? 'play' : 'pause');
+    rotation.textContent = rotation.getAttribute('aria-label');
     if (!paused && inView && !hovering && !document.hidden && !root.closest('[hidden]') && !document.querySelector('dialog[open]')) {
       timer = setTimeout(() => show(index + 1, 1, false), 5500);
     }
@@ -50,7 +48,6 @@ export function createHeroCarousel({ branches, icon, escape }) {
       slide.setAttribute('aria-hidden', String(i !== index));
     });
     dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === index)));
-    counter.textContent = `${String(index + 1).padStart(2, '0')} / 04`;
     if (manual) status.textContent = slides[index].getAttribute('aria-label');
     if (previous !== index && !motion.matches) {
       const outgoing = slides[previous];
@@ -67,8 +64,6 @@ export function createHeroCarousel({ branches, icon, escape }) {
     if (suppressClick) { event.preventDefault(); event.stopPropagation(); suppressClick = false; return; }
     const button = event.target.closest('button');
     if (!button) return;
-    if (button.hasAttribute('data-hero-next')) show(index + 1, 1);
-    if (button.hasAttribute('data-hero-prev')) show(index - 1, -1);
     if (button.hasAttribute('data-hero-slide')) {
       const next = Number(button.dataset.heroSlide);
       show(next, next < index ? -1 : 1);

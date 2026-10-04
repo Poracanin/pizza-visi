@@ -165,24 +165,52 @@ body.checkout-open .site-header .wordmark{font-size:32px}
 #checkout-page .assigned-branch{display:flex;align-items:center;gap:9px;border:1px solid #87b09735;border-radius:5px;background:#87b0970a;padding:10px 12px;margin-top:10px;font-size:11px;color:#ccc9c2}
 #checkout-page .assigned-branch .icon{width:19px;height:19px;color:#9ec3ab;flex:none}
 #checkout-page .assigned-branch strong{color:var(--text);font-weight:500}
-#checkout-page .checkout-pickup-branches{display:grid;gap:7px;margin-top:12px}
-#checkout-page .checkout-pickup-branches button{display:flex;align-items:center;gap:12px;padding:11px 13px;text-align:left;border:1px solid var(--line);border-radius:5px;background:var(--surface);color:var(--text)}
-#checkout-page .checkout-pickup-branches button[aria-pressed=true]{border-color:var(--accent);background:#d9153810}
-#checkout-page .checkout-pickup-branches .icon{width:19px;height:19px;color:var(--accent);flex:none}
+#checkout-page .checkout-pickup-branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+#checkout-page .checkout-pickup-branches button{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:flex-end;min-height:110px;padding:12px 10px;text-align:left;border:1px solid #ffffff30;border-radius:6px;background:var(--surface);color:#fff}
+#checkout-page .checkout-pickup-branches button::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#1010110a,#10101136 25%,#101011e8);transition:background .2s}
+#checkout-page .checkout-pickup-branches button>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .25s}
+#checkout-page .checkout-pickup-branches button:hover>img{transform:scale(1.04)}
+#checkout-page .checkout-pickup-branches button>span{display:flex;align-items:center;gap:6px}
+#checkout-page .checkout-pickup-branches button[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+#checkout-page .checkout-pickup-branches button[aria-pressed=true]::after{background:linear-gradient(180deg,#10101105,#10101136 20%,#3b0a15ed)}
+#checkout-page .checkout-pickup-branches .icon{width:16px;height:16px;color:#fff;flex:none}
+#checkout-page .checkout-pickup-branches button[aria-pressed=true] .icon{color:var(--accent)}
 #checkout-page .checkout-pickup-branches strong{font:400 21px/1.2 var(--display);letter-spacing:.3px}
-#checkout-page .checkout-pickup-branches small{display:block;margin-top:2px;font-size:10px;color:var(--muted)}
+#checkout-page .pickup-branch-detail{margin-top:10px;border:1px solid var(--line);border-radius:6px;overflow:hidden;animation:pickup-reveal .2s ease-out}
+#checkout-page .pickup-branch-location{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;background:var(--surface)}
+#checkout-page .pickup-branch-location>span{display:flex;align-items:center;gap:10px;min-width:0}
+#checkout-page .pickup-branch-location strong{display:block;font-size:12px;font-weight:500}
+#checkout-page .pickup-branch-location strong+span{display:block;font-size:11px;color:var(--muted);line-height:1.5;margin-top:2px}
+#checkout-page .pickup-branch-location .icon{width:17px;height:17px;color:var(--accent);flex:none}
+#checkout-page .pickup-branch-location a{display:flex;align-items:center;gap:6px;font-size:11px;white-space:nowrap;min-height:32px;color:var(--accent)}
+#checkout-page .pickup-branch-location a:hover{text-decoration:underline}
+#checkout-page .pickup-branch-map{width:100%;height:185px;background:#ddd9cf;isolation:isolate;z-index:0}
+#checkout-page .pickup-branch-map .leaflet-control-attribution{font:9px/1.5 var(--body);background:#ffffffdf;color:#333}
+#checkout-page .pickup-map-marker span{display:block;width:28px;height:28px;transform:rotate(-45deg);border:2px solid #fff;border-radius:50% 50% 50% 0;background:var(--accent-solid);box-shadow:0 2px 8px #0005}
+#checkout-page .pickup-map-marker span::after{content:'';position:absolute;inset:7px;border:2px solid #fff;border-radius:50%}
+@keyframes pickup-reveal{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
 #checkout-page .checkout-remember{display:flex;align-items:flex-start;gap:9px;margin-top:13px;cursor:pointer;font-size:11px;line-height:1.4}
 #checkout-page .checkout-remember input{width:17px;height:17px;flex:none;margin:0;accent-color:var(--accent-solid)}
 #checkout-page .checkout-remember small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
 #checkout-page .receipt-view h1{font-style:normal}
 @media(max-width:900px){
-  #checkout-page .checkout-pickup-branches button{padding:13px}
-  #checkout-page .checkout-pickup-branches small{font-size:11px}
   #checkout-page .checkout-remember{font-size:12px;padding-block:5px}
 }
-@media(min-width:901px){
-  #checkout-page .checkout-pickup-branches{grid-template-columns:repeat(3,minmax(0,1fr))}
-  #checkout-page .checkout-pickup-branches button{align-items:flex-start;gap:8px;padding:12px 10px}
-  #checkout-page .checkout-pickup-branches .icon{width:16px;height:20px}
-  #checkout-page .checkout-pickup-branches small{line-height:1.5}
+@media(max-width:480px){
+  #checkout-page .checkout-pickup-branches{gap:6px}
+  #checkout-page .checkout-pickup-branches button{min-height:94px;padding:9px 7px}
+  #checkout-page .checkout-pickup-branches button>span{gap:4px}
+  #checkout-page .checkout-pickup-branches strong{font-size:19px}
+  #checkout-page .checkout-pickup-branches .icon{width:13px;height:13px}
+  #checkout-page .pickup-branch-location{align-items:flex-start;gap:5px;padding:10px}
+  #checkout-page .pickup-branch-location>span{gap:6px}
+  #checkout-page .pickup-branch-location strong+span{font-size:10px}
+  #checkout-page .pickup-branch-location a{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){#checkout-page .pickup-branch-detail{animation:none}#checkout-page .checkout-pickup-branches button>img{transition:none}}
+@media(max-width:370px){
+  #checkout-page .checkout-pickup-branches strong{font-size:16px}
+  #checkout-page .checkout-pickup-branches button{padding-inline:6px}
+  #checkout-page .checkout-pickup-branches button>span{gap:3px}
+  #checkout-page .checkout-pickup-branches .icon{width:11px;height:11px}
 }

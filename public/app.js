@@ -1,9 +1,9 @@
-import { createHeroCarousel } from './hero-carousel.js?v=1';
+import { createHeroCarousel } from './hero-carousel.js?v=2';
 import { itemPrice, matchesItem, validBranch } from './menu-utils.js';
 import { createPrivacyBanner } from './privacy-banner.js';
 import { loadRuianAddresses } from './ruian-addresses.js';
 import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js';
-import { createOrdering } from './ordering.js?v=checkout-3';
+import { createOrdering } from './ordering.js?v=pickup-4';
 import { showCartFeedback } from './cart-feedback.js';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -186,6 +186,18 @@ const menuSizing = new ResizeObserver(measureMenuControls);
 menuSizing.observe($('.site-header'));
 menuSizing.observe($('.menu-controls'));
 measureMenuControls();
+
+const siteHeader = $('.site-header');
+let headerFrame = null;
+function syncCompactHeader() {
+  headerFrame = null;
+  if (window.scrollY > 96) siteHeader.classList.add('is-compact');
+  else if (window.scrollY < 24) siteHeader.classList.remove('is-compact');
+}
+window.addEventListener('scroll', () => {
+  if (headerFrame === null) headerFrame = requestAnimationFrame(syncCompactHeader);
+}, { passive: true });
+syncCompactHeader();
 
 $('.category-tabs').addEventListener('keydown', event => {
   const tabs = $$('.category-tabs button');

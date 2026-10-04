@@ -4,6 +4,7 @@
       "id": "rudna",
       "name": "Rudná",
       "address": "Riegerova 527/50, Rudná (u Prahy)",
+      "coordinates": [50.0360741, 14.2367666],
       "phone": "+420 606 918 942",
       "phone_uri": "tel:+420606918942",
       "delivery_areas": [
@@ -44,6 +45,7 @@
       "id": "hostivice",
       "name": "Hostivice",
       "address": "Husovo náměstí 60, Hostivice",
+      "coordinates": [50.0799443, 14.2572491],
       "phone": "+420 606 518 565",
       "phone_uri": "tel:+420606518565",
       "delivery_areas": [
@@ -86,6 +88,7 @@
       "id": "beroun",
       "name": "Beroun",
       "address": "Pivovarská 105/11, Beroun",
+      "coordinates": [49.9630527, 14.0731013],
       "phone": "+420 737 857 493",
       "phone_uri": "tel:+420737857493",
       "delivery_areas": [
