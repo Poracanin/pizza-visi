@@ -71,6 +71,7 @@ Administrace / POS je dostupná na **https://poracanin.github.io/pizza-visi/admi
 - `public/hero-carousel.js`, `public/hero-carousel.css`: automatický i ručně ovládaný posuvník; `public/menu-controls.css`: připnuté kategorie a kompaktní ovládání menu.
 - `public/compact-header.css`: zmenšení hlavičky po odrolování, včetně mobilu a objednávky.
 - `public/pickup-map.js`: mapa vybrané pobočky s místní knihovnou Leaflet a podkladem OpenStreetMap; změna pobočky odpojí předchozí mapu a její události.
+- `public/address-suggestion-events.js`: výběr adresy klepnutím po dokončení dotyku, ochrana před předčasným zavřením nabídky při ztrátě fokusu a rozlišení klepnutí od rolování. Potvrzení mění adresu a přiřazenou pobočku přímo v existujícím formuláři; kliknutí myší a klávesnice zůstávají podporované.
 - `public/ordering.js`, `public/ordering.css`, `public/checkout-page.css`: konfigurátor, košík a samostatná stránka objednávky; `public/storefront-orders.js`: zápis do lokální administrace.
 - `public/cart-model.js`: normalizace košíku, slučování položek, přísady, ceny a bezpečné obnovení uložených voleb.
 - `public/data/site.json`: pobočky, kontakty a menu pro web.

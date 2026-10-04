@@ -65,7 +65,7 @@ body.checkout-open .site-header .wordmark{font-size:32px}
 #checkout-page .pickup-address small{display:block;font-size:10px;margin-top:4px}
 #checkout-page .address-combobox{position:relative}
 #checkout-page .ruian-results{position:absolute;top:100%;left:0;right:0;z-index:30;max-height:240px;overflow:auto;margin:4px 0 0;padding:5px;list-style:none;background:#242426;border:1px solid #ffffff38;border-radius:6px;box-shadow:0 12px 30px #0006}
-#checkout-page .ruian-results li{padding:11px 10px;border-radius:3px;font-size:12px;line-height:1.4;cursor:pointer;color:var(--text)}
+#checkout-page .ruian-results li{min-height:44px;padding:12px 10px;border-radius:3px;font-size:12px;line-height:1.4;cursor:pointer;color:var(--text);touch-action:pan-y}
 #checkout-page .ruian-results li:hover,#checkout-page .ruian-results li[aria-selected=true]{background:#ffffff12;outline:1px solid var(--accent)}
 #checkout-page .address-coverage{color:#edc291}
 #checkout-page .payment-options{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:0}

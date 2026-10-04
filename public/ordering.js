@@ -4,6 +4,7 @@ import { PRODUCT_CATEGORIES, productHash, parseProductRoute, editSnapshot, findE
 import { loadRuianAddresses, searchAddresses, resolveAddress } from './ruian-addresses.js';
 import { submitLocalOrder } from './storefront-orders.js?v=checkout-3';
 import { mountPickupMap } from './pickup-map.js';
+import { bindAddressSuggestionEvents } from './address-suggestion-events.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -381,7 +382,7 @@ export function createOrdering(context) {
     input.removeAttribute('aria-activedescendant');
     $('#address-status', checkoutPage).textContent = addressResults.length ? `${addressResults.length} ${addressResults.length === 1 ? 'adresa' : addressResults.length < 5 ? 'adresy' : 'adres'}. Vyber správnou šipkami a Enterem nebo kliknutím.` : input.value.trim().length < 3 ? 'Napiš alespoň 3 znaky.' : 'Adresu jsme nenašli. Zkus ulici, číslo domu a město. Dostupný je rozvoz Rudná a Hostivice.';
   }
-  function selectAddress(id) {
+  function selectAddress(id, { pointerType } = {}) {
     if (submitting) return;
     const address = addressBook && resolveAddress(addressBook, id);
     if (!address) return;
@@ -389,10 +390,16 @@ export function createOrdering(context) {
     captureCustomer();
     selectedAddressId = address.id;
     customer.address = address.label;
-    $('#checkout-address', checkoutPage).value = address.label;
+    const input = $('#checkout-address', checkoutPage);
+    input.value = address.label;
     setBranch(address.branchIds[0]);
-    renderCheckout();
-    $('#checkout-address', checkoutPage)?.focus();
+    closeAddressSuggestions();
+    addressResults = [];
+    $('#address-status', checkoutPage).textContent = 'Adresa vybraná z registru RÚIAN.';
+    $('#checkout-assigned-branch', checkoutPage).innerHTML = assignedBranch();
+    $('#checkout-error', checkoutPage).textContent = '';
+    // Keep the form in place instead of replacing the focused mobile input.
+    if (pointerType === 'touch' || pointerType === 'pen') input.blur();
     onDeliveryChange?.(getDeliverySelection());
   }
   async function submitCheckout() {
@@ -541,14 +548,8 @@ export function createOrdering(context) {
     if (event.target.id === 'checkout-remember') onRememberChange?.(event.target.checked);
   });
   checkoutPage.addEventListener('submit', event => { if (event.target.id === 'checkout-form') { event.preventDefault(); submitCheckout(); } });
-  checkoutPage.addEventListener('click', event => {
-    const option = event.target.closest('[data-address-id]');
-    if (option) selectAddress(option.dataset.addressId);
-    else if (!event.target.closest('.address-combobox')) closeAddressSuggestions();
-  });
-  checkoutPage.addEventListener('pointerdown', event => { if (event.target.closest('[data-address-id]')) event.preventDefault(); });
+  bindAddressSuggestionEvents(checkoutPage, { select: selectAddress, close: closeAddressSuggestions });
   checkoutPage.addEventListener('focusin', event => { if (event.target.id === 'checkout-address' && !selectedAddressId) updateAddressSuggestions(); });
-  checkoutPage.addEventListener('focusout', event => { if (event.target.id === 'checkout-address') closeAddressSuggestions(); });
   checkoutPage.addEventListener('keydown', event => {
     if (event.target.id !== 'checkout-address') return;
     if (event.key === 'Escape') { event.preventDefault(); closeAddressSuggestions(); return; }
