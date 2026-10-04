@@ -1,0 +1,49 @@
+/* Two compact rows stay beneath the header while browsing the menu. */
+:root{--site-header-height:90px;--menu-controls-height:100px}
+.menu-section{overflow:visible;overflow-anchor:none}
+.menu-section::before{max-width:100%;overflow:hidden}
+.menu-section .menu-controls{position:sticky;top:var(--site-header-height);z-index:8;margin:0 -16px 24px;padding:0 16px;background:#eeede9f5;border-bottom:1px solid #29241d24;box-shadow:0 6px 12px #211d180b;backdrop-filter:blur(14px)}
+.menu-controls .menu-toolbar{border:0;display:flex}
+.menu-controls .category-tabs{width:100%;flex:1;gap:32px;border-bottom:1px solid #26231f20;justify-content:flex-start}
+.menu-controls .category-tabs button{min-height:48px;padding:11px 5px;font:400 23px/1.1 var(--display);letter-spacing:.5px;color:#44413c}
+.menu-controls .category-tabs button[aria-selected=true]{color:#bb0d2d;background:linear-gradient(0deg,#cf173309,transparent)}
+.menu-controls .category-tabs button[aria-selected=true]::after{height:3px;background:#c91031}
+.menu-controls .category-tabs button>span{font-size:10px}
+.menu-controls .filter-row{min-height:48px;padding:5px 0;display:flex;flex-wrap:nowrap;gap:16px}
+.menu-controls .filter-buttons{flex:1 1 auto;width:auto;gap:20px;min-width:0;justify-content:flex-start}
+.menu-controls .filter-buttons[hidden]{display:none}
+.menu-controls .filter-buttons button{min-height:38px;font-size:12px;padding:7px 0;color:#55504b}
+.menu-controls .filter-buttons button[aria-pressed=true]{color:#bb0d2d}
+.menu-controls .filter-buttons button::after{bottom:2px}
+.menu-controls .menu-tools{flex:0 0 auto;max-width:none;margin-left:auto;gap:0}
+.menu-controls .menu-view-toggle{background:#fff8;border-radius:4px;padding:2px;gap:2px}
+.menu-controls .menu-view-toggle button{font-size:11px;min-height:34px;padding:6px 9px;gap:5px}
+#menu-panel{scroll-margin-top:calc(var(--site-header-height) + var(--menu-controls-height) + 18px)}
+@media(max-width:700px){
+  :root{--site-header-height:73px}
+  .menu-section.section-space{padding-top:36px}
+  .menu-section .section-heading{margin-bottom:22px}
+  .menu-section .menu-controls{margin-inline:-20px;padding-inline:20px;margin-bottom:20px}
+  .menu-controls .category-tabs{justify-content:space-between;gap:12px}
+  .menu-controls .category-tabs button{font-size:20px;padding:9px 0;min-height:43px}
+  .menu-controls .filter-row{min-height:44px;gap:10px;padding:3px 0}
+  .menu-controls .filter-buttons{gap:14px;flex-basis:auto;justify-content:space-between}
+  .menu-controls .filter-buttons button{font-size:11px;min-height:36px}
+  .menu-controls .filter-buttons .icon{width:13px;height:13px}
+  .menu-controls .menu-view-toggle button{padding:6px;font-size:10px;min-height:34px;gap:4px}
+}
+@media(max-width:480px){
+  .menu-controls .menu-view-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .menu-controls .menu-view-toggle button{width:32px;padding:6px}
+  .menu-controls .menu-view-toggle .icon{width:16px;height:16px}
+  .menu-controls .filter-buttons{gap:9px}
+}
+@media(max-width:370px){
+  .menu-section .menu-controls{margin-inline:-16px;padding-inline:16px}
+  .menu-controls .category-tabs button{font-size:18px}
+  .menu-controls .filter-row{gap:8px}
+  .menu-controls .filter-buttons{gap:3px}
+  .menu-controls .filter-buttons button{font-size:10px}
+  .menu-controls .filter-buttons .icon{width:11px;height:11px}
+  .menu-controls .menu-view-toggle button{width:28px}
+}

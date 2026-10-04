@@ -47,11 +47,11 @@ Mobilní stránka **[rozvoz.html](https://poracanin.github.io/pizza-visi/rozvoz.
 Administrace / POS je dostupná na **https://poracanin.github.io/pizza-visi/admin/** (lokálně `/admin/`). Obsahuje objednávky podle kanálů včetně Woltu, samostatné sklady tří poboček, příjmy po šaržích s trvanlivostí a tabulku receptur 30 cm. Rozhraní je upravené pro tablet; při zahájení přípravy odečte suroviny jednou, ze šarží s nejbližší spotřebou. Jde o veřejné demo bez přihlášení a živých integrací, s ukládáním v prohlížeči a ukázkovými gramážemi. Podrobnosti: [docs/admin.md](docs/admin.md).
 
 - Výběr převzetí je pouze v objednávce. Doručení vyžaduje kanonickou adresu RÚIAN a automaticky přiřadí obsluhující pobočku. Vyzvednutí nabídne tři pobočky přímo ve formuláři, bez adresního pole i bez modalu. Samotná stará preference pobočky již neurčuje rozvoz.
-- Úvod s fotografií pizzy, přehledem tří poboček a přímým odkazem na menu. Logo má proužek v barvách italské vlajky.
+- Kompaktní úvodní posuvník (268 px na mobilu, 300 px na počítači): první snímek s pizzou, dále fotografie Rudné, Hostivic a Berouna. Snímky se střídají po 5,5 sekundách, přepínají se šipkami, tečkami, klávesnicí i tahem. Ruční ovládání pozastaví automatiku; respektuje se omezení animací, neaktivní karta a viditelnost sekce. Logo má proužek v barvách italské vlajky.
 - Zaškrtnutí „Zapamatovat pro příště“ ukládá způsob převzetí, pobočku a případné RÚIAN ID do localStorage na nejvýše 180 dní od posledního použití. Adresa se po návratu znovu ověří proti adresáři; text adresy ani kontaktní údaje se do této preference neukládají. Zapamatování i změna adresy jsou dostupné přímo v objednávce. Bez zaškrtnutí je adresa pouze pro aktuální návštěvu.
 - Lišta „Cookies a uložené volby“ se otevře po skutečném rolování stránky, ne nad košíkem ani při programovém skoku na menu. Nabízí Přijmout / Jen nezbytné; druhá volba odstraní zapamatovanou adresu, ale zachová aktuální návštěvu a košík. Nastavení jde znovu otevřít v patičce. Web nepřidává analytické ani reklamní cookies; využívá lokální úložiště pro košík a povolené volby.
 - Aktuální kontakty a rozvoz podle pobočky, odkazy na mapy a telefon.
-- Veřejné menu: všech 24 pizz, 11 nápojů a 12 vín/prosecc se zobrazuje rovnou. Výchozí dlaždice lze přepnout na kompaktní řádky; volba se zachová mezi kategoriemi. Suroviny navíc, okraje a omáčky se vybírají u konkrétní pizzy. Hledání a filtrování zůstává zachované.
+- Veřejné menu: všech 24 pizz, 11 nápojů a 12 vín/prosecc se zobrazuje rovnou. Výchozí dlaždice lze přepnout na kompaktní řádky; volba se zachová mezi kategoriemi. Suroviny navíc, okraje a omáčky se vybírají u konkrétní pizzy. Kategorie a filtry s přepínačem zobrazení tvoří dva kompaktní řádky připnuté pod hlavičkou. Vyhledávací pole je odstraněné; na úzkých telefonech mají přepínače zobrazení pouze SVG ikony s přístupnými názvy.
 - Celá karta pizzy otevírá samostatnou stránku úprav: velikost, suroviny navíc, mozzarellové okraje, omáčky, množství a poznámka. Velikost se volí až zde; rychlé přidání z menu vloží základní 30cm pizzu. Karty uvádějí cenu „od“ a dostupné průměry bez přepínače.
 - Košík s úpravou a odebráním položek, slučováním stejných konfigurací, nápojem navíc a automatickým součtem krabic a rozvozu. Nejvýše 20 kusů jedné konfigurace. Volby menu se obnoví i po reloadu; osobní údaje a poznámky se neukládají.
 - Přidání do košíku potvrdí kompaktní zpráva uprostřed obrazovky se zeleným okrajem a fotografií produktu; funguje i nad otevřeným košíkem a respektuje omezení animací.
@@ -68,6 +68,7 @@ Administrace / POS je dostupná na **https://poracanin.github.io/pizza-visi/admi
 ## Soubory
 
 - `public/index.html`, `public/style.css`, `public/app.js`: rozhraní a chování.
+- `public/hero-carousel.js`, `public/hero-carousel.css`: automatický i ručně ovládaný posuvník; `public/menu-controls.css`: připnuté kategorie a kompaktní ovládání menu.
 - `public/ordering.js`, `public/ordering.css`, `public/checkout-page.css`: konfigurátor, košík a samostatná stránka objednávky; `public/storefront-orders.js`: zápis do lokální administrace.
 - `public/cart-model.js`: normalizace košíku, slučování položek, přísady, ceny a bezpečné obnovení uložených voleb.
 - `public/data/site.json`: pobočky, kontakty a menu pro web.
