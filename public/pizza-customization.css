@@ -39,10 +39,13 @@
 #product-page .product-scroll-summary[hidden]{display:none}
 #product-page .product-summary-identity{display:flex;align-items:center;gap:12px;min-height:50px}
 #product-page .product-summary-identity .product-page-photo{width:48px;height:48px;flex:none;margin:0;box-shadow:none}
-#product-page .product-summary-identity>div{min-width:0}
-#product-page .product-summary-identity strong{display:block;font:400 24px/1 var(--display);letter-spacing:.3px}
+#product-page .product-summary-copy{min-width:0;flex:1}
+#product-page .product-summary-identity strong{display:block;font:400 24px/1 var(--display);letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #product-page .product-summary-identity small{display:block;font:400 10px/1.4 var(--body);color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#product-page [data-summary-size]{margin-left:auto;white-space:nowrap;font:500 11px/1 var(--body);color:var(--muted)}
+#product-page [data-summary-size]{white-space:nowrap}
+#product-page .product-summary-back{display:flex;align-items:center;gap:7px;flex:none;min-height:38px;padding:8px 12px;border:1px solid #ff526b;border-radius:8px;background:#b91432;color:#fff;font:600 12px/1.2 var(--body)}
+#product-page .product-summary-back:hover{background:#d91538;border-color:#ff8194}
+#product-page .product-summary-back .icon{width:17px;height:17px}
 #product-page .product-scroll-summary .half-tabs{border-top:1px solid #ffffff19;gap:5px;margin:6px 0 0;padding:4px 0 0}
 #product-page .product-scroll-summary .half-tabs button{min-height:34px;padding:4px 8px;gap:7px;border-color:transparent;border-radius:5px}
 #product-page .product-scroll-summary .half-tabs button[aria-pressed=true]{border-color:#ff486540;background:#d9153817}
