@@ -1,4 +1,4 @@
-import { STORAGE_KEY, createState, restoreState } from './admin/model.js';
+import { STORAGE_KEY, createState, restoreState, orderId } from './admin/model.js?v=checkout-3';
 import { getItem, normalizeLine, unitPrice, cartTotals } from './cart-model.js';
 import { loadRuianAddresses, resolveAddress } from './ruian-addresses.js';
 
@@ -55,7 +55,7 @@ export function createStorefrontOrder(state, input, addressCatalog, now = new Da
       extraNames: line.extras.map(id => getItem(data, id).name), note: line.note };
   });
   const order = {
-    id: `VISI-${++next.sequence}`, source: 'web', branchId, fulfillment, payment: 'cash',
+    id: orderId(branchId, ++next.sequence), source: 'web', branchId, fulfillment, payment: 'cash',
     label: name, phone, email, note, deliveryAddress: address?.label || '',
     addressSnapshot: address ? structuredClone(address) : null,
     lines, subtotal: total.subtotal, packaging: total.packaging, delivery: total.delivery, total: total.total,

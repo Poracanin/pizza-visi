@@ -4,6 +4,16 @@ import {deliveryAssignment, removeDeliveryOrder, validateDeliveryPlans, platform
 // is persisted only after the entire operation succeeds.
 export const SOURCES = ['web', 'pos', 'wolt', 'foodora', 'bolt'];
 export const STATUSES = ['new', 'confirmed', 'preparing', 'ready', 'completed', 'cancelled'];
+export const BRANCH_CODES = Object.freeze({ rudna: 'RUD', hostivice: 'HOST', beroun: 'BER' });
+export function orderId(branchId, sequence) {
+  if (!Object.hasOwn(BRANCH_CODES, branchId) || !Number.isSafeInteger(sequence) || sequence < 1) throw new Error('Neplatné číslo objednávky.');
+  return `VISI-${BRANCH_CODES[branchId]}-${sequence}`;
+}
+function validOrderId(order) {
+  if (typeof order.id !== 'string') return false;
+  const match = /^VISI-(?:(RUD|HOST|BER)-)?(\d+)$/.exec(order.id);
+  return Boolean(match && (!match[1] || match[1] === BRANCH_CODES[order.branchId]));
+}
 export const STORAGE_KEY = 'pizza-visi-pos-demo-v1';
 const clone = value => structuredClone(value);
 const integer = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
@@ -51,7 +61,7 @@ export function addOrder(state, site, input, now = new Date().toISOString()) {
   const subtotal = lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
   const packaging = lines.reduce((sum, l) => sum + (l.size ? (l.size === 40 ? 23 : 16) * l.quantity : 0), 0);
   const delivery = fulfillment === 'delivery' ? site.delivery.price_czk : 0;
-  const order = {id: `VISI-${++next.sequence}`, branchId: input.branchId, source: input.source,
+  const order = {id: orderId(input.branchId, ++next.sequence), branchId: input.branchId, source: input.source,
     fulfillment, payment: input.payment, label: String(input.label || 'Demo objednávka').trim().slice(0, 80),
     status: 'new', lines, subtotal, packaging, delivery, total: subtotal + packaging + delivery,
     createdAt: now, updatedAt: now, minutes, phone, note, requestedAt, deduction: null,
@@ -171,7 +181,7 @@ export function restoreState(raw, site, seed) {
   for (const pizza of pizzas(site)) for (const size of [30]) validateRecipe(state.recipes?.[pizza.id]?.[size], seed);
   const ids = new Set();
   for (const order of state.orders) {
-    if (typeof order.id !== 'string' || !/^VISI-\d+$/.test(order.id) || ids.has(order.id) || !Object.hasOwn(state.stocks, order.branchId) || !SOURCES.includes(order.source) || !STATUSES.includes(order.status) || !Array.isArray(order.lines) || !order.lines.length || !Number.isFinite(order.total) || order.total < 0) fail('Uložená objednávka je neplatná.');
+    if (!validOrderId(order) || ids.has(order.id) || !Object.hasOwn(state.stocks, order.branchId) || !SOURCES.includes(order.source) || !STATUSES.includes(order.status) || !Array.isArray(order.lines) || !order.lines.length || !Number.isFinite(order.total) || order.total < 0) fail('Uložená objednávka je neplatná.');
     ids.add(order.id);
     for (const line of order.lines) {
       const item = products(site).find(p => p.id === line.pizzaId);

@@ -1,6 +1,6 @@
 # Pizza Visi
 
-Responzivní web podle fotografií značky. Tmavé pozadí, krémová a měděná typografie, fotografie pizz a úvodní modální výběr pobočky Rudná, Hostivice nebo Beroun.
+Responzivní web podle fotografií značky. Tmavá textura, červená a světlá typografie a fotografie pizz. Pobočka se určí podle doručovací adresy při dokončení objednávky; úvodní modal se nezobrazuje.
 
 ## Spuštění
 
@@ -46,10 +46,10 @@ Mobilní stránka **[rozvoz.html](https://poracanin.github.io/pizza-visi/rozvoz.
 
 Administrace / POS je dostupná na **https://poracanin.github.io/pizza-visi/admin/** (lokálně `/admin/`). Obsahuje objednávky podle kanálů včetně Woltu, samostatné sklady tří poboček, příjmy po šaržích s trvanlivostí a tabulku receptur 30 cm. Rozhraní je upravené pro tablet; při zahájení přípravy odečte suroviny jednou, ze šarží s nejbližší spotřebou. Jde o veřejné demo bez přihlášení a živých integrací, s ukládáním v prohlížeči a ukázkovými gramážemi. Podrobnosti: [docs/admin.md](docs/admin.md).
 
-- Kompaktní úvodní okno: nejprve Doručení / Vyzvednutí; doručení nabídne kanonické adresy RÚIAN, vyzvednutí tři pobočky bez adresního pole. Zvolená adresa i způsob převzetí se přenesou do objednávky.
-- Kompaktní hero se ztlumenou fotografií vybrané pobočky v pozadí.
-- Zaškrtnutí „Zapamatovat pro příště“ ukládá způsob převzetí, pobočku a případné RÚIAN ID do localStorage na nejvýše 180 dní od posledního použití. Adresa se po návratu znovu ověří proti adresáři; text adresy ani kontaktní údaje se do této preference neukládají. Změna je dostupná v hlavičce, úvodním okně i u adresy v objednávce. Bez zaškrtnutí je adresa pouze pro aktuální návštěvu.
-- Lišta „Cookies a uložené volby“ se otevře po skutečném rolování stránky, ne během úvodního dialogu ani při programovém skoku na menu. Nabízí Přijmout / Jen nezbytné; druhá volba odstraní zapamatovanou adresu, ale zachová aktuální návštěvu a košík. Nastavení jde znovu otevřít v patičce. Web nepřidává analytické ani reklamní cookies; využívá lokální úložiště pro košík a povolené volby.
+- Výběr převzetí je pouze v objednávce. Doručení vyžaduje kanonickou adresu RÚIAN a automaticky přiřadí obsluhující pobočku. Vyzvednutí nabídne tři pobočky přímo ve formuláři, bez adresního pole i bez modalu. Samotná stará preference pobočky již neurčuje rozvoz.
+- Úvod s fotografií pizzy, přehledem tří poboček a přímým odkazem na menu. Logo má proužek v barvách italské vlajky.
+- Zaškrtnutí „Zapamatovat pro příště“ ukládá způsob převzetí, pobočku a případné RÚIAN ID do localStorage na nejvýše 180 dní od posledního použití. Adresa se po návratu znovu ověří proti adresáři; text adresy ani kontaktní údaje se do této preference neukládají. Zapamatování i změna adresy jsou dostupné přímo v objednávce. Bez zaškrtnutí je adresa pouze pro aktuální návštěvu.
+- Lišta „Cookies a uložené volby“ se otevře po skutečném rolování stránky, ne nad košíkem ani při programovém skoku na menu. Nabízí Přijmout / Jen nezbytné; druhá volba odstraní zapamatovanou adresu, ale zachová aktuální návštěvu a košík. Nastavení jde znovu otevřít v patičce. Web nepřidává analytické ani reklamní cookies; využívá lokální úložiště pro košík a povolené volby.
 - Aktuální kontakty a rozvoz podle pobočky, odkazy na mapy a telefon.
 - Veřejné menu: všech 24 pizz, 11 nápojů a 12 vín/prosecc se zobrazuje rovnou. Výchozí dlaždice lze přepnout na kompaktní řádky; volba se zachová mezi kategoriemi. Suroviny navíc, okraje a omáčky se vybírají u konkrétní pizzy. Hledání a filtrování zůstává zachované.
 - Celá karta pizzy otevírá samostatnou stránku úprav: velikost, suroviny navíc, mozzarellové okraje, omáčky, množství a poznámka. Velikost se volí až zde; rychlé přidání z menu vloží základní 30cm pizzu. Karty uvádějí cenu „od“ a dostupné průměry bez přepínače.
@@ -57,11 +57,12 @@ Administrace / POS je dostupná na **https://poracanin.github.io/pizza-visi/admi
 - Přidání do košíku potvrdí kompaktní zpráva uprostřed obrazovky se zeleným okrajem a fotografií produktu; funguje i nad otevřeným košíkem a respektuje omezení animací.
 - Samostatná stránka objednávky s doručením nebo vyzvednutím, kontakty a úplným přehledem bez vnitřního posuvníku. U delší objednávky roluje celá stránka. Způsob převzetí se vybírá až zde. Košík má tři fotografické nabídky nápojů a ukotvené tlačítko pro pokračování; na mobilu zůstává dostupné také potvrzení objednávky.
 - Doručení vyžaduje výběr kanonické adresy RÚIAN. Změna textu výběr zneplatní. Veřejná projekce obsahuje 16 856 adres pro oblasti Rudné a Hostivic ze snímku 31. 8. 2026; Beroun nemá v dodaném výběru pokrytí a umožňuje vyzvednutí. SQLite zůstává neveřejný.
-- Potvrzení uloží objednávku do stejného lokálního úložiště jako administrace (`pizza-visi-pos-demo-v1`), včetně 30/40 cm, příplatků, poznámek a adresního snímku. Úspěch se zobrazí až po uložení. Opakování stejného požadavku nevytváří duplikát.
+- Potvrzení uloží objednávku do stejného lokálního úložiště jako administrace (`pizza-visi-pos-demo-v1`), včetně 30/40 cm, příplatků, poznámek a adresního snímku. Úspěch se zobrazí až po uložení. Opakování stejného požadavku nevytváří duplikát. Nová čísla používají `VISI-RUD-…`, `VISI-HOST-…` nebo `VISI-BER-…`; staré záznamy `VISI-…` zůstávají čitelné. Prefix pobočky je zachován také v administraci a rozvozu.
 - Objednávky, kontakt a adresa jsou dostupné v administraci ve stejném prohlížeči a na stejném originu. Neodesílají se restauraci ani mezi zařízeními. Ostrý backend není připojený.
 - Apple Pay, Google Pay a karta jsou připravené v rozhraní, ale bez platební brány zůstávají neaktivní. Aktivní je hotovost při převzetí; žádná online úhrada se nesimuluje ani neoznačuje jako zaplacená.
 - Objednávky 40 cm a s příplatky se v administraci zobrazí beze změn. Protože skladové receptury existují pouze pro základní 30cm pizzy, administrace u chybějících receptur nepředstírá automatický odečet surovin.
 - Mobilní rozvržení, klávesnicová navigace kategorií, nativní dialogy a omezení animací podle nastavení systému.
+- Ikony jsou lokální SVG z knihovny Lucide, včetně hvězdiček a symbolu průměru. Zdroj a licence jsou v `public/assets/icons/lucide/`; příkaz `node scripts/sync-icons.mjs` znovu sestaví inline sadu v HTML. Nezávisí na emoji fontech prohlížeče.
 - Všechny fotografie, fonty a data jsou lokální; prohlížení nevyžaduje externí služby. Mapy, sociální sítě a telefon se otevírají až na výslovné kliknutí.
 
 ## Soubory

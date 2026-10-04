@@ -22,7 +22,7 @@ h1,h2{font-weight:400;text-transform:uppercase;text-wrap:balance}
 .tricolor-mini{background:var(--accent);width:18px;height:3px}
 .site-header{background:rgba(17,17,18,.97);border-color:#ffffff14;backdrop-filter:blur(12px)}
 .wordmark{font-size:38px;letter-spacing:1px;transform:none;padding-bottom:8px}
-.wordmark i{background:var(--accent);height:3px}
+.wordmark i{background:linear-gradient(90deg,#009246 0 33.333%,#fff 33.333% 66.666%,#ce2b37 66.666% 100%);height:3px}
 .desktop-nav a{font:400 17px/1.4 var(--display);letter-spacing:1px;color:#f5f3ee}
 .desktop-nav a::after{height:2px}
 .branch-switch{font-size:12px}
@@ -222,16 +222,16 @@ h1,h2{font-weight:400;text-transform:uppercase;text-wrap:balance}
 
 /* The food sits above the card, with ordering controls close at hand. */
 .pizza-grid{padding-top:66px;row-gap:94px;align-items:stretch}
-.pizza-menu-card{overflow:visible;background:linear-gradient(#171719ed,#171719ed),var(--stone-dark) center/650px;border-radius:12px;display:flex;flex-direction:column}
+.pizza-menu-card{overflow:visible;background:linear-gradient(#1111139c,#111113c9),var(--stone-dark) center/650px;border-radius:12px;display:flex;flex-direction:column}
 .pizza-menu-card .pizza-image-button{overflow:visible;display:block;width:calc(100% - 48px);max-width:260px;height:auto;aspect-ratio:1;margin:-66px auto 0;padding:0;flex:none;z-index:1;border-radius:50%}
 .pizza-menu-card .pizza-image-button img[src*='/pizzas/']{display:block;width:100%;height:100%;object-fit:cover;filter:drop-shadow(0 9px 10px #0004)}
-.pizza-menu-card .pizza-card-copy{padding:20px 24px 13px;display:flex;flex-direction:column;flex:1}
+.pizza-menu-card .pizza-card-copy{padding:14px 24px 10px;display:flex;flex-direction:column;flex:1}
 .pizza-card-heading{display:flex;align-items:baseline;gap:9px;position:relative}
 .pizza-menu-card .pizza-number{position:static;font:400 15px/1 var(--display);color:#ff526c;flex-shrink:0}
 .pizza-menu-card h3{font:400 34px/1.05 var(--display);letter-spacing:.4px;margin:0;min-width:0;overflow-wrap:anywhere;hyphens:auto}
 .pizza-menu-card .spicy-tag{position:static;background:none;border:0;padding:0;margin-left:auto;color:#ff526c;flex-shrink:0}
-.pizza-menu-card .pizza-card-copy>p{font-size:12px;line-height:1.6;min-height:39px;margin:11px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.pizza-menu-card .pizza-card-bottom{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:8px;border:0;margin-top:auto;padding-top:18px;padding-bottom:13px}
+.pizza-menu-card .pizza-card-copy>p{font-size:12px;line-height:1.6;min-height:0;margin:8px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pizza-menu-card .pizza-card-bottom{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:8px;border:0;margin-top:auto;padding-top:12px;padding-bottom:10px}
 .pizza-menu-card .pizza-card-price{font:400 30px/1 var(--display);white-space:nowrap}
 .card-size-toggle{display:flex;gap:2px;padding:3px;background:#0d0d0e;border:1px solid #ffffff24;border-radius:5px}
 .card-size-toggle button{min-width:48px;min-height:36px;padding:5px 8px;border:0;border-radius:3px;background:transparent;color:#d4d1ca;font:400 17px/1 var(--display);letter-spacing:.4px;cursor:pointer}
@@ -254,11 +254,11 @@ h1,h2{font-weight:400;text-transform:uppercase;text-wrap:balance}
   .pizza-menu-card{border-radius:8px}
   .pizza-menu-card .pizza-image-button{width:calc(100% - 18px);max-width:200px;margin-top:-40px}
   .pizza-menu-card .pizza-card-copy{padding:12px 10px 5px}
-  .pizza-card-heading{gap:5px;min-height:45px}
+  .pizza-card-heading{gap:5px;min-height:0}
   .pizza-menu-card h3{font-size:25px;line-height:.98}
   .pizza-menu-card .pizza-number{font-size:11px}
   .pizza-menu-card .spicy-tag{position:absolute;right:0;top:-28px}
-  .pizza-menu-card .pizza-card-copy>p{font-size:10px;line-height:1.5;min-height:30px;margin-top:5px}
+  .pizza-menu-card .pizza-card-copy>p{font-size:10px;line-height:1.5;min-height:0;margin-top:7px}
   .pizza-menu-card .pizza-card-bottom{gap:4px;padding-top:10px;padding-bottom:9px;margin-top:auto}
   .pizza-menu-card .pizza-card-price{font-size:25px;letter-spacing:0}
   .card-size-toggle{gap:0;padding:2px}
@@ -310,3 +310,11 @@ h1,h2{font-weight:400;text-transform:uppercase;text-wrap:balance}
 
 .drink-photo-credit{margin-top:22px;color:#6a6764;font-size:11px;line-height:1.6}
 .drink-photo-credit a{text-decoration:underline;text-underline-offset:3px}
+
+/* Static delivery information; location is chosen only during checkout. */
+.hero-location{cursor:default;text-align:left}
+.hero-location:hover{background:rgba(12,12,13,.9);border-color:#ffffff35;border-top-color:var(--accent)}
+.branch-card-select{display:flex;justify-content:space-between;align-items:center}
+.branch-card[id]{scroll-margin-top:100px}
+.manifesto-strip span{display:inline-flex;align-items:center}
+.manifesto-strip span .icon{width:20px;height:20px;stroke-width:1.5}

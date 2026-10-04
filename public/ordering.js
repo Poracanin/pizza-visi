@@ -2,7 +2,7 @@ import { itemPrice } from './menu-utils.js';
 import { MAX_QUANTITY, getItem, normalizeLine, mergeLine, unitPrice, cartTotals, restoreCart, serializeCart } from './cart-model.js';
 import { PRODUCT_CATEGORIES, productHash, parseProductRoute, editSnapshot, findEditingLine } from './product-route.js';
 import { loadRuianAddresses, searchAddresses, resolveAddress } from './ruian-addresses.js';
-import { submitLocalOrder } from './storefront-orders.js';
+import { submitLocalOrder } from './storefront-orders.js?v=checkout-3';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -15,7 +15,7 @@ const closeButton = label => `<button class="icon-button dialog-close" data-clos
 const stepper = (quantity, scope, label) => `<div class="quantity-stepper" role="group" aria-label="Počet: ${esc(label)}"><button data-quantity="${scope}" data-delta="-1" aria-label="Ubrat kus: ${esc(label)}" ${quantity <= 1 ? 'disabled' : ''}>${icon('minus')}</button><span aria-live="polite">${quantity}</span><button data-quantity="${scope}" data-delta="1" aria-label="Přidat kus: ${esc(label)}" ${quantity >= MAX_QUANTITY ? 'disabled' : ''}>${icon('plus')}</button></div>`;
 
 export function createOrdering(context) {
-  const { data, openDialog, toast, showCartFeedback, getBranch, chooseBranch, setBranch, onDeliveryChange, editDelivery } = context;
+  const { data, openDialog, toast, showCartFeedback, getBranch, setBranch, onDeliveryChange, getRememberPreference, onRememberChange } = context;
   const productPage = $('#product-page');
   const storefront = $('#storefront');
   const siteFooter = $('#site-footer');
@@ -90,6 +90,7 @@ export function createOrdering(context) {
   function setAddress(value) {
     if (submitting) return;
     ++deliverySelectionVersion;
+    setBranch(null);
     customer.address = value; selectedAddressId = null; fulfillment = 'delivery'; updateBadge();
   }
   function menuReturn() {
@@ -210,7 +211,7 @@ export function createOrdering(context) {
     const item = getItem(data, draft.itemId);
     const pizza = item.categoryId === 'pizzy';
     const note = `<label class="customize-note">Poznámka k ${pizza ? 'pizze' : 'položce'} <span>nepovinné</span><textarea id="product-note" rows="2" maxlength="180" placeholder="${pizza ? 'Např. prosím rozkrájet…' : 'Něco nám chceš vzkázat?'}">${esc(draft.note)}</textarea></label>`;
-    $('#product-content', productPage).innerHTML = `<div class="product-page-shell"><div class="product-page-top"><button class="product-back product-page-back" data-product-back>← Zpět na menu</button></div><div class="product-page-intro">${item.image ? `<figure class="product-page-photo"><img class="product-photo ${pizza ? 'product-photo-pizza' : ''}" src="./${esc(item.image)}" alt="${esc(name(item))}"></figure>` : ''}<div class="product-intro-copy product-page-heading"><p class="eyebrow">${pizza ? 'PIZZA PŘESNĚ PODLE TEBE' : 'NĚCO DOBRÉHO NAVÍC'}</p><h1 id="product-title">${esc(name(item))}</h1>${item.description ? `<p class="product-description">${esc(item.description)}</p>` : ''}</div>${item.prices.length ? `<fieldset class="customize-size"><legend>Jak velký máš hlad?</legend><div class="product-sizes"><button data-option-size="30" aria-pressed="${draft.size === 30}">30 cm <span>${money(itemPrice(item, 30))}</span></button><button data-option-size="40" aria-pressed="${draft.size === 40}">40 cm <span>${money(itemPrice(item, 40))}</span></button></div></fieldset>` : `<p class="product-single-price">${money(itemPrice(item))}</p>`}</div><div class="product-page-body ${pizza ? '' : 'product-page-simple'}">${pizza ? `<section class="product-page-extras" aria-labelledby="product-extras-title"><h2 id="product-extras-title">Suroviny navíc</h2><div class="addon-grid">${addonOptions('dej-si-navic')}</div></section><aside class="product-page-aside"><section aria-labelledby="product-crust-title"><h2 id="product-crust-title">Něco do okrajů</h2><div class="addon-grid addon-grid-single">${addonOptions('chutne-okraje')}</div></section><section aria-labelledby="product-sauce-title"><h2 id="product-sauce-title">Omáčka k pizze</h2><div class="addon-grid addon-grid-single">${addonOptions('omacky')}</div></section>${note}</aside>` : note}</div><p class="customize-fine">${pizza ? 'Krabici připočítáme v košíku podle velikosti pizzy. ' : ''}Informace o alergenech ti sdělí pobočka.</p><div class="product-page-purchase customize-footer"><div id="product-quantity">${stepper(draft.quantity, 'draft', name(item))}</div><button class="button" data-add-cart><span>${productSession.snapshot ? 'Uložit úpravy' : 'Přidat do košíku'}</span><strong id="product-total">${money(unitPrice(data, draft) * draft.quantity)}</strong>${icon('arrow')}</button></div></div>`;
+    $('#product-content', productPage).innerHTML = `<div class="product-page-shell"><div class="product-page-top"><button class="product-back product-page-back" data-product-back>${icon('back')} Zpět na menu</button></div><div class="product-page-intro">${item.image ? `<figure class="product-page-photo"><img class="product-photo ${pizza ? 'product-photo-pizza' : ''}" src="./${esc(item.image)}" alt="${esc(name(item))}"></figure>` : ''}<div class="product-intro-copy product-page-heading"><p class="eyebrow">${pizza ? 'PIZZA PŘESNĚ PODLE TEBE' : 'NĚCO DOBRÉHO NAVÍC'}</p><h1 id="product-title">${esc(name(item))}</h1>${item.description ? `<p class="product-description">${esc(item.description)}</p>` : ''}</div>${item.prices.length ? `<fieldset class="customize-size"><legend>Jak velký máš hlad?</legend><div class="product-sizes"><button data-option-size="30" aria-pressed="${draft.size === 30}">30 cm <span>${money(itemPrice(item, 30))}</span></button><button data-option-size="40" aria-pressed="${draft.size === 40}">40 cm <span>${money(itemPrice(item, 40))}</span></button></div></fieldset>` : `<p class="product-single-price">${money(itemPrice(item))}</p>`}</div><div class="product-page-body ${pizza ? '' : 'product-page-simple'}">${pizza ? `<section class="product-page-extras" aria-labelledby="product-extras-title"><h2 id="product-extras-title">Suroviny navíc</h2><div class="addon-grid">${addonOptions('dej-si-navic')}</div></section><aside class="product-page-aside"><section aria-labelledby="product-crust-title"><h2 id="product-crust-title">Něco do okrajů</h2><div class="addon-grid addon-grid-single">${addonOptions('chutne-okraje')}</div></section><section aria-labelledby="product-sauce-title"><h2 id="product-sauce-title">Omáčka k pizze</h2><div class="addon-grid addon-grid-single">${addonOptions('omacky')}</div></section>${note}</aside>` : note}</div><p class="customize-fine">${pizza ? 'Krabici připočítáme v košíku podle velikosti pizzy. ' : ''}Informace o alergenech ti sdělí pobočka.</p><div class="product-page-purchase customize-footer"><div id="product-quantity">${stepper(draft.quantity, 'draft', name(item))}</div><button class="button" data-add-cart><span>${productSession.snapshot ? 'Uložit úpravy' : 'Přidat do košíku'}</span><strong id="product-total">${money(unitPrice(data, draft) * draft.quantity)}</strong>${icon('arrow')}</button></div></div>`;
   }
   function updateProductPrice() {
     const item = getItem(data, draft.itemId);
@@ -262,15 +263,10 @@ export function createOrdering(context) {
   function renderCart() {
     const branch = getBranch();
     const total = totals();
-    $('#cart-content').innerHTML = `<div class="cart-shell"><header class="cart-heading"><p class="eyebrow">DOBRÝ VEČER ZAČÍNÁ TADY</p><h2 id="cart-title">TVŮJ <em>KOŠÍK</em> <span>${total.quantity}</span></h2>${closeButton('Zavřít košík')}</header>${!cart.length ? `<div class="cart-scroll empty-cart">${icon('cart')}<h3>ZATÍM ANI KOUSEK</h3><p>Vyber si pizzu, přidej něco navíc<br>a udělej si hezký den.</p><button class="button" data-continue-menu>Vybrat si pizzu ${icon('arrow')}</button>${receipt ? '<button class="small-text-button last-receipt" data-last-receipt>Poslední objednávka ↗</button>' : ''}</div>` : `<div class="cart-scroll"><div class="cart-body"><div class="cart-branch"><span>${icon('pin')} ${branch ? `Pizza Visi ${esc(branch.name)}` : 'Vyber pobočku'}</span><button data-cart-branch>${branch ? 'Změnit' : 'Vybrat'} ↗</button></div><p class="cart-next-step-note">Doručení nebo vyzvednutí vybereš v dalším kroku.</p><div class="cart-lines">${cart.map(cartLine).join('')}</div><section class="cart-upsell"><h3>JEŠTĚ NĚCO NA ZAPITÍ?</h3><div class="cart-upsell-grid">${upsellCards()}</div></section></div></div><footer class="cart-footer">${summaryRows(total)}<button class="button cart-checkout" data-checkout>Pokračovat k objednávce ${icon('arrow')}</button><button class="cart-continue" data-close-dialog>Ještě něco přihodím</button></footer>`}</div>`;
-  }
-  function requestBranch(resume) {
-    cartDialog.close();
-    chooseBranch(resume);
+    $('#cart-content').innerHTML = `<div class="cart-shell"><header class="cart-heading"><p class="eyebrow">DOBRÝ VEČER ZAČÍNÁ TADY</p><h2 id="cart-title">TVŮJ <em>KOŠÍK</em> <span>${total.quantity}</span></h2>${closeButton('Zavřít košík')}</header>${!cart.length ? `<div class="cart-scroll empty-cart">${icon('cart')}<h3>ZATÍM ANI KOUSEK</h3><p>Vyber si pizzu, přidej něco navíc<br>a udělej si hezký den.</p><button class="button" data-continue-menu>Vybrat si pizzu ${icon('arrow')}</button>${receipt ? `<button class="small-text-button last-receipt" data-last-receipt>Poslední objednávka ${icon('external')}</button>` : ''}</div>` : `<div class="cart-scroll"><div class="cart-body"><div class="cart-branch"><span>${icon('pin')} ${branch ? `Pizza Visi ${esc(branch.name)}` : 'Pobočku určíme v objednávce'}</span></div><p class="cart-next-step-note">Doručení nebo vyzvednutí vybereš v dalším kroku.</p><div class="cart-lines">${cart.map(cartLine).join('')}</div><section class="cart-upsell"><h3>JEŠTĚ NĚCO NA ZAPITÍ?</h3><div class="cart-upsell-grid">${upsellCards()}</div></section></div></div><footer class="cart-footer">${summaryRows(total)}<button class="button cart-checkout" data-checkout>Pokračovat k objednávce ${icon('arrow')}</button><button class="cart-continue" data-close-dialog>Ještě něco přihodím</button></footer>`}</div>`;
   }
   function openCheckout() {
     if (!cart.length) return openCart();
-    if (!getBranch()) return requestBranch(openCheckout);
     captureCustomer();
     if (checkoutPage.hidden) checkoutReturn = productSession?.returnTo || menuReturn();
     receipt = null;
@@ -329,18 +325,31 @@ export function createOrdering(context) {
   function paymentCards() {
     const apple = '<img class="payment-brand payment-brand-apple" src="./assets/payments/apple-pay-symbol.svg" alt="" aria-hidden="true">';
     const google = '<img class="payment-brand payment-brand-google" src="./assets/payments/google-pay-symbol.svg" alt="" aria-hidden="true">';
-    return `<fieldset class="checkout-payment"><legend>3. Platba</legend><div class="payment-options"><label class="payment-choice"><input type="radio" name="payment" value="cash" checked><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M5 8h1m12 8h1"/></svg><span>Hotově<small>Při převzetí</small></span></label><label class="payment-choice unavailable"><input type="radio" name="payment" value="card" disabled>${icon('card')}<span>Kartou online<small>Zatím nepřipojeno</small></span></label><label class="payment-choice unavailable"><input type="radio" name="payment" value="applepay" disabled>${apple}<span class="sr-only">Apple Pay — zatím nedostupné</span></label><label class="payment-choice unavailable"><input type="radio" name="payment" value="googlepay" disabled>${google}<span class="sr-only">Google Pay — zatím nedostupné</span></label></div><p class="checkout-help">Online platby zatím nejsou připojené. Zaplatíš hotově při převzetí.</p></fieldset>`;
+    return `<fieldset class="checkout-payment"><legend>3. Platba</legend><div class="payment-options"><label class="payment-choice"><input type="radio" name="payment" value="cash" checked>${icon('cash')}<span>Hotově<small>Při převzetí</small></span></label><label class="payment-choice unavailable"><input type="radio" name="payment" value="card" disabled>${icon('card')}<span>Kartou online<small>Zatím nepřipojeno</small></span></label><label class="payment-choice unavailable"><input type="radio" name="payment" value="applepay" disabled>${apple}<span class="sr-only">Apple Pay — zatím nedostupné</span></label><label class="payment-choice unavailable"><input type="radio" name="payment" value="googlepay" disabled>${google}<span class="sr-only">Google Pay — zatím nedostupné</span></label></div><p class="checkout-help">Online platby zatím nejsou připojené. Zaplatíš hotově při převzetí.</p></fieldset>`;
   }
   function addressField() {
-    return `<div class="checkout-address-box"><div class="checkout-branch checkout-address-heading"><label for="checkout-address">Doručovací adresa</label><button type="button" class="small-text-button" data-edit-delivery>Upravit adresu</button></div><div class="address-combobox"><input name="address" id="checkout-address" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ruian-results" aria-describedby="address-status" autocomplete="off" required minlength="4" maxlength="200" placeholder="Ulice, číslo domu, město" value="${esc(customer.address)}"><ul id="ruian-results" class="ruian-results" role="listbox" hidden></ul></div><p id="address-status" class="checkout-help" role="status">${selectedAddressId ? 'Adresa vybraná z registru RÚIAN.' : addressLoading ? 'Načítáme adresy…' : addressLoadError ? 'Adresy se nepodařilo načíst. Zkus znovu otevřít objednávku.' : 'Začni psát a vyber přesnou adresu ze seznamu RÚIAN.'}</p>${getBranch()?.id === 'beroun' ? '<p class="checkout-help address-coverage">Pro Beroun je zatím dostupné vyzvednutí. Ověřené doručovací adresy máme pro Rudnou a Hostivici.</p>' : ''}</div>`;
+    return `<div class="checkout-address-box"><div class="checkout-branch checkout-address-heading"><label for="checkout-address">Doručovací adresa</label></div><div class="address-combobox"><input name="address" id="checkout-address" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ruian-results" aria-describedby="address-status" autocomplete="off" required minlength="4" maxlength="200" placeholder="Ulice, číslo domu, město" value="${esc(customer.address)}"><ul id="ruian-results" class="ruian-results" role="listbox" hidden></ul></div><p id="address-status" class="checkout-help" role="status">${selectedAddressId ? 'Adresa vybraná z registru RÚIAN.' : addressLoading ? 'Načítáme adresy…' : addressLoadError ? 'Adresy se nepodařilo načíst. Zkus znovu otevřít objednávku.' : 'Začni psát a vyber přesnou adresu ze seznamu RÚIAN.'}</p><div id="checkout-assigned-branch" role="status">${assignedBranch()}</div></div>`;
+  }
+  function assignedBranch() {
+    const branch = selectedAddressId && getBranch();
+    return branch ? `<p class="assigned-branch">${icon('check')}<span>Připraví a přiveze <strong>Pizza Visi ${esc(branch.name)}</strong></span></p>` : '<p class="checkout-help">Pobočku vybereme automaticky podle adresy doručení.</p>';
+  }
+  function pickupBranches() {
+    return `<div class="checkout-pickup-branches" role="group" aria-label="Pobočka pro vyzvednutí">${data.branches.map(branch => `<button type="button" data-pickup-branch="${esc(branch.id)}" aria-pressed="${getBranch()?.id === branch.id}">${icon(getBranch()?.id === branch.id ? 'check' : 'pin')}<span><strong>${esc(branch.name)}</strong><small>${esc(branch.address)}</small></span></button>`).join('')}</div><p class="checkout-help">Osobní vyzvednutí zdarma, orientačně za 10–30 minut.</p>`;
+  }
+  function rememberPreference() {
+    return `<label class="checkout-remember"><input id="checkout-remember" type="checkbox" ${getRememberPreference?.() ? 'checked' : ''}><span>Zapamatovat pro příště<small>Adresu nebo pobočku uložíme jen v tomto prohlížeči.</small></span></label>`;
+  }
+  function syncRememberPreference() {
+    const checkbox = $('#checkout-remember', checkoutPage);
+    if (checkbox) checkbox.checked = Boolean(getRememberPreference?.());
   }
   function checkoutSubmitContent() {
     return `<span>Objednat<span class="checkout-submit-total"> · ${money(totals().total)}</span></span>${icon('arrow')}`;
   }
   function renderCheckout() {
-    const branch = getBranch();
     addressResults = []; addressActive = -1;
-    $('#checkout-content', checkoutPage).innerHTML = `<div class="checkout-page-shell"><div class="checkout-page-top"><button class="checkout-page-back" data-back-cart>← Zpět do košíku</button><span>KOŠÍK <i>›</i> <strong>DOKONČENÍ</strong></span></div><header class="checkout-heading"><p class="eyebrow">UŽ JEN POSLEDNÍ KOUSEK</p><h1 id="checkout-title">KAM TO <em>BUDE?</em></h1></header><div class="checkout-layout"><form id="checkout-form"><fieldset class="checkout-contact"><legend>1. Kontakt</legend><div class="checkout-field-grid"><label class="checkout-field">Jméno<input name="name" autocomplete="name" required minlength="2" maxlength="70" placeholder="Tvoje jméno" value="${esc(customer.name)}"></label><label class="checkout-field">Telefon<input name="phone" type="tel" autocomplete="tel" required maxlength="20" placeholder="777 000 000" value="${esc(customer.phone)}"></label></div><label class="checkout-field">E-mail <span>nepovinný</span><input name="email" type="email" autocomplete="email" maxlength="120" placeholder="tvuj@email.cz" value="${esc(customer.email)}"></label></fieldset><fieldset class="checkout-delivery"><legend>2. Převzetí</legend>${fulfillmentControls()}<div class="checkout-branch"><span>${icon('pin')}<strong>${branch ? `Pizza Visi ${esc(branch.name)}` : 'Vyber pobočku'}</strong></span><button type="button" class="small-text-button" data-cart-branch>Změnit</button></div>${fulfillment === 'delivery' ? addressField() : `<p class="pickup-address">${esc(branch?.address || '')}<small>Orientačně za 10–30 minut</small></p>`}</fieldset>${paymentCards()}</form><aside class="checkout-summary"><p class="eyebrow">TVŮJ VÝBĚR</p><h2>TVOJE OBJEDNÁVKA</h2><div class="checkout-mini-lines">${cart.map(line => { const item = getItem(data, line.itemId); return `<div><span><strong>${line.quantity}× ${esc(name(item))}</strong><small>${line.size ? line.size + ' cm' : ''}${line.extras.length ? ' · ' + line.extras.map(id => esc(name(getItem(data, id)))).join(', ') : ''}</small></span><b>${money(unitPrice(data, line) * line.quantity)}</b></div>`; }).join('')}</div>${summaryRows(totals())}<label class="checkout-field checkout-order-note">Poznámka <span>nepovinná</span><textarea name="note" form="checkout-form" rows="2" maxlength="250" placeholder="Např. zvonek nebo patro…">${esc(customer.note)}</textarea></label><p id="checkout-error" class="checkout-error" role="alert" tabindex="-1"></p><div class="checkout-submit-bar"><button class="button checkout-submit" type="submit" form="checkout-form" ${submitting ? 'disabled' : ''}>${submitting ? 'Ukládáme objednávku…' : checkoutSubmitContent()}</button></div><p class="checkout-local-note">Objednávka se uloží do místní administrace v tomto prohlížeči.</p></aside></div></div>`;
+    $('#checkout-content', checkoutPage).innerHTML = `<div class="checkout-page-shell"><div class="checkout-page-top"><button class="checkout-page-back" data-back-cart>${icon('back')} Zpět do košíku</button><span>KOŠÍK <i>${icon('chev-right')}</i> <strong>DOKONČENÍ</strong></span></div><header class="checkout-heading"><p class="eyebrow">UŽ JEN POSLEDNÍ KOUSEK</p><h1 id="checkout-title">KAM TO <em>BUDE?</em></h1></header><div class="checkout-layout"><form id="checkout-form"><fieldset class="checkout-contact"><legend>1. Kontakt</legend><div class="checkout-field-grid"><label class="checkout-field">Jméno<input name="name" autocomplete="name" required minlength="2" maxlength="70" placeholder="Tvoje jméno" value="${esc(customer.name)}"></label><label class="checkout-field">Telefon<input name="phone" type="tel" autocomplete="tel" required maxlength="20" placeholder="777 000 000" value="${esc(customer.phone)}"></label></div><label class="checkout-field">E-mail <span>nepovinný</span><input name="email" type="email" autocomplete="email" maxlength="120" placeholder="tvuj@email.cz" value="${esc(customer.email)}"></label></fieldset><fieldset class="checkout-delivery"><legend>2. Převzetí</legend>${fulfillmentControls()}${fulfillment === 'delivery' ? addressField() : pickupBranches()}${rememberPreference()}</fieldset>${paymentCards()}</form><aside class="checkout-summary"><p class="eyebrow">TVŮJ VÝBĚR</p><h2>TVOJE OBJEDNÁVKA</h2><div class="checkout-mini-lines">${cart.map(line => { const item = getItem(data, line.itemId); return `<div><span><strong>${line.quantity}× ${esc(name(item))}</strong><small>${line.size ? line.size + ' cm' : ''}${line.extras.length ? ' · ' + line.extras.map(id => esc(name(getItem(data, id)))).join(', ') : ''}</small></span><b>${money(unitPrice(data, line) * line.quantity)}</b></div>`; }).join('')}</div>${summaryRows(totals())}<label class="checkout-field checkout-order-note">Poznámka <span>nepovinná</span><textarea name="note" form="checkout-form" rows="2" maxlength="250" placeholder="Např. zvonek nebo patro…">${esc(customer.note)}</textarea></label><p id="checkout-error" class="checkout-error" role="alert" tabindex="-1"></p><div class="checkout-submit-bar"><button class="button checkout-submit" type="submit" form="checkout-form" ${submitting ? 'disabled' : ''}>${submitting ? 'Ukládáme objednávku…' : checkoutSubmitContent()}</button></div><p class="checkout-local-note">Objednávka se uloží do místní administrace v tomto prohlížeči.</p></aside></div></div>`;
   }
   function closeAddressSuggestions() {
     const input = $('#checkout-address', checkoutPage);
@@ -370,7 +379,7 @@ export function createOrdering(context) {
     selectedAddressId = address.id;
     customer.address = address.label;
     $('#checkout-address', checkoutPage).value = address.label;
-    if (!address.branchIds.includes(getBranch()?.id)) setBranch(address.branchIds[0]);
+    setBranch(address.branchIds[0]);
     renderCheckout();
     $('#checkout-address', checkoutPage)?.focus();
     onDeliveryChange?.(getDeliverySelection());
@@ -382,11 +391,11 @@ export function createOrdering(context) {
     error.textContent = '';
     if (customer.name.trim().length < 2) { error.textContent = 'Doplň prosím jméno.'; $('#checkout-form [name="name"]', checkoutPage).focus(); return; }
     if (!/^\+?[\d\s()-]+$/.test(customer.phone.trim()) || !/^\d{9,15}$/.test(customer.phone.replace(/\D/g, ''))) { error.textContent = 'Zadej prosím platný telefon.'; $('#checkout-form [name="phone"]', checkoutPage).focus(); return; }
-    if (!getBranch()) { requestBranch(() => showCheckoutPage()); return; }
+    if (fulfillment === 'pickup' && !getBranch()) { error.textContent = 'Vyber pobočku pro vyzvednutí.'; $('[data-pickup-branch]', checkoutPage)?.focus(); return; }
     let address = null;
     if (fulfillment === 'delivery') {
       address = addressBook && resolveAddress(addressBook, selectedAddressId);
-      if (!address || address.label !== customer.address || !address.branchIds.includes(getBranch().id)) {
+      if (!address || address.label !== customer.address || !address.branchIds.includes(getBranch()?.id)) {
         error.textContent = 'Vyber přesnou doručovací adresu ze seznamu RÚIAN.';
         $('#checkout-address', checkoutPage)?.focus();
         return;
@@ -423,7 +432,7 @@ export function createOrdering(context) {
   }
   function renderReceipt() {
     const delivery = receipt.fulfillment === 'delivery';
-    $('#checkout-content', checkoutPage).innerHTML = `<section class="receipt-view"><span class="receipt-check">${icon('check')}</span><p class="eyebrow">DĚKUJEME ZA OBJEDNÁVKU</p><h1 id="checkout-title" tabindex="-1">DOBRÝ VÝBĚR<br><em>TAK DOBROU CHUŤ!</em></h1><p class="receipt-intro">Objednávka je v místní administraci.<br>Číslo <strong>${esc(receipt.orderId || receipt.id)}</strong></p><div class="receipt-details"><div><span>POBOČKA</span><strong>Pizza Visi ${esc(receipt.branch.name)}</strong></div><div><span>${delivery ? 'DORUČENÍ' : 'VYZVEDNUTÍ'}</span><strong>${esc(delivery ? receipt.customer.address : receipt.branch.address)}</strong></div><div><span>PLATBA</span><strong>Hotově při převzetí</strong></div><div><span>CELKEM</span><strong>${money(receipt.total.total)}</strong></div></div><details class="receipt-items"><summary>Zobrazit objednávku (${receipt.total.quantity} ks)</summary>${receipt.lines.map(line => `<p><span>${line.quantity}× ${esc(name(getItem(data, line.itemId)))} ${line.size ? '· ' + line.size + ' cm' : ''}${line.extras.length ? '<small>+ ' + line.extras.map(id => esc(name(getItem(data, id)))).join(', ') + '</small>' : ''}${line.note ? `<small>${esc(line.note)}</small>` : ''}</span><strong>${money(unitPrice(data, line) * line.quantity)}</strong></p>`).join('')}</details><p class="receipt-local-note">Uloženo v tomto prohlížeči. Platba online neproběhla a objednávka nebyla odeslána restauraci.</p><button class="button" data-continue-menu>Zpět na menu ${icon('arrow')}</button></section>`;
+    $('#checkout-content', checkoutPage).innerHTML = `<section class="receipt-view"><span class="receipt-check">${icon('check')}</span><p class="eyebrow">DĚKUJEME ZA OBJEDNÁVKU</p><h1 id="checkout-title" tabindex="-1">OBJEDNÁVKA<br><em>ULOŽENA</em></h1><p class="receipt-intro">Objednávka je v místní administraci.<br>Číslo <strong>${esc(receipt.orderId || receipt.id)}</strong></p><div class="receipt-details"><div><span>POBOČKA</span><strong>Pizza Visi ${esc(receipt.branch.name)}</strong></div><div><span>${delivery ? 'DORUČENÍ' : 'VYZVEDNUTÍ'}</span><strong>${esc(delivery ? receipt.customer.address : receipt.branch.address)}</strong></div><div><span>PLATBA</span><strong>Hotově při převzetí</strong></div><div><span>CELKEM</span><strong>${money(receipt.total.total)}</strong></div></div><details class="receipt-items"><summary>Zobrazit objednávku (${receipt.total.quantity} ks)</summary>${receipt.lines.map(line => `<p><span>${line.quantity}× ${esc(name(getItem(data, line.itemId)))} ${line.size ? '· ' + line.size + ' cm' : ''}${line.extras.length ? '<small>+ ' + line.extras.map(id => esc(name(getItem(data, id)))).join(', ') + '</small>' : ''}${line.note ? `<small>${esc(line.note)}</small>` : ''}</span><strong>${money(unitPrice(data, line) * line.quantity)}</strong></p>`).join('')}</details><p class="receipt-local-note">Uloženo v tomto prohlížeči. Platba online neproběhla a objednávka nebyla odeslána restauraci.</p><button class="button" data-continue-menu>Zpět na menu ${icon('arrow')}</button></section>`;
   }
 
   document.addEventListener('click', event => {
@@ -446,17 +455,23 @@ export function createOrdering(context) {
     }
     if (target.hasAttribute('data-remove-line')) { cart.splice(Number(target.dataset.removeLine), 1); saveCart(); renderCart(); }
     if (target.hasAttribute('data-edit-line')) { const index = Number(target.dataset.editLine); if (cart[index]) openProduct(cart[index].itemId, index); }
-    if (target.dataset.fulfillment) {
+    if (target.dataset.fulfillment && target.dataset.fulfillment !== fulfillment) {
       ++deliverySelectionVersion;
       captureCustomer(); fulfillment = target.dataset.fulfillment; updateBadge();
-      if (fulfillment === 'pickup') { selectedAddressId = null; customer.address = ''; }
+      selectedAddressId = null; customer.address = ''; setBranch(null);
       if (cartDialog.open) renderCart(); else renderCheckout();
       $(`[data-fulfillment="${fulfillment}"]`, cartDialog.open ? cartDialog : checkoutPage).focus();
       onDeliveryChange?.(getDeliverySelection());
     }
     if (target.dataset.quickDrink) quickAdd(target.dataset.quickDrink);
-    if (target.hasAttribute('data-cart-branch')) { captureCustomer(); requestBranch(checkoutPage.hidden ? openCart : showCheckoutPage); }
-    if (target.hasAttribute('data-edit-delivery')) { captureCustomer(); editDelivery?.(getDeliverySelection()); }
+    if (target.dataset.pickupBranch && fulfillment === 'pickup') {
+      captureCustomer();
+      ++deliverySelectionVersion;
+      setBranch(target.dataset.pickupBranch);
+      renderCheckout();
+      $(`[data-pickup-branch="${getBranch().id}"]`, checkoutPage)?.focus();
+      onDeliveryChange?.(getDeliverySelection());
+    }
     if (target.hasAttribute('data-checkout')) openCheckout();
     if (target.hasAttribute('data-back-cart')) {
       captureCustomer();
@@ -503,11 +518,16 @@ export function createOrdering(context) {
     if (event.target.id === 'checkout-address') {
       ++deliverySelectionVersion;
       selectedAddressId = null;
+      setBranch(null);
+      $('#checkout-assigned-branch', checkoutPage).innerHTML = assignedBranch();
       updateAddressSuggestions();
       onDeliveryChange?.(getDeliverySelection());
     }
   });
-  checkoutPage.addEventListener('change', captureCustomer);
+  checkoutPage.addEventListener('change', event => {
+    captureCustomer();
+    if (event.target.id === 'checkout-remember') onRememberChange?.(event.target.checked);
+  });
   checkoutPage.addEventListener('submit', event => { if (event.target.id === 'checkout-form') { event.preventDefault(); submitCheckout(); } });
   checkoutPage.addEventListener('click', event => {
     const option = event.target.closest('[data-address-id]');
@@ -541,5 +561,5 @@ export function createOrdering(context) {
     window.addEventListener('popstate', () => syncProductRoute());
     syncProductRoute();
   }
-  return { openProduct: (id, size) => openProduct(id, -1, size), quickAdd, initRoute, showSection, openCart, setAddress, applyDeliverySelection, getDeliverySelection, branchChanged: () => { if (cartDialog.open) renderCart(); if (!checkoutPage.hidden && !receipt && !submitting) { captureCustomer(); renderCheckout(); } } };
+  return { openProduct: (id, size) => openProduct(id, -1, size), quickAdd, initRoute, showSection, openCart, setAddress, applyDeliverySelection, getDeliverySelection, syncRememberPreference, branchChanged: () => { if (cartDialog.open) renderCart(); if (!checkoutPage.hidden && !receipt && !submitting) { captureCustomer(); renderCheckout(); } } };
 }

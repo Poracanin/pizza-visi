@@ -154,3 +154,35 @@ body.checkout-open .site-header .wordmark{font-size:32px}
   #checkout-page .receipt-view{padding:36px 5px}
   #checkout-page .receipt-view h1{font-size:45px}
 }
+
+/* Address-driven branch assignment, with pickup selection inline. */
+#checkout-page .checkout-page-back{display:inline-flex;align-items:center;gap:8px}
+#checkout-page .checkout-page-back .icon{width:16px;height:16px}
+#checkout-page .checkout-page-top>span{display:flex;align-items:center}
+#checkout-page .checkout-page-top i{display:inline-flex;padding-inline:8px}
+#checkout-page .checkout-page-top i .icon{width:12px;height:12px}
+#checkout-page .checkout-address-heading{padding-top:15px}
+#checkout-page .assigned-branch{display:flex;align-items:center;gap:9px;border:1px solid #87b09735;border-radius:5px;background:#87b0970a;padding:10px 12px;margin-top:10px;font-size:11px;color:#ccc9c2}
+#checkout-page .assigned-branch .icon{width:19px;height:19px;color:#9ec3ab;flex:none}
+#checkout-page .assigned-branch strong{color:var(--text);font-weight:500}
+#checkout-page .checkout-pickup-branches{display:grid;gap:7px;margin-top:12px}
+#checkout-page .checkout-pickup-branches button{display:flex;align-items:center;gap:12px;padding:11px 13px;text-align:left;border:1px solid var(--line);border-radius:5px;background:var(--surface);color:var(--text)}
+#checkout-page .checkout-pickup-branches button[aria-pressed=true]{border-color:var(--accent);background:#d9153810}
+#checkout-page .checkout-pickup-branches .icon{width:19px;height:19px;color:var(--accent);flex:none}
+#checkout-page .checkout-pickup-branches strong{font:400 21px/1.2 var(--display);letter-spacing:.3px}
+#checkout-page .checkout-pickup-branches small{display:block;margin-top:2px;font-size:10px;color:var(--muted)}
+#checkout-page .checkout-remember{display:flex;align-items:flex-start;gap:9px;margin-top:13px;cursor:pointer;font-size:11px;line-height:1.4}
+#checkout-page .checkout-remember input{width:17px;height:17px;flex:none;margin:0;accent-color:var(--accent-solid)}
+#checkout-page .checkout-remember small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+#checkout-page .receipt-view h1{font-style:normal}
+@media(max-width:900px){
+  #checkout-page .checkout-pickup-branches button{padding:13px}
+  #checkout-page .checkout-pickup-branches small{font-size:11px}
+  #checkout-page .checkout-remember{font-size:12px;padding-block:5px}
+}
+@media(min-width:901px){
+  #checkout-page .checkout-pickup-branches{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #checkout-page .checkout-pickup-branches button{align-items:flex-start;gap:8px;padding:12px 10px}
+  #checkout-page .checkout-pickup-branches .icon{width:16px;height:20px}
+  #checkout-page .checkout-pickup-branches small{line-height:1.5}
+}

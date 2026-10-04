@@ -100,3 +100,6 @@
   .menu-list .beverage-copy{padding:12px}
   .menu-list .beverage-add{font-size:14px;padding-inline:5px}
 }
+
+.pizza-menu-card .pizza-size-note{display:inline-flex;align-items:center;gap:4px}
+.pizza-size-note .icon{width:11px;height:11px;flex:none}

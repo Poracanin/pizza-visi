@@ -51,3 +51,21 @@ test('Persistence must succeed before checkout can receive a success result',asy
  await assert.rejects(()=>submitLocalOrder({...input(),idempotencyKey:'different-request-0002'},{...deps,storage:broken}),/Quota/);
  assert.equal(request.cart.length,1);
 });
+
+test('New web orders include their branch code and survive reload alongside legacy IDs',()=>{
+ let state=initial();
+ for(const [branchId,code] of [['rudna','RUD'],['hostivice','HOST'],['beroun','BER']]){
+  const request={...input(),branchId,fulfillment:'pickup',addressId:null,idempotencyKey:`branch-request-${branchId}`};
+  const result=createStorefrontOrder(state,request,null,now);
+  assert.equal(result.order.id,`VISI-${code}-${state.sequence+1}`);
+  state=restoreState(JSON.stringify(result.state),data,seed);
+ }
+ const legacy=structuredClone(state.orders[0]);
+ legacy.id='VISI-1000'; delete legacy.webRequest;
+ state.orders.push(legacy);
+ assert.equal(restoreState(JSON.stringify(state),data,seed).orders.length,4);
+ const mismatched=structuredClone(state); mismatched.orders[0].id='VISI-RUD-1043';
+ assert.throws(()=>restoreState(JSON.stringify(mismatched),data,seed),/neplatná/);
+ const continued=createStorefrontOrder(state,{...input(),idempotencyKey:'after-reload-request'},addresses,now);
+ assert.equal(continued.order.id,'VISI-RUD-1044');
+});
