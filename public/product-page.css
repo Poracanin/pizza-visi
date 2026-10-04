@@ -155,3 +155,95 @@ body.product-open .site-header .cart-trigger{min-height:40px;padding:8px 13px}
 #product-page .product-page-back:hover{background:#ffffff13;border-color:#ffffff65}
 #product-page .product-page-top{margin-bottom:12px}
 @media(max-width:600px){#product-page .product-page-back{min-height:48px;font-size:20px}}
+
+/* A compact pizza builder: size, composition and per-half toppings. */
+#product-page .product-page-intro{grid-template-columns:128px minmax(0,1fr);column-gap:24px;row-gap:8px;margin:12px 0 20px;min-height:128px}
+#product-page .product-page-photo{width:128px;height:128px;grid-column:1;grid-row:1/3}
+#product-page .product-page-heading{align-self:end}
+#product-page .product-title-row{display:flex;align-items:center;justify-content:space-between;gap:14px}
+#product-page .product-page-back{flex:none;min-height:40px;padding:8px 12px;font:500 12px/1.2 var(--body);letter-spacing:0;gap:7px;border-radius:30px;background:transparent;color:var(--muted)}
+#product-page .product-page-back .icon{width:16px;height:16px}
+#product-page .product-description{grid-column:2;align-self:start;margin:0;max-width:700px}
+#product-page .product-config{grid-column:1/-1;display:flex;align-items:start;flex-wrap:wrap;gap:12px 32px;padding:0 0 20px}
+#product-page .customize-size{width:auto;max-width:540px;flex:1;min-width:260px}
+#product-page .customize-size legend,#product-page .pizza-mode legend{font:500 11px/1.4 var(--body);color:var(--muted);letter-spacing:.5px;margin-bottom:7px}
+#product-page .product-sizes{display:flex;padding:4px;gap:4px;border:1px solid var(--line);border-radius:12px;background:#08080970}
+#product-page .product-sizes>button{flex:1;display:flex;flex-direction:row;justify-content:flex-start;gap:10px;min-height:48px;padding:8px 12px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--muted);transition:background .18s,color .18s,border-color .18s}
+#product-page .product-sizes>button[aria-pressed=true]{background:linear-gradient(120deg,#57233080,#2a1b20);border-color:#ff486570;box-shadow:0 2px 8px #0003;color:#ff758b}
+#product-page .product-sizes>button>.size-label{font:400 24px/1 var(--display);color:inherit;white-space:nowrap}
+#product-page .size-label small{font:500 11px/1 var(--body);margin-left:3px}
+#product-page .product-sizes>button>[data-base-size]{font:500 12px/1.2 var(--body);margin-left:auto;white-space:nowrap;color:var(--muted)}
+#product-page .product-sizes>button[aria-pressed=true]>[data-base-size]{color:#fff}
+.size-disc{width:22px;height:22px;flex:none;border:1px solid currentColor;border-radius:50%;position:relative}
+.size-disc::after{content:'';position:absolute;inset:4px;border:1px dashed currentColor;border-radius:50%;opacity:.65}
+.size-disc-40{width:28px;height:28px}
+#product-page .pizza-mode{padding:0;margin:0;border:0;min-width:0;flex:0 1 320px}
+#product-page .pizza-mode-options{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:12px;background:#08080970}
+#product-page .pizza-mode-options button{display:flex;align-items:center;justify-content:center;gap:9px;flex:1;min-height:48px;padding:8px 12px;border:1px solid transparent;border-radius:8px;color:var(--muted);font:500 12px/1.2 var(--body);white-space:nowrap}
+#product-page .pizza-mode-options button[aria-pressed=true]{background:#f3eee6;color:#18191b;box-shadow:0 2px 8px #0003}
+.pizza-disc{display:inline-block;flex:none;width:20px;height:20px;border:1.5px solid currentColor;border-radius:50%;background:transparent;position:relative}
+.disc-whole{background:currentColor;box-shadow:inset 0 0 0 3px #f3eee6}
+.disc-split{background:linear-gradient(90deg,currentColor 46%,transparent 46%,transparent 54%,currentColor 54%);background-size:100% 100%;opacity:.85}
+.disc-left{background:linear-gradient(90deg,currentColor 48%,transparent 48%)}
+.disc-right{background:linear-gradient(90deg,transparent 52%,currentColor 52%)}
+#product-page .half-price-note{flex-basis:100%;font:400 11px/1.6 var(--body);color:var(--muted);margin:0}
+#product-page .half-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:24px}
+#product-page .half-choice{display:flex;flex-direction:column;gap:9px;padding:14px;border:1px solid #ffffff24;border-radius:10px;background:linear-gradient(130deg,#ffffff09,transparent)}
+#product-page .half-choice>span{display:flex;align-items:center;gap:8px;font:500 12px/1.2 var(--body);color:#ff8194}
+#product-page .half-choice select{width:100%;min-width:0;min-height:44px;border:0;border-bottom:1px solid #ffffff35;border-radius:0;padding:8px 20px 8px 0;background:transparent;color:var(--text);font:500 14px/1.3 var(--body);cursor:pointer;text-overflow:ellipsis}
+#product-page .half-choice select option{background:#202022;color:var(--text)}
+#product-page .half-choice small{font:400 11px/1.6 var(--body);color:var(--muted)}
+#product-page .half-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+#product-page .half-tabs button{display:flex;align-items:center;gap:10px;min-width:0;min-height:58px;text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:8px;color:var(--muted)}
+#product-page .half-tabs button[aria-pressed=true]{background:#d9153817;border-color:var(--accent);color:#ff758b}
+#product-page .half-tabs button>span{min-width:0;font:500 11px/1.25 var(--body)}
+#product-page .half-tabs small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;margin-top:3px;color:var(--text)}
+#product-page .half-tabs b{font-size:11px;margin-left:auto}
+#product-page .half-editing-note{font:400 11px/1.5 var(--body);color:var(--muted);margin:0 0 12px}
+#product-page .customize-footer,#product-page .customize-fine{grid-row:4}
+#product-page .customize-footer{min-width:0}
+#product-page select:focus-visible{outline:2px solid #ff6680;outline-offset:3px}
+@media(max-width:900px){
+  #product-page .product-config{gap:14px}
+  #product-page .product-page-intro{grid-template-columns:110px minmax(0,1fr);column-gap:18px;min-height:110px;margin:10px 0 18px}
+  #product-page .product-page-photo{width:110px;height:110px}
+  #product-page .customize-size{flex-basis:55%;min-width:0}
+  #product-page .pizza-mode{flex:1;min-width:0}
+  #product-page .product-sizes>button{padding:8px;gap:7px}
+  #product-page .pizza-mode-options button{padding:8px;gap:7px}
+}
+@media(max-width:600px){
+  #product-page .product-page-intro{grid-template-columns:88px minmax(0,1fr);gap:12px 14px;min-height:88px;margin:10px 0 18px}
+  #product-page .product-page-photo{width:88px;height:88px;grid-row:1}
+  #product-page .product-page-heading{align-self:center}
+  #product-page .product-page-heading .eyebrow{font-size:10px;letter-spacing:1px;margin-bottom:6px}
+  #product-page #product-title{font-size:clamp(28px,6.4vw,38px);overflow-wrap:anywhere}
+  #product-page .product-title-row{gap:8px}
+  #product-page .product-page-back{font-size:10px;gap:4px;padding:8px;min-height:36px}
+  #product-page .product-page-back .icon{width:13px;height:13px}
+  #product-page .product-description{grid-column:1/-1;font-size:12px;line-height:1.6}
+  #product-page .customize-size{flex-basis:100%}
+  #product-page .pizza-mode{flex-basis:100%;display:flex;align-items:center;gap:12px}
+  #product-page .pizza-mode legend{float:left;margin:0;max-width:75px}
+  #product-page .pizza-mode-options{flex:1}
+  #product-page .pizza-mode-options button{min-height:38px}
+  #product-page .product-sizes>button{min-height:46px;padding:8px 12px}
+  #product-page .half-choices{gap:8px;margin-bottom:22px}
+  #product-page .half-choice{padding:10px;gap:6px}
+  #product-page .half-choice select{font-size:16px}
+  #product-page .half-tabs button{padding:8px;gap:7px}
+  #product-page .half-tabs small{font-size:12px}
+}
+@media(max-width:370px){
+  #product-page .product-page-intro{grid-template-columns:64px minmax(0,1fr);column-gap:10px}
+  #product-page .product-page-photo{width:64px;height:64px}
+  #product-page .product-page-back{border:0;padding-inline:0;font-size:9px}
+  #product-page .half-tabs .pizza-disc{width:16px;height:16px}
+}
+@media(prefers-reduced-motion:reduce){#product-page .product-sizes>button{transition:none}}
+@media(max-width:370px){
+  #product-page .product-sizes>button{min-width:0;padding:8px 7px;gap:6px}
+  #product-page .product-sizes>button>[data-base-size]{font-size:11px}
+  #product-page .size-disc{width:18px;height:18px}
+  #product-page .size-disc-40{width:23px;height:23px}
+}

@@ -15,7 +15,7 @@ function getNotice() {
   return notice;
 }
 
-export function showCartFeedback({ name, image, size, quantity = 1, updated = false }) {
+export function showCartFeedback({ name, image, secondImage, size, quantity = 1, updated = false }) {
   const element = getNotice();
   clearTimeout(dismissTimer);
   clearTimeout(pulseTimer);
@@ -29,6 +29,13 @@ export function showCartFeedback({ name, image, size, quantity = 1, updated = fa
     img.alt = '';
     img.width = 92;
     img.height = 92;
+    photo.append(img);
+  }
+  if (secondImage) {
+    photo.classList.add('pizza-composite');
+    const img = document.createElement('img');
+    img.src = `./${secondImage}`;
+    img.alt = '';
     photo.append(img);
   }
   const check = document.createElement('span');

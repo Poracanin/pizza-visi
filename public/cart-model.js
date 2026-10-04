@@ -16,19 +16,44 @@ export function normalizeLine(data, input) {
   const size = item.prices.length ? (Number(input.size) === 40 ? 40 : 30) : null;
   const quantity = Math.min(MAX_QUANTITY, Math.max(1, Math.floor(Number(input.quantity) || 1)));
   const allowed = new Set(data.categories.filter(c => ADDON_CATEGORIES.includes(c.id)).flatMap(c => c.items.map(i => i.id)));
-  const extras = item.categoryId === 'pizzy' && Array.isArray(input.extras) ? [...new Set(input.extras.filter(id => allowed.has(id)))].sort() : [];
-  return { itemId: item.id, size, quantity, extras, note: typeof input.note === 'string' ? input.note.trim().slice(0, 180) : '' };
+  const cleanExtras = (values, ids = allowed) => Array.isArray(values) ? [...new Set(values.filter(id => ids.has(id)))].sort() : [];
+  let extras = item.categoryId === 'pizzy' ? cleanExtras(input.extras) : [];
+  let halves;
+  if (input.halves !== undefined) {
+    // Never silently turn a broken half-and-half order into a different whole pizza.
+    if (item.categoryId !== 'pizzy' || !Array.isArray(input.halves) || input.halves.length !== 2 || input.halves[0]?.itemId !== item.id || input.halves.some(half => getItem(data, half?.itemId)?.categoryId !== 'pizzy')) return null;
+    const toppings = new Set(data.categories.find(c => c.id === 'dej-si-navic').items.map(i => i.id));
+    halves = input.halves.map(half => ({ itemId: half.itemId, extras: cleanExtras(half.extras, toppings) }));
+    extras = extras.filter(id => !toppings.has(id)); // Crust and sauces belong to the whole pizza.
+  }
+  return { itemId: item.id, size, quantity, extras, ...(halves ? { halves } : {}), note: typeof input.note === 'string' ? input.note.trim().slice(0, 180) : '' };
 }
-export const lineKey = line => JSON.stringify([line.itemId, line.size, [...line.extras].sort(), line.note]);
+export const lineKey = line => JSON.stringify([line.itemId, line.size, [...line.extras].sort(), line.note, ...(line.halves ? [line.halves.map(half => [half.itemId, [...half.extras].sort()])] : [])]);
+export const cloneLine = line => structuredClone(line);
 export function mergeLine(cart, line, replaceIndex = -1) {
-  const next = cart.filter((_, index) => index !== replaceIndex).map(item => ({ ...item, extras: [...item.extras] }));
+  const next = cart.filter((_, index) => index !== replaceIndex).map(cloneLine);
   const match = next.find(item => lineKey(item) === lineKey(line));
   if (match) match.quantity = Math.min(MAX_QUANTITY, match.quantity + line.quantity);
-  else next.push({ ...line, extras: [...line.extras] });
+  else next.push(cloneLine(line));
   return next;
 }
 export function unitPrice(data, line) {
-  return itemPrice(getItem(data, line.itemId), line.size) + line.extras.reduce((sum, id) => sum + itemPrice(getItem(data, id), line.size), 0);
+  const base = basePrice(data, line);
+  const extras = [...line.extras, ...(line.halves || []).flatMap(half => half.extras)];
+  // Each half's toppings cost the normal full amount, even when selected on both halves.
+  return base + extras.reduce((sum, id) => sum + itemPrice(getItem(data, id), line.size), 0);
+}
+export function basePrice(data, line, size = line.size) {
+  return Math.max(...(line.halves || [line]).map(part => itemPrice(getItem(data, part.itemId), size)));
+}
+const displayName = item => item.name.replace(/^\d+\.\s*/, '').replace(/\s*🌶️?/gu, '').trim();
+export function lineName(data, line) {
+  return line.halves ? line.halves.map(half => `½ ${displayName(getItem(data, half.itemId))}`).join(' + ') : displayName(getItem(data, line.itemId));
+}
+export function lineDetails(data, line) {
+  const details = (line.halves || []).map((half, index) => `${index + 1}. půlka · ${displayName(getItem(data, half.itemId))}: ${half.extras.length ? '+ ' + half.extras.map(id => displayName(getItem(data, id))).join(', ') : 'bez přísad navíc'}`);
+  if (line.extras.length) details.push(`${line.halves ? 'K celé pizze: ' : '+ '}${line.extras.map(id => displayName(getItem(data, id))).join(', ')}`);
+  return details;
 }
 export function cartTotals(data, cart, fulfillment = 'delivery') {
   const subtotal = cart.reduce((sum, line) => sum + unitPrice(data, line) * line.quantity, 0);

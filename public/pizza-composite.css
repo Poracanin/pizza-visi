@@ -1,0 +1,12 @@
+/* Both images keep their full diameter; only their visible half is clipped. */
+.pizza-composite{position:relative;overflow:hidden;border-radius:50%;isolation:isolate}
+.pizza-composite>img{position:absolute!important;inset:0;width:100%!important;height:100%!important;max-width:none;object-fit:cover!important;border-radius:50%;margin:0}
+.pizza-composite>img:first-child{clip-path:inset(0 50% 0 0)}
+.pizza-composite>img:nth-child(2){clip-path:inset(0 0 0 50%)}
+.pizza-composite::after{content:'';position:absolute;inset:4% auto 4% 50%;width:1px;background:#fff9;pointer-events:none}
+figure.cart-line-image{margin:0;mix-blend-mode:normal}
+figure.cart-line-image img{width:100%;height:100%;object-fit:contain}
+.review-item .pizza-composite{width:64px;height:64px;flex:none}
+
+.cart-feedback-photo.pizza-composite{overflow:visible}
+figure.cart-line-image:has(.product-photo-pizza){border-radius:50%;overflow:hidden}

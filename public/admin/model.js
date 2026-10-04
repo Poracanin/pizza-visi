@@ -1,5 +1,6 @@
 import {stockSummary, makeInitialBatches, addBatch, allocateBatches, validateBatches} from './inventory.js';
 import {deliveryAssignment, removeDeliveryOrder, validateDeliveryPlans, platformCourier, migrateCourierPolicy} from './delivery.js?v=bb45e9a7';
+import { normalizeLine } from '../cart-model.js?v=half-pizza-1';
 // Amounts are whole grams or millilitres. Mutations are pure: one complete state
 // is persisted only after the entire operation succeeds.
 export const SOURCES = ['web', 'pos', 'wolt', 'foodora', 'bolt'];
@@ -74,11 +75,15 @@ export function requirements(state, order, seed, now = new Date().toISOString())
   const amounts = {};
   for (const line of order.lines) {
     if (line.size === null) continue; // Drinks are sold by piece; this stock module covers pizza ingredients.
-    const recipe = state.recipes[line.pizzaId]?.[line.size];
-    validateRecipe(recipe, seed);
-    for (const [id, amount] of Object.entries(recipe)) amounts[id] = (amounts[id] || 0) + amount * line.quantity;
+    const parts = line.halves || [{ itemId: line.pizzaId }];
+    for (const part of parts) {
+      const recipe = state.recipes[part.itemId]?.[line.size];
+      validateRecipe(recipe, seed);
+      for (const [id, amount] of Object.entries(recipe)) amounts[id] = (amounts[id] || 0) + amount * line.quantity / parts.length;
+    }
   }
-  return Object.entries(amounts).map(([id, needed]) => {
+  return Object.entries(amounts).map(([id, amount]) => {
+    const needed = Math.ceil(amount); // Stock is recorded in whole g/ml; round only after summing both halves.
     const ingredient = seed.ingredients.find(i => i.id === id);
     const summary = stockSummary(state, order.branchId, id, now);
     const available = summary.available;
@@ -186,6 +191,11 @@ export function restoreState(raw, site, seed) {
     for (const line of order.lines) {
       const item = products(site).find(p => p.id === line.pizzaId);
       if (!item || (item.category === 'pizzy' ? ![30, 40].includes(line.size) : line.size !== null) || !integer(line.quantity, 1, 20)) fail('Položka objednávky je neplatná.');
+      if (line.halves !== undefined) {
+        const normalized = normalizeLine(site, { ...line, itemId: line.pizzaId });
+        if (!normalized || line.halves.some((half, index) => typeof half.name !== 'string' || !Array.isArray(half.extraNames) || half.extraNames.some(name => typeof name !== 'string') || !Array.isArray(half.extras) || half.extras.length !== normalized.halves[index].extras.length || half.extras.some(id => !normalized.halves[index].extras.includes(id)))) fail('Půlky pizzy nejsou platné.');
+        if (line.size === 40 || line.extras?.length || line.halves.some(half => half.extras.length)) order.inventoryIncomplete = true;
+      }
     }
     const deducted = ['preparing', 'ready', 'completed'].includes(order.status);
     if (order.handoff) {

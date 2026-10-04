@@ -34,14 +34,20 @@ Každá pobočka začíná sedmi smyšlenými objednávkami. Dvě už zahájily 
 
 ## Ukládání a omezení
 
-Jde o statické **veřejné demo bez přihlášení**. Není připojené k objednávkám veřejného webu, k platební bráně ani k API rozvozových platforem. Tlačítka žádné reálné objednávky nepotvrzují a žádné platby neprovádějí.
+Jde o statické **veřejné demo bez přihlášení**. Objednávky z veřejného webu ukládá do stejné místní administrace v prohlížeči. Není připojené k platební bráně ani k API rozvozových platforem. Tlačítka žádné reálné objednávky nepotvrzují a žádné platby neprovádějí.
 
 Jeden záznam `localStorage` pod klíčem `pizza-visi-pos-demo-v1` obsahuje zásoby, šarže, receptury, objednávky a pohyby ve formátu verze 2. Klíč úložiště zůstává stejný kvůli převodu předchozích dat. Zápis se provede až po úspěšné validaci celé operace. U moderních prohlížečů podporujících Web Locks se úpravy z různých oken stejného prohlížeče provádějí postupně nad aktuálními daty. Bez Web Locks používejte jedno okno. Změna receptury v jiném okně během editace vyvolá upozornění místo přepsání.
 
-Při převodu verze 1 se zachová skutečný uložený stav zásob i historické odečty. Protože stará evidence neznala trvanlivost, převedené zásoby mají nevyplněná data, jsou označené „Doplnit datum“ a vyžadují doplnění v přehledu šarží před použitím. Čekající demo objednávky 40 cm se převedou na 30 cm a přepočítají; již zahájené či historické objednávky se nepřepisují. Nová administrativní objednávka může obsahovat pouze pizzu 30 cm. Veřejný zákaznický web zatím zůstává beze změny.
+Při převodu verze 1 se zachová skutečný uložený stav zásob i historické odečty. Protože stará evidence neznala trvanlivost, převedené zásoby mají nevyplněná data, jsou označené „Doplnit datum“ a vyžadují doplnění v přehledu šarží před použitím. Čekající demo objednávky 40 cm se převedou na 30 cm a přepočítají; již zahájené či historické objednávky se nepřepisují. Nová administrativní objednávka může obsahovat pouze pizzu 30 cm. Webové objednávky podporují také 40 cm a přísady; bez odpovídajících skladových receptur je lze uložit a potvrdit, ale nelze zahájit přípravu.
 
 Data se nesdílejí mezi zařízeními či odlišnými adresami webu. Smazání dat prohlížeče odstraní demo stav. Nedostupné úložiště, chyba zápisu nebo poškozená uložená data jsou oznámeny; poškozená data se tiše nenahrazují. Pro skutečný provoz je potřeba serverová databáze, přihlášení a role, serverové transakce a audit a skutečné integrace.
 
 ## Ověření a nasazení
 
 `npm test` zahrnuje pokrytí receptur 30 cm, násobení množství, nedostatek zásob, opakované zahájení, obnovu, oddělení poboček, naskladnění, FEFO, blokaci prošlých a nedatovaných šarží, přechod přes pražskou půlnoc, opravy dat příjmu, vyřazení, atomické změny norem, souběžné konflikty, migraci předchozího formátu, storno a nápoje. GitHub Actions po úspěšných testech a `npm run build` nasadí veřejný web i složku `admin/` společně.
+
+## Pizza půl na půl z webu
+
+V editoru lze zvolit dvě pizzy stejného průměru a přísady pro každou půlku zvlášť. Základní cena je cena dražší z obou pizz. Každá přísada má běžnou plnou cenu pro vybraný průměr; pokud je na obou půlkách, účtuje se dvakrát. Okraje a omáčky jsou pro celou pizzu, krabice se připočte jednou za kus.
+
+Košík uchovává obě konfigurace, jejich úpravy a složenou fotografii. Objednávka v administraci a potvrzení zákazníkovi uvádí příchutě a přísady samostatně pro 1. a 2. půlku. Prostá pizza napůl 30 cm čerpá polovinu každé receptury; součet za objednávku se zaokrouhlí nahoru na celé g/ml. Pro 40 cm nebo přísady dál platí stávající omezení chybějících skladových receptur.

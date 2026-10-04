@@ -1,4 +1,4 @@
-import { getItem, lineKey } from './cart-model.js';
+import { getItem, lineKey } from './cart-model.js?v=half-pizza-1';
 export const PRODUCT_CATEGORIES = ['pizzy', 'napoje', 'vino-prosecco'];
 
 export function productHash(itemId, size = 30) {

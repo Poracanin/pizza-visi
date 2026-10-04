@@ -3,8 +3,8 @@ import { itemPrice, matchesItem, validBranch } from './menu-utils.js';
 import { createPrivacyBanner } from './privacy-banner.js';
 import { loadRuianAddresses } from './ruian-addresses.js';
 import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js';
-import { createOrdering } from './ordering.js?v=address-touch-5';
-import { showCartFeedback } from './cart-feedback.js';
+import { createOrdering } from './ordering.js?v=half-pizza-1';
+import { showCartFeedback } from './cart-feedback.js?v=half-pizza-1';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
