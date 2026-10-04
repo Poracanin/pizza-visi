@@ -1,9 +1,9 @@
-/* Recipe controls share one active half, including the compact scroll toolbar. */
+/* Extra toppings follow the active half; ingredient removal covers the whole pizza. */
 #product-page .product-page-back{min-height:44px;padding:10px 15px;border:1px solid #ff526b;border-radius:10px;background:#b91432;color:#fff;font:600 12px/1.2 var(--body);box-shadow:0 3px 12px #d9153820}
 #product-page .product-page-back:hover{background:#d91538;border-color:#ff8194;color:#fff}
 #product-page .product-page-back .icon{width:18px;height:18px}
 #product-page .product-page-body .pizza-base{margin:0 0 25px}
-#product-page .pizza-base legend{display:flex;align-items:center;gap:12px;width:100%;font:400 23px/1.2 var(--display);margin-bottom:12px}
+#product-page .product-page-body .pizza-base legend{display:flex;align-items:center;gap:12px;width:100%;font:500 11px/1.4 var(--body);color:var(--muted);letter-spacing:.5px;margin-bottom:7px}
 #product-page .pizza-base legend>span{font:400 11px/1.2 var(--body);color:var(--muted);letter-spacing:0;margin-left:auto}
 #product-page .pizza-base-options{display:flex;gap:5px;padding:4px;border:1px solid var(--line);border-radius:12px;background:#08080980}
 #product-page .pizza-base-options button{--base-color:#ed9a63;--base-ink:#1f1007;display:flex;align-items:center;gap:10px;flex:1;min-width:0;min-height:48px;padding:9px 12px;border:1px solid transparent;border-radius:8px;color:#efb08b;font:500 12px/1.3 var(--body);transition:background .18s,color .18s}
@@ -26,11 +26,13 @@
 #product-page .removal-options{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding-bottom:16px}
 #product-page .removal-options label{display:flex;align-items:center;gap:8px;min-height:44px;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font:400 12px/1.4 var(--body);cursor:pointer}
 #product-page .removal-options input{width:17px;height:17px;margin:0;accent-color:#d91538;flex:none}
-#product-page .removal-options label>span::first-letter{text-transform:uppercase}
-#product-page .removal-options label:has(:checked){border-color:#ff48658c;background:#d9153812}
-#product-page .removal-options label:has(:checked)>span{text-decoration:line-through;text-decoration-color:#ff8194}
+#product-page .removal-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+#product-page .removal-copy>span::first-letter{text-transform:uppercase}
+#product-page .removal-copy>small{color:var(--muted);font-size:10px}
+#product-page .removal-options label:has(:is(:checked,:indeterminate)){border-color:#ff48658c;background:#d9153812}
+#product-page .removal-options label:has(:checked) .removal-copy>span{text-decoration:line-through;text-decoration-color:#ff8194}
 #product-page .removal-options label>small{margin-left:auto;color:#ff8194;font-size:10px;visibility:hidden}
-#product-page .removal-options label:has(:checked)>small{visibility:visible}
+#product-page .removal-options label:has(:is(:checked,:indeterminate))>small{visibility:visible}
 #product-page summary:focus-visible{outline:2px solid #ff6680;outline-offset:3px}
 
 #product-page .product-scroll-summary{position:fixed;top:var(--site-header-height);inset-inline:0;z-index:19;padding:6px max(32px,calc((100vw - 1160px)/2));background:#151516f7;border-bottom:1px solid #ffffff25;box-shadow:0 8px 18px #0003;backdrop-filter:blur(14px)}

@@ -1,5 +1,5 @@
 import { itemPrice } from './menu-utils.js';
-import { normalizeCustomization, customizationFields, customizationDetails } from './pizza-customization.js';
+import { normalizeCustomization, customizationFields, customizationDetails } from './pizza-customization.js?v=combined-removals-1';
 
 export const MAX_QUANTITY = 20;
 export const ADDON_CATEGORIES = ['dej-si-navic', 'chutne-okraje', 'omacky'];

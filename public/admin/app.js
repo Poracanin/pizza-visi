@@ -1,7 +1,7 @@
 import {stockSummary, batchStatus, daysLeft, localDay, updateBatch, discardBatch} from './inventory.js';
-import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, ensureDemoDeliveryOrders, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=recipe-options-1';
+import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, ensureDemoDeliveryOrders, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=combined-removals-1';
 import {normalizeSearch, itemPrice} from '../menu-utils.js';
-import {customizationDetails} from '../pizza-customization.js';
+import {customizationDetails} from '../pizza-customization.js?v=combined-removals-1';
 import {COURIERS, deliveryOrders, deliveryPlan, deliveryAssignment, saveDeliveryPlan, platformCourier, toggleDeliveryStop} from './delivery.js?v=bb45e9a7';
 
 const $ = selector => document.querySelector(selector);

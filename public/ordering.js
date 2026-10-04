@@ -1,11 +1,11 @@
 import { itemPrice, normalizeSearch } from './menu-utils.js';
-import { MAX_QUANTITY, getItem, normalizeLine, mergeLine, unitPrice, cartTotals, restoreCart, serializeCart, basePrice, lineName, lineDetails, cloneLine } from './cart-model.js?v=recipe-options-1';
-import { PRODUCT_CATEGORIES, productHash, parseProductRoute, editSnapshot, findEditingLine } from './product-route.js?v=recipe-options-1';
+import { MAX_QUANTITY, getItem, normalizeLine, mergeLine, unitPrice, cartTotals, restoreCart, serializeCart, basePrice, lineName, lineDetails, cloneLine } from './cart-model.js?v=combined-removals-1';
+import { PRODUCT_CATEGORIES, productHash, parseProductRoute, editSnapshot, findEditingLine } from './product-route.js?v=combined-removals-1';
 import { loadRuianAddresses, searchAddresses, resolveAddress } from './ruian-addresses.js';
-import { submitLocalOrder } from './storefront-orders.js?v=recipe-options-1';
+import { submitLocalOrder } from './storefront-orders.js?v=combined-removals-1';
 import { mountPickupMap } from './pickup-map.js';
 import { bindAddressSuggestionEvents } from './address-suggestion-events.js';
-import { PIZZA_BASES, recipeBase, removableIngredients, customizationFields } from './pizza-customization.js';
+import { PIZZA_BASES, recipeBase, removableIngredients, customizationFields, removalChoices, setIngredientRemoval } from './pizza-customization.js?v=combined-removals-1';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -246,14 +246,26 @@ export function createOrdering(context) {
   }
   const editingPart = () => draft.halves ? draft.halves[activeHalf] : draft;
   function baseOptions() {
+    if (draft.halves) return '';
     const part = editingPart();
     const base = part.base || recipeBase(getItem(data, part.itemId));
     return `<fieldset class="pizza-base"><legend>Vyber základ <span>změna zdarma</span></legend><div class="pizza-base-options">${Object.entries(PIZZA_BASES).map(([id, label]) => `<button type="button" data-pizza-base="${id}" aria-pressed="${base === id}"><i class="base-swatch" aria-hidden="true"></i><span>${label.replace(' základ', '')}</span>${icon('check')}</button>`).join('')}</div></fieldset>`;
   }
   function removalOptions(open = false) {
-    const part = editingPart();
-    const removed = part.removedIngredients || [];
-    return `<details class="ingredient-removal" ${open ? 'open' : ''}><summary><span><strong>Něco vynechat?</strong><small>Původní suroviny${draft.halves ? ` · ${activeHalf + 1}. půlka` : ''}</small></span><span class="removal-count">${removed.length ? removed.length + ' odebráno' : 'Upravit'}</span>${icon('chev')}</summary><p>Zaškrtnuté suroviny vynecháme. Cena zůstává stejná.</p><div class="removal-options">${removableIngredients(getItem(data, part.itemId)).map(ingredient => `<label><input type="checkbox" data-remove-ingredient="${esc(ingredient)}" ${removed.includes(ingredient) ? 'checked' : ''}><span>${esc(ingredient)}</span><small>vynechat</small></label>`).join('')}</div></details>`;
+    const choices = removalChoices(draft, id => getItem(data, id));
+    const removed = choices.filter(choice => choice.removed).length;
+    return `<details class="ingredient-removal" ${open ? 'open' : ''}><summary><span><strong>Něco vynechat?</strong><small>${draft.halves ? 'Suroviny z obou půlek' : 'Původní suroviny'}</small></span><span class="removal-count">${removed ? removed + ' odebráno' : 'Upravit'}</span>${icon('chev')}</summary><p>${draft.halves ? 'Společné suroviny vynecháme z obou půlek.' : 'Zaškrtnuté suroviny vynecháme.'} Cena zůstává stejná.</p><div class="removal-options">${choices.map(choice => `<label><input type="checkbox" data-remove-ingredient="${esc(choice.ingredient)}" ${choice.checked ? 'checked' : ''}><span class="removal-copy"><span>${esc(choice.ingredient)}</span>${draft.halves ? `<small>${choice.targets.length === 2 ? 'Obě půlky' : `${choice.targets[0].index + 1}. půlka`}</small>` : ''}</span><small class="removal-status">${choice.mixed ? 'část vynechána' : 'vynechat'}</small></label>`).join('')}</div></details>`;
+  }
+  function syncRemovalChoices() {
+    const choices = removalChoices(draft, id => getItem(data, id));
+    $$('[data-remove-ingredient]', productPage).forEach(input => {
+      const choice = choices.find(choice => choice.ingredient === input.dataset.removeIngredient);
+      input.checked = choice.checked;
+      input.indeterminate = choice.mixed;
+      $('.removal-status', input.closest('label')).textContent = choice.mixed ? 'část vynechána' : 'vynechat';
+    });
+    const count = choices.filter(choice => choice.removed).length;
+    $('.removal-count', productPage).textContent = count ? count + ' odebráno' : 'Upravit';
   }
   function syncHalfTabs() {
     for (const button of $$('[data-edit-half]', productPage)) {
@@ -304,6 +316,7 @@ export function createOrdering(context) {
       <div class="product-config">${item.prices.length ? `<fieldset class="customize-size"><legend>Velikost pizzy</legend><div class="product-sizes">${[30,40].map(size => `<button type="button" data-option-size="${size}" aria-pressed="${draft.size === size}"><i class="size-disc size-disc-${size}" aria-hidden="true"></i><span class="size-label">${size}<small>cm</small></span><span data-base-size="${size}">${money(basePrice(data, draft, size))}</span></button>`).join('')}</div></fieldset><fieldset class="pizza-mode"><legend>Na co máš chuť?</legend><div class="pizza-mode-options"><button type="button" data-pizza-mode="whole" aria-pressed="${!draft.halves}"><i class="pizza-disc disc-whole" aria-hidden="true"></i>Celá pizza</button><button type="button" data-pizza-mode="half" aria-pressed="${Boolean(draft.halves)}"><i class="pizza-disc disc-split" aria-hidden="true"></i>Půl na půl</button></div></fieldset>` : `<p class="product-single-price">${money(itemPrice(item))}</p>`}${draft.halves ? '<p class="half-price-note">Cena podle dražší pizzy. Přísady pro každou půlku za běžnou cenu. Okraje a omáčka jsou k celé pizze.</p>' : ''}</div>
       <div class="product-page-body ${pizza ? '' : 'product-page-simple'}">${pizza ? `<section class="product-page-extras" aria-labelledby="product-extras-title">${halfChoices()}<div id="half-tabs">${halfTabs()}</div><div id="base-options">${baseOptions()}</div><h2 id="product-extras-title">Suroviny navíc</h2><div class="addon-grid" id="topping-options">${addonOptions('dej-si-navic')}</div><div id="removal-options">${removalOptions()}</div></section><aside class="product-page-aside"><section aria-labelledby="product-crust-title"><h2 id="product-crust-title">Něco do okrajů</h2><div class="addon-grid addon-grid-single">${addonOptions('chutne-okraje')}</div></section><section aria-labelledby="product-sauce-title"><h2 id="product-sauce-title">Omáčka k pizze</h2><div class="addon-grid addon-grid-single">${addonOptions('omacky')}</div></section>${note}</aside>` : note}</div>
       <p class="customize-fine">${pizza ? 'Krabici připočítáme v košíku podle velikosti pizzy. ' : ''}Informace o alergenech ti sdělí pobočka.</p><div class="product-page-purchase customize-footer"><div id="product-quantity">${stepper(draft.quantity, 'draft', lineName(data, draft))}</div><button class="button" data-add-cart><span>${productSession.snapshot ? 'Uložit úpravy' : 'Přidat do košíku'}</span><strong id="product-total" aria-live="polite">${money(unitPrice(data, draft) * draft.quantity)}</strong>${icon('arrow')}</button></div></div>`;
+    if (pizza) syncRemovalChoices();
     syncProductSummary();
   }
   function updateProductPrice() {
@@ -628,16 +641,22 @@ export function createOrdering(context) {
     if (target.dataset.editHalf !== undefined && draft.halves) {
       activeHalf = Number(target.dataset.editHalf);
       syncHalfTabs();
-      $('#base-options', productPage).innerHTML = baseOptions();
-      const removalOpen = $('.ingredient-removal', productPage).open;
-      $('#removal-options', productPage).innerHTML = removalOptions(removalOpen);
       $('#topping-options', productPage).innerHTML = addonOptions('dej-si-navic');
     }
-    if (target.dataset.pizzaBase && Object.hasOwn(PIZZA_BASES, target.dataset.pizzaBase)) {
+    if (!draft.halves && target.dataset.pizzaBase && Object.hasOwn(PIZZA_BASES, target.dataset.pizzaBase)) {
       const part = editingPart();
+      const previousBase = removableIngredients(getItem(data, part.itemId), part)[0];
+      const changed = target.dataset.pizzaBase !== (part.base || recipeBase(getItem(data, part.itemId)));
       part.base = target.dataset.pizzaBase;
       if (part.base === recipeBase(getItem(data, part.itemId))) delete part.base;
+      if (changed && part.removedIngredients?.includes(previousBase)) {
+        part.removedIngredients = part.removedIngredients.filter(ingredient => ingredient !== previousBase);
+        if (!part.removedIngredients.length) delete part.removedIngredients;
+      }
       $$('[data-pizza-base]', productPage).forEach(button => button.setAttribute('aria-pressed', String(button === target)));
+      const removalOpen = $('.ingredient-removal', productPage).open;
+      $('#removal-options', productPage).innerHTML = removalOptions(removalOpen);
+      syncRemovalChoices();
     }
     if (target.hasAttribute('data-add-cart')) addDraft();
     if (target.dataset.quantity === 'draft') {
@@ -658,11 +677,8 @@ export function createOrdering(context) {
       if (draft.halves) syncHalfTabs();
     }
     if (event.target.dataset.removeIngredient) {
-      const part = editingPart();
-      const removed = new Set(part.removedIngredients || []);
-      if (event.target.checked) removed.add(event.target.dataset.removeIngredient); else removed.delete(event.target.dataset.removeIngredient);
-      if (removed.size) part.removedIngredients = [...removed].sort(); else delete part.removedIngredients;
-      $('.removal-count', productPage).textContent = removed.size ? removed.size + ' odebráno' : 'Upravit';
+      setIngredientRemoval(draft, id => getItem(data, id), event.target.dataset.removeIngredient, event.target.checked);
+      syncRemovalChoices();
     }
   });
   productPage.addEventListener('input', event => { if (event.target.id === 'product-note' && draft) draft.note = event.target.value; });

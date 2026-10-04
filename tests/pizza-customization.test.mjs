@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { normalizeLine, unitPrice, lineDetails, lineKey, mergeLine, restoreCart, serializeCart } from '../public/cart-model.js';
-import { recipeBase, removableIngredients, hasRecipeChanges } from '../public/pizza-customization.js';
+import { recipeBase, removableIngredients, hasRecipeChanges, removalChoices, setIngredientRemoval } from '../public/pizza-customization.js';
 import { createStorefrontOrder, submitLocalOrder } from '../public/storefront-orders.js';
 import { createState, restoreState, requirements, STORAGE_KEY } from '../public/admin/model.js';
 import { editSnapshot, findEditingLine } from '../public/product-route.js';
@@ -24,18 +24,71 @@ test('Default recipes remain compatible; both base swaps and removals are free a
   }
   assert.equal(recipeBase(mushroom), 'cream');
   assert.equal(recipeBase(data.categories.find(c => c.id === 'pizzy').items.find(item => item.id === '19-zeleninova')), 'cream');
-  assert.deepEqual(removableIngredients(margherita), ['mozzarella', 'oregano']);
+  assert.deepEqual(removableIngredients(margherita), ['drcená rajčata', 'mozzarella', 'oregano']);
   const original = whole();
   assert.equal(lineKey(original), JSON.stringify([original.itemId, 40, [], '']));
 });
 
-test('Unknown bases, ingredients from another recipe, base removals and changes on drinks are rejected', () => {
-  for (const options of [{ base: 'fake' }, { base: null }, { removedIngredients: ['salám pepperoni'] }, { removedIngredients: 'oregano' }, { removedIngredients: ['drcená rajčata'] }]) assert.equal(whole(options), null);
+test('Unknown bases, ingredients from another recipe and changes on drinks are rejected', () => {
+  for (const options of [{ base: 'fake' }, { base: null }, { removedIngredients: ['salám pepperoni'] }, { removedIngredients: 'oregano' }, { base: 'cream', removedIngredients: ['drcená rajčata'] }]) assert.equal(whole(options), null);
   assert.equal(half({ base: 'cream' }), null);
   assert.equal(half({ removedIngredients: ['oregano'] }), null);
   const wrongHalf = half(); wrongHalf.halves[0].removedIngredients = ['šunka – prosciutto cotto'];
   assert.equal(normalizeLine(data, wrongHalf), null);
   assert.equal(normalizeLine(data, { itemId: 'coca-cola-0-5l', base: 'cream' }), null);
+});
+
+const lookup = id => data.categories.find(c => c.id === 'pizzy').items.find(item => item.id === id);
+test('One combined list removes shared ingredients from both halves and unique ingredients only where present', () => {
+  const line = whole({ halves: [{ itemId: margherita.id, extras: [] }, { itemId: ham.id, extras: [] }] });
+  const choices = removalChoices(line, lookup);
+  assert.deepEqual(choices.map(choice => choice.ingredient), ['drcená rajčata', 'mozzarella', 'oregano', 'šunka – prosciutto cotto']);
+  assert.equal(choices.find(choice => choice.ingredient === 'mozzarella').targets.length, 2);
+  assert.equal(setIngredientRemoval(line, lookup, 'mozzarella', true), true);
+  assert.equal(setIngredientRemoval(line, lookup, 'šunka – prosciutto cotto', true), true);
+  assert.deepEqual(line.halves[0].removedIngredients, ['mozzarella']);
+  assert.deepEqual(line.halves[1].removedIngredients, ['mozzarella', 'šunka – prosciutto cotto']);
+  assert.equal(setIngredientRemoval(line, lookup, 'salám pepperoni', true), false);
+  assert.equal(unitPrice(data, line), 240);
+  assert.deepEqual(restoreCart(data, serializeCart([line])), [line]);
+  const { state, order } = createStorefrontOrder(createState(data, seed), request(line));
+  assert.deepEqual(restoreState(JSON.stringify(state), data, seed).orders[0].lines[0].halves.map(part => part.removedIngredients), line.halves.map(part => part.removedIngredients));
+  assert.equal(order.total, 263);
+  setIngredientRemoval(line, lookup, 'mozzarella', false);
+  assert.equal(line.halves[0].removedIngredients, undefined);
+  assert.deepEqual(line.halves[1].removedIngredients, ['šunka – prosciutto cotto']);
+});
+
+test('Previously saved one-half omissions remain mixed until explicitly changed in the combined list', () => {
+  const line = half();
+  let oregano = removalChoices(line, lookup).find(choice => choice.ingredient === 'oregano');
+  assert.equal(oregano.mixed, true);
+  assert.equal(oregano.checked, false);
+  assert.deepEqual(line.halves[1].removedIngredients, ['šunka – prosciutto cotto']);
+  setIngredientRemoval(line, lookup, 'oregano', true);
+  oregano = removalChoices(line, lookup).find(choice => choice.ingredient === 'oregano');
+  assert.equal(oregano.mixed, false);
+  assert.equal(oregano.checked, true);
+  setIngredientRemoval(line, lookup, 'oregano', false);
+  assert.equal(removalChoices(line, lookup).find(choice => choice.ingredient === 'oregano').removed, 0);
+});
+
+test('The combined list includes actual bases and merges case variants without losing per-half spelling', () => {
+  const vegetables = lookup('19-zeleninova');
+  const line = normalizeLine(data, { itemId: mushroom.id, size: 30, halves: [{ itemId: mushroom.id, extras: [] }, { itemId: vegetables.id, extras: [] }] });
+  const creams = removalChoices(line, lookup).filter(choice => choice.ingredient.toLowerCase().includes('smetana'));
+  assert.equal(creams.length, 1);
+  assert.equal(creams[0].targets.length, 2);
+  setIngredientRemoval(line, lookup, creams[0].ingredient, true);
+  assert.deepEqual(line.halves.map(part => part.removedIngredients), [['smetana (halta)'], ['Smetana (halta)']]);
+  assert.deepEqual(normalizeLine(data, line), line);
+  const explicitDefault = normalizeLine(data, { itemId: vegetables.id, size: 30, base: 'cream', removedIngredients: ['Smetana (halta)'] });
+  assert.deepEqual(normalizeLine(data, explicitDefault), explicitDefault);
+  const swapped = whole({ base: 'cream' });
+  assert.equal(removalChoices(swapped, lookup)[0].ingredient, 'smetana (halta)');
+  setIngredientRemoval(swapped, lookup, 'smetana (halta)', true);
+  assert.deepEqual(normalizeLine(data, swapped), swapped);
+  assert.equal(unitPrice(data, swapped), 220);
 });
 
 test('Each recipe stays distinct in cart merging, editing and browser persistence', () => {

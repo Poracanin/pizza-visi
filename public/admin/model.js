@@ -1,7 +1,7 @@
 import {stockSummary, makeInitialBatches, addBatch, allocateBatches, validateBatches} from './inventory.js';
 import {deliveryAssignment, removeDeliveryOrder, validateDeliveryPlans, platformCourier, migrateCourierPolicy} from './delivery.js?v=bb45e9a7';
-import { normalizeLine } from '../cart-model.js?v=recipe-options-1';
-import { hasRecipeChanges } from '../pizza-customization.js';
+import { normalizeLine } from '../cart-model.js?v=combined-removals-1';
+import { hasRecipeChanges } from '../pizza-customization.js?v=combined-removals-1';
 // Amounts are whole grams or millilitres. Mutations are pure: one complete state
 // is persisted only after the entire operation succeeds.
 export const SOURCES = ['web', 'pos', 'wolt', 'foodora', 'bolt'];
