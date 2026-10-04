@@ -1,10 +1,11 @@
 import { itemPrice, normalizeSearch } from './menu-utils.js';
-import { MAX_QUANTITY, getItem, normalizeLine, mergeLine, unitPrice, cartTotals, restoreCart, serializeCart, basePrice, lineName, lineDetails, cloneLine } from './cart-model.js?v=half-pizza-1';
-import { PRODUCT_CATEGORIES, productHash, parseProductRoute, editSnapshot, findEditingLine } from './product-route.js?v=half-pizza-1';
+import { MAX_QUANTITY, getItem, normalizeLine, mergeLine, unitPrice, cartTotals, restoreCart, serializeCart, basePrice, lineName, lineDetails, cloneLine } from './cart-model.js?v=recipe-options-1';
+import { PRODUCT_CATEGORIES, productHash, parseProductRoute, editSnapshot, findEditingLine } from './product-route.js?v=recipe-options-1';
 import { loadRuianAddresses, searchAddresses, resolveAddress } from './ruian-addresses.js';
-import { submitLocalOrder } from './storefront-orders.js?v=half-pizza-1';
+import { submitLocalOrder } from './storefront-orders.js?v=recipe-options-1';
 import { mountPickupMap } from './pickup-map.js';
 import { bindAddressSuggestionEvents } from './address-suggestion-events.js';
+import { PIZZA_BASES, recipeBase, removableIngredients, customizationFields } from './pizza-customization.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -240,21 +241,74 @@ export function createOrdering(context) {
     renderHalfPickerItems();
     openDialog(halfPicker);
   }
-  function halfTabs() {
-    return draft.halves ? `<div class="half-tabs" role="group" aria-label="Přísady pro půlku pizzy">${draft.halves.map((half, index) => `<button type="button" data-edit-half="${index}" aria-pressed="${activeHalf === index}"><i class="pizza-disc ${index ? 'disc-right' : 'disc-left'}" aria-hidden="true"></i><span>${index + 1}. půlka<small>${esc(name(getItem(data, half.itemId)))}</small></span><b>${half.extras.length ? '+' + half.extras.length : ''}</b></button>`).join('')}</div><p class="half-editing-note">Přísady přidáváš na ${activeHalf + 1}. půlku: <strong>${esc(name(getItem(data, draft.halves[activeHalf].itemId)))}</strong></p>` : '';
+  function halfTabs(compact = false) {
+    return draft.halves ? `<div class="half-tabs" role="group" aria-label="${compact ? 'Rychlé přepnutí půlky' : 'Upravit půlku pizzy'}">${draft.halves.map((half, index) => `<button type="button" data-edit-half="${index}" aria-pressed="${activeHalf === index}"><i class="pizza-disc ${index ? 'disc-right' : 'disc-left'}" aria-hidden="true"></i><span>${index + 1}. půlka<small>${esc(name(getItem(data, half.itemId)))}</small></span><b>${half.extras.length ? '+' + half.extras.length : ''}</b></button>`).join('')}</div>${compact ? '' : `<p class="half-editing-note">Upravuješ ${activeHalf + 1}. půlku: <strong>${esc(name(getItem(data, draft.halves[activeHalf].itemId)))}</strong></p>`}` : '';
   }
+  const editingPart = () => draft.halves ? draft.halves[activeHalf] : draft;
+  function baseOptions() {
+    const part = editingPart();
+    const base = part.base || recipeBase(getItem(data, part.itemId));
+    return `<fieldset class="pizza-base"><legend>Vyber základ <span>změna zdarma</span></legend><div class="pizza-base-options">${Object.entries(PIZZA_BASES).map(([id, label]) => `<button type="button" data-pizza-base="${id}" aria-pressed="${base === id}"><i class="base-swatch" aria-hidden="true"></i><span>${label.replace(' základ', '')}</span>${icon('check')}</button>`).join('')}</div></fieldset>`;
+  }
+  function removalOptions(open = false) {
+    const part = editingPart();
+    const removed = part.removedIngredients || [];
+    return `<details class="ingredient-removal" ${open ? 'open' : ''}><summary><span><strong>Něco vynechat?</strong><small>Původní suroviny${draft.halves ? ` · ${activeHalf + 1}. půlka` : ''}</small></span><span class="removal-count">${removed.length ? removed.length + ' odebráno' : 'Upravit'}</span>${icon('chev')}</summary><p>Zaškrtnuté suroviny vynecháme. Cena zůstává stejná.</p><div class="removal-options">${removableIngredients(getItem(data, part.itemId)).map(ingredient => `<label><input type="checkbox" data-remove-ingredient="${esc(ingredient)}" ${removed.includes(ingredient) ? 'checked' : ''}><span>${esc(ingredient)}</span><small>vynechat</small></label>`).join('')}</div></details>`;
+  }
+  function syncHalfTabs() {
+    for (const button of $$('[data-edit-half]', productPage)) {
+      const index = Number(button.dataset.editHalf);
+      button.setAttribute('aria-pressed', String(index === activeHalf));
+      $('b', button).textContent = draft.halves[index].extras.length ? '+' + draft.halves[index].extras.length : '';
+    }
+    const note = $('.half-editing-note', productPage);
+    if (note) note.innerHTML = `Upravuješ ${activeHalf + 1}. půlku: <strong>${esc(name(getItem(data, editingPart().itemId)))}</strong>`;
+  }
+  let productScrollFrame = 0;
+  function syncProductSummary() {
+    productScrollFrame = 0;
+    if (productPage.hidden) return;
+    const summary = $('.product-scroll-summary', productPage);
+    const intro = $('.product-page-intro', productPage);
+    if (!summary || !intro) return;
+    const headerBottom = $('.site-header').getBoundingClientRect().bottom;
+    const visible = intro.getBoundingClientRect().bottom <= headerBottom;
+    summary.hidden = !visible;
+    productPage.classList.toggle('has-product-summary', visible);
+    const compactTabs = $('.half-tabs', summary);
+    const originalTabs = $('#half-tabs .half-tabs', productPage);
+    const anchored = Boolean(visible && originalTabs && originalTabs.getBoundingClientRect().top <= headerBottom + $('.product-summary-identity', summary).getBoundingClientRect().height + 12);
+    productPage.classList.toggle('has-compact-halves', anchored);
+    if (compactTabs) {
+      compactTabs.hidden = !anchored;
+      const focused = document.activeElement;
+      const from = anchored ? originalTabs : compactTabs;
+      const to = anchored ? compactTabs : originalTabs;
+      if (from?.contains(focused) && focused.dataset.editHalf !== undefined) $('[data-edit-half="' + focused.dataset.editHalf + '"]', to)?.focus({ preventScroll: true });
+    }
+  }
+  function scheduleProductSummary() {
+    if (!productPage.hidden && !productScrollFrame) productScrollFrame = requestAnimationFrame(syncProductSummary);
+  }
+  window.addEventListener('scroll', scheduleProductSummary, { passive: true });
+  window.addEventListener('resize', scheduleProductSummary);
+  new ResizeObserver(scheduleProductSummary).observe($('.site-header'));
   function renderProduct() {
     const item = getItem(data, draft.itemId);
     const pizza = item.categoryId === 'pizzy';
     document.title = `${draft.halves ? 'Pizza půl na půl' : name(item)} – upravit | Pizza Visi`;
     const note = `<label class="customize-note">Poznámka k ${pizza ? 'pizze' : 'položce'} <span>nepovinné</span><textarea id="product-note" rows="2" maxlength="180" placeholder="${pizza ? 'Např. prosím rozkrájet…' : 'Něco nám chceš vzkázat?'}">${esc(draft.note)}</textarea></label>`;
     $('#product-content', productPage).innerHTML = `<div class="product-page-shell">
+      ${pizza ? `<div class="product-scroll-summary" hidden><div class="product-summary-identity">${productPhoto(draft)}<div><strong>${draft.halves ? 'Půl na půl' : esc(name(item))}</strong>${draft.halves ? `<small>${esc(lineName(data, draft))}</small>` : ''}</div><span data-summary-size>${draft.size} cm</span></div>${halfTabs(true)}</div>` : ''}
       <div class="product-page-intro">${productPhoto(draft)}<div class="product-intro-copy product-page-heading"><p class="eyebrow">${pizza ? 'PIZZA PŘESNĚ PODLE TEBE' : 'NĚCO DOBRÉHO NAVÍC'}</p><div class="product-title-row"><h1 id="product-title">${draft.halves ? 'PŮL NA PŮL' : esc(name(item))}</h1><button class="product-back product-page-back" data-product-back>${icon('back')}<span>Zpět na menu</span></button></div></div><p class="product-description">${draft.halves ? esc(lineName(data, draft)) : esc(item.description || '')}</p></div>
       <div class="product-config">${item.prices.length ? `<fieldset class="customize-size"><legend>Velikost pizzy</legend><div class="product-sizes">${[30,40].map(size => `<button type="button" data-option-size="${size}" aria-pressed="${draft.size === size}"><i class="size-disc size-disc-${size}" aria-hidden="true"></i><span class="size-label">${size}<small>cm</small></span><span data-base-size="${size}">${money(basePrice(data, draft, size))}</span></button>`).join('')}</div></fieldset><fieldset class="pizza-mode"><legend>Na co máš chuť?</legend><div class="pizza-mode-options"><button type="button" data-pizza-mode="whole" aria-pressed="${!draft.halves}"><i class="pizza-disc disc-whole" aria-hidden="true"></i>Celá pizza</button><button type="button" data-pizza-mode="half" aria-pressed="${Boolean(draft.halves)}"><i class="pizza-disc disc-split" aria-hidden="true"></i>Půl na půl</button></div></fieldset>` : `<p class="product-single-price">${money(itemPrice(item))}</p>`}${draft.halves ? '<p class="half-price-note">Cena podle dražší pizzy. Přísady pro každou půlku za běžnou cenu. Okraje a omáčka jsou k celé pizze.</p>' : ''}</div>
-      <div class="product-page-body ${pizza ? '' : 'product-page-simple'}">${pizza ? `<section class="product-page-extras" aria-labelledby="product-extras-title">${halfChoices()}<h2 id="product-extras-title">Suroviny navíc</h2><div id="half-tabs">${halfTabs()}</div><div class="addon-grid" id="topping-options">${addonOptions('dej-si-navic')}</div></section><aside class="product-page-aside"><section aria-labelledby="product-crust-title"><h2 id="product-crust-title">Něco do okrajů</h2><div class="addon-grid addon-grid-single">${addonOptions('chutne-okraje')}</div></section><section aria-labelledby="product-sauce-title"><h2 id="product-sauce-title">Omáčka k pizze</h2><div class="addon-grid addon-grid-single">${addonOptions('omacky')}</div></section>${note}</aside>` : note}</div>
+      <div class="product-page-body ${pizza ? '' : 'product-page-simple'}">${pizza ? `<section class="product-page-extras" aria-labelledby="product-extras-title">${halfChoices()}<div id="half-tabs">${halfTabs()}</div><div id="base-options">${baseOptions()}</div><h2 id="product-extras-title">Suroviny navíc</h2><div class="addon-grid" id="topping-options">${addonOptions('dej-si-navic')}</div><div id="removal-options">${removalOptions()}</div></section><aside class="product-page-aside"><section aria-labelledby="product-crust-title"><h2 id="product-crust-title">Něco do okrajů</h2><div class="addon-grid addon-grid-single">${addonOptions('chutne-okraje')}</div></section><section aria-labelledby="product-sauce-title"><h2 id="product-sauce-title">Omáčka k pizze</h2><div class="addon-grid addon-grid-single">${addonOptions('omacky')}</div></section>${note}</aside>` : note}</div>
       <p class="customize-fine">${pizza ? 'Krabici připočítáme v košíku podle velikosti pizzy. ' : ''}Informace o alergenech ti sdělí pobočka.</p><div class="product-page-purchase customize-footer"><div id="product-quantity">${stepper(draft.quantity, 'draft', lineName(data, draft))}</div><button class="button" data-add-cart><span>${productSession.snapshot ? 'Uložit úpravy' : 'Přidat do košíku'}</span><strong id="product-total" aria-live="polite">${money(unitPrice(data, draft) * draft.quantity)}</strong>${icon('arrow')}</button></div></div>`;
+    syncProductSummary();
   }
   function updateProductPrice() {
+    const summarySize = $('[data-summary-size]', productPage);
+    if (summarySize) summarySize.textContent = draft.size + ' cm';
     $$('[data-option-size]', productPage).forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.optionSize) === draft.size)));
     $$('[data-base-size]', productPage).forEach(label => { label.textContent = money(basePrice(data, draft, Number(label.dataset.baseSize))); });
     const secondPrice = $('[data-second-half-price]', productPage);
@@ -558,11 +612,14 @@ export function createOrdering(context) {
     if (target.dataset.pizzaMode) {
       if (target.dataset.pizzaMode === 'half' && !draft.halves) {
         const toppings = new Set(data.categories.find(c => c.id === 'dej-si-navic').items.map(item => item.id));
-        draft.halves = [{ itemId: draft.itemId, extras: draft.extras.filter(id => toppings.has(id)) }, { itemId: draft.itemId, extras: [] }];
+        draft.halves = [{ itemId: draft.itemId, extras: draft.extras.filter(id => toppings.has(id)), ...customizationFields(draft) }, { itemId: draft.itemId, extras: [] }];
+        delete draft.base;
+        delete draft.removedIngredients;
         draft.extras = draft.extras.filter(id => !toppings.has(id));
         activeHalf = 0;
       } else if (target.dataset.pizzaMode === 'whole' && draft.halves) {
         draft.extras = [...draft.extras, ...draft.halves[0].extras].sort();
+        Object.assign(draft, customizationFields(draft.halves[0]));
         delete draft.halves;
       }
       renderProduct();
@@ -570,9 +627,17 @@ export function createOrdering(context) {
     }
     if (target.dataset.editHalf !== undefined && draft.halves) {
       activeHalf = Number(target.dataset.editHalf);
-      $('#half-tabs', productPage).innerHTML = halfTabs();
+      syncHalfTabs();
+      $('#base-options', productPage).innerHTML = baseOptions();
+      const removalOpen = $('.ingredient-removal', productPage).open;
+      $('#removal-options', productPage).innerHTML = removalOptions(removalOpen);
       $('#topping-options', productPage).innerHTML = addonOptions('dej-si-navic');
-      $(`[data-edit-half="${activeHalf}"]`, productPage).focus({ preventScroll: true });
+    }
+    if (target.dataset.pizzaBase && Object.hasOwn(PIZZA_BASES, target.dataset.pizzaBase)) {
+      const part = editingPart();
+      part.base = target.dataset.pizzaBase;
+      if (part.base === recipeBase(getItem(data, part.itemId))) delete part.base;
+      $$('[data-pizza-base]', productPage).forEach(button => button.setAttribute('aria-pressed', String(button === target)));
     }
     if (target.hasAttribute('data-add-cart')) addDraft();
     if (target.dataset.quantity === 'draft') {
@@ -590,7 +655,14 @@ export function createOrdering(context) {
       const selected = new Set(part.extras);
       if (event.target.checked) selected.add(event.target.dataset.addon); else selected.delete(event.target.dataset.addon);
       part.extras = [...selected].sort(); updateProductPrice();
-      if (draft.halves) $('#half-tabs', productPage).innerHTML = halfTabs();
+      if (draft.halves) syncHalfTabs();
+    }
+    if (event.target.dataset.removeIngredient) {
+      const part = editingPart();
+      const removed = new Set(part.removedIngredients || []);
+      if (event.target.checked) removed.add(event.target.dataset.removeIngredient); else removed.delete(event.target.dataset.removeIngredient);
+      if (removed.size) part.removedIngredients = [...removed].sort(); else delete part.removedIngredients;
+      $('.removal-count', productPage).textContent = removed.size ? removed.size + ' odebráno' : 'Upravit';
     }
   });
   productPage.addEventListener('input', event => { if (event.target.id === 'product-note' && draft) draft.note = event.target.value; });
@@ -637,7 +709,11 @@ export function createOrdering(context) {
   halfPicker.addEventListener('click', event => {
     const choice = event.target.closest('[data-select-second-half]');
     if (!choice || !draft?.halves || getItem(data, choice.dataset.selectSecondHalf)?.categoryId !== 'pizzy') return;
-    draft.halves[1].itemId = choice.dataset.selectSecondHalf;
+    if (draft.halves[1].itemId !== choice.dataset.selectSecondHalf) {
+      draft.halves[1].itemId = choice.dataset.selectSecondHalf;
+      delete draft.halves[1].base;
+      delete draft.halves[1].removedIngredients;
+    }
     activeHalf = 1;
     halfPicker.close();
     renderProduct();

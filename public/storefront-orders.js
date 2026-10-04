@@ -1,6 +1,7 @@
-import { STORAGE_KEY, createState, restoreState, orderId } from './admin/model.js?v=half-pizza-1';
-import { getItem, normalizeLine, unitPrice, cartTotals, lineName } from './cart-model.js?v=half-pizza-1';
+import { STORAGE_KEY, createState, restoreState, orderId } from './admin/model.js?v=recipe-options-1';
+import { getItem, normalizeLine, unitPrice, cartTotals, lineName } from './cart-model.js?v=recipe-options-1';
 import { loadRuianAddresses, resolveAddress } from './ruian-addresses.js';
+import { customizationFields, hasRecipeChanges } from './pizza-customization.js';
 
 const reject = message => { throw new Error(message); };
 let seedPromise;
@@ -36,7 +37,7 @@ export function createStorefrontOrder(state, input, addressCatalog, now = new Da
     if (!Number.isSafeInteger(line.quantity) || line.quantity < 1 || line.quantity > 20) reject('Zkontroluj počet kusů v košíku.');
     if (item.categoryId === 'pizzy' && ![30, 40].includes(line.size)) reject('Vyber velikost 30 nebo 40 cm.');
     const result = normalizeLine(data, line);
-    if (!result) reject('Zkontroluj výběr obou půlek pizzy.');
+    if (!result) reject('Zkontroluj výběr pizzy, základu a odebraných surovin.');
     if ((line.extras || []).length !== result.extras.length || (line.extras || []).some(id => !result.extras.includes(id))) reject('Některá přísada už není v nabídce. Uprav pizzu znovu.');
     if (result.halves && line.halves.some((half, index) => !Array.isArray(half.extras) || half.extras.length !== result.halves[index].extras.length || half.extras.some(id => !result.halves[index].extras.includes(id)))) reject('Zkontroluj přísady pro jednotlivé půlky pizzy.');
     if (String(line.note || '').length > 180) reject('Poznámka k pizze je příliš dlouhá.');
@@ -53,7 +54,7 @@ export function createStorefrontOrder(state, input, addressCatalog, now = new Da
   const lines = normalized.map(line => {
     return { pizzaId: line.itemId, name: lineName(data, line), size: line.size, quantity: line.quantity,
       unitPrice: unitPrice(data, line), extras: [...line.extras],
-      ...(line.halves ? { halves: line.halves.map(half => ({ itemId: half.itemId, name: lineName(data, half), extras: [...half.extras], extraNames: half.extras.map(id => getItem(data, id).name) })) } : {}),
+      ...(line.halves ? { halves: line.halves.map(half => ({ itemId: half.itemId, name: lineName(data, half), extras: [...half.extras], extraNames: half.extras.map(id => getItem(data, id).name), ...customizationFields(half) })) } : customizationFields(line)),
       extraNames: line.extras.map(id => getItem(data, id).name), note: line.note };
   });
   const order = {
@@ -62,8 +63,8 @@ export function createStorefrontOrder(state, input, addressCatalog, now = new Da
     addressSnapshot: address ? structuredClone(address) : null,
     lines, subtotal: total.subtotal, packaging: total.packaging, delivery: total.delivery, total: total.total,
     status: 'new', createdAt: now, updatedAt: now, minutes: fulfillment === 'delivery' ? 50 : 20,
-    requestedAt: null, deduction: null, configurationVersion: normalized.some(line => line.halves) ? 2 : 1,
-    inventoryIncomplete: normalized.some(line => line.size === 40 || line.extras.length > 0 || line.halves?.some(half => half.extras.length > 0)),
+    requestedAt: null, deduction: null, configurationVersion: normalized.some(hasRecipeChanges) ? 3 : normalized.some(line => line.halves) ? 2 : 1,
+    inventoryIncomplete: normalized.some(line => hasRecipeChanges(line) || line.size === 40 || line.extras.length > 0 || line.halves?.some(half => half.extras.length > 0)),
     webRequest: { key: idempotencyKey, fingerprint },
   };
   next.orders.unshift(order);

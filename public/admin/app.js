@@ -1,6 +1,7 @@
 import {stockSummary, batchStatus, daysLeft, localDay, updateBatch, discardBatch} from './inventory.js';
-import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, ensureDemoDeliveryOrders, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=half-pizza-1';
+import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, ensureDemoDeliveryOrders, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=recipe-options-1';
 import {normalizeSearch, itemPrice} from '../menu-utils.js';
+import {customizationDetails} from '../pizza-customization.js';
 import {COURIERS, deliveryOrders, deliveryPlan, deliveryAssignment, saveDeliveryPlan, platformCourier, toggleDeliveryStop} from './delivery.js?v=bb45e9a7';
 
 const $ = selector => document.querySelector(selector);
@@ -74,8 +75,9 @@ function renderOrders() {
 }
 function orderLineNotes(line, tag = 'small') {
   const extras = Array.isArray(line.extraNames) ? line.extraNames.filter(value => typeof value === 'string' && value) : [];
-  const halves = (line.halves || []).map((half, index) => `<${tag}>${index + 1}. půlka · ${esc(half.name)}: ${half.extraNames.length ? '+ ' + esc(half.extraNames.join(', ')) : 'bez přísad navíc'}</${tag}>`).join('');
-  return `${halves}${extras.length ? `<${tag}>${line.halves ? 'K celé pizze' : 'Navíc'}: ${esc(extras.join(', '))}</${tag}>` : ''}${line.note ? `<${tag}>Poznámka: ${esc(line.note)}</${tag}>` : ''}`;
+  const halves = (line.halves || []).map((half, index) => `<${tag}>${index + 1}. půlka · ${esc(half.name)}: ${esc([...customizationDetails(half), ...(half.extraNames.length ? ['+ ' + half.extraNames.join(', ')] : [])].join(' · ') || 'bez přísad navíc')}</${tag}>`).join('');
+  const recipe = line.halves ? '' : customizationDetails(line).map(detail => `<${tag}>${esc(detail)}</${tag}>`).join('');
+  return `${halves}${recipe}${extras.length ? `<${tag}>${line.halves ? 'K celé pizze' : 'Navíc'}: ${esc(extras.join(', '))}</${tag}>` : ''}${line.note ? `<${tag}>Poznámka: ${esc(line.note)}</${tag}>` : ''}`;
 }
 function orderCard(order) {
   const action = {new: 'Potvrdit objednávku', confirmed: order.inventoryIncomplete ? 'Zobrazit objednávku' : 'Začít připravovat', preparing: 'Hotovo → k předání', ready: handoffAction(order)}[order.status];

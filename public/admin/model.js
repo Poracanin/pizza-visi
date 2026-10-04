@@ -1,6 +1,7 @@
 import {stockSummary, makeInitialBatches, addBatch, allocateBatches, validateBatches} from './inventory.js';
 import {deliveryAssignment, removeDeliveryOrder, validateDeliveryPlans, platformCourier, migrateCourierPolicy} from './delivery.js?v=bb45e9a7';
-import { normalizeLine } from '../cart-model.js?v=half-pizza-1';
+import { normalizeLine } from '../cart-model.js?v=recipe-options-1';
+import { hasRecipeChanges } from '../pizza-customization.js';
 // Amounts are whole grams or millilitres. Mutations are pure: one complete state
 // is persisted only after the entire operation succeeds.
 export const SOURCES = ['web', 'pos', 'wolt', 'foodora', 'bolt'];
@@ -71,7 +72,7 @@ export function addOrder(state, site, input, now = new Date().toISOString()) {
   return {state: next, order};
 }
 export function requirements(state, order, seed, now = new Date().toISOString()) {
-  if (order.inventoryIncomplete) fail('Pro pizzu 40 cm nebo přísady není nastavená receptura. Nejdřív doplňte recepturu a ověřte sklad; potom lze zahájit přípravu.');
+  if (order.inventoryIncomplete || order.lines.some(hasRecipeChanges)) fail('Pro pizzu 40 cm, přísady nebo změnu surovin není nastavená receptura. Nejdřív doplňte recepturu a ověřte sklad; potom lze zahájit přípravu.');
   const amounts = {};
   for (const line of order.lines) {
     if (line.size === null) continue; // Drinks are sold by piece; this stock module covers pizza ingredients.
@@ -191,6 +192,10 @@ export function restoreState(raw, site, seed) {
     for (const line of order.lines) {
       const item = products(site).find(p => p.id === line.pizzaId);
       if (!item || (item.category === 'pizzy' ? ![30, 40].includes(line.size) : line.size !== null) || !integer(line.quantity, 1, 20)) fail('Položka objednávky je neplatná.');
+      if (line.base !== undefined || line.removedIngredients !== undefined || line.halves?.some(half => half?.base !== undefined || half?.removedIngredients !== undefined)) {
+        if (!normalizeLine(site, { ...line, itemId: line.pizzaId })) fail('Základ nebo odebrané suroviny nejsou platné.');
+        if (hasRecipeChanges(line)) order.inventoryIncomplete = true;
+      }
       if (line.halves !== undefined) {
         const normalized = normalizeLine(site, { ...line, itemId: line.pizzaId });
         if (!normalized || line.halves.some((half, index) => typeof half.name !== 'string' || !Array.isArray(half.extraNames) || half.extraNames.some(name => typeof name !== 'string') || !Array.isArray(half.extras) || half.extras.length !== normalized.halves[index].extras.length || half.extras.some(id => !normalized.halves[index].extras.includes(id)))) fail('Půlky pizzy nejsou platné.');

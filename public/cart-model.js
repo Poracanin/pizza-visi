@@ -1,4 +1,5 @@
 import { itemPrice } from './menu-utils.js';
+import { normalizeCustomization, customizationFields, customizationDetails } from './pizza-customization.js';
 
 export const MAX_QUANTITY = 20;
 export const ADDON_CATEGORIES = ['dej-si-navic', 'chutne-okraje', 'omacky'];
@@ -13,6 +14,9 @@ export function normalizeLine(data, input) {
   if (!input || typeof input !== 'object') return null;
   const item = getItem(data, input.itemId);
   if (!item || item.categoryId === 'baleni') return null;
+  if (item.categoryId !== 'pizzy' && (input.base !== undefined || input.removedIngredients !== undefined)) return null;
+  const customization = normalizeCustomization(item, input);
+  if (!customization) return null;
   const size = item.prices.length ? (Number(input.size) === 40 ? 40 : 30) : null;
   const quantity = Math.min(MAX_QUANTITY, Math.max(1, Math.floor(Number(input.quantity) || 1)));
   const allowed = new Set(data.categories.filter(c => ADDON_CATEGORIES.includes(c.id)).flatMap(c => c.items.map(i => i.id)));
@@ -23,12 +27,18 @@ export function normalizeLine(data, input) {
     // Never silently turn a broken half-and-half order into a different whole pizza.
     if (item.categoryId !== 'pizzy' || !Array.isArray(input.halves) || input.halves.length !== 2 || input.halves[0]?.itemId !== item.id || input.halves.some(half => getItem(data, half?.itemId)?.categoryId !== 'pizzy')) return null;
     const toppings = new Set(data.categories.find(c => c.id === 'dej-si-navic').items.map(i => i.id));
-    halves = input.halves.map(half => ({ itemId: half.itemId, extras: cleanExtras(half.extras, toppings) }));
+    if (input.base !== undefined || input.removedIngredients !== undefined) return null;
+    halves = input.halves.map(half => {
+      const choices = normalizeCustomization(getItem(data, half.itemId), half);
+      return choices && { itemId: half.itemId, extras: cleanExtras(half.extras, toppings), ...choices };
+    });
+    if (halves.some(half => !half)) return null;
     extras = extras.filter(id => !toppings.has(id)); // Crust and sauces belong to the whole pizza.
   }
-  return { itemId: item.id, size, quantity, extras, ...(halves ? { halves } : {}), note: typeof input.note === 'string' ? input.note.trim().slice(0, 180) : '' };
+  return { itemId: item.id, size, quantity, extras, ...(halves ? { halves } : customization), note: typeof input.note === 'string' ? input.note.trim().slice(0, 180) : '' };
 }
-export const lineKey = line => JSON.stringify([line.itemId, line.size, [...line.extras].sort(), line.note, ...(line.halves ? [line.halves.map(half => [half.itemId, [...half.extras].sort()])] : [])]);
+const customizationKey = part => Object.keys(customizationFields(part)).length ? [part.base || '', [...(part.removedIngredients || [])].sort()] : [];
+export const lineKey = line => JSON.stringify([line.itemId, line.size, [...line.extras].sort(), line.note, ...customizationKey(line), ...(line.halves ? [line.halves.map(half => [half.itemId, [...half.extras].sort(), ...customizationKey(half)])] : [])]);
 export const cloneLine = line => structuredClone(line);
 export function mergeLine(cart, line, replaceIndex = -1) {
   const next = cart.filter((_, index) => index !== replaceIndex).map(cloneLine);
@@ -51,7 +61,7 @@ export function lineName(data, line) {
   return line.halves ? line.halves.map(half => `½ ${displayName(getItem(data, half.itemId))}`).join(' + ') : displayName(getItem(data, line.itemId));
 }
 export function lineDetails(data, line) {
-  const details = (line.halves || []).map((half, index) => `${index + 1}. půlka · ${displayName(getItem(data, half.itemId))}: ${half.extras.length ? '+ ' + half.extras.map(id => displayName(getItem(data, id))).join(', ') : 'bez přísad navíc'}`);
+  const details = line.halves ? line.halves.map((half, index) => `${index + 1}. půlka · ${displayName(getItem(data, half.itemId))}: ${[...customizationDetails(half), ...(half.extras.length ? ['+ ' + half.extras.map(id => displayName(getItem(data, id))).join(', ')] : [])].join(' · ') || 'bez přísad navíc'}`) : customizationDetails(line);
   if (line.extras.length) details.push(`${line.halves ? 'K celé pizze: ' : '+ '}${line.extras.map(id => displayName(getItem(data, id))).join(', ')}`);
   return details;
 }
