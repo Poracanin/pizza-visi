@@ -354,25 +354,32 @@ export function createOrdering(context) {
     return `<dl class="price-summary"><div><dt>Jídlo a přísady</dt><dd>${money(total.subtotal)}</dd></div><div><dt>Krabice na pizzu</dt><dd>${money(total.packaging)}</dd></div><div><dt>${fulfillment === 'delivery' ? 'Rozvoz' : 'Osobní vyzvednutí'}</dt><dd>${total.delivery ? money(total.delivery) : 'Zdarma'}</dd></div><div class="price-total"><dt>Celkem</dt><dd>${money(total.total)}</dd></div></dl>`;
   }
   function cartLine(line, index) {
-    return `<article class="cart-line">${productPhoto(line, 'cart-line-image')}<div class="cart-line-copy"><div class="cart-line-title"><h3>${esc(lineName(data, line))}</h3><strong>${money(unitPrice(data, line) * line.quantity)}</strong></div><p>${line.size ? `${line.size} cm` : '1 porce / balení'}</p>${lineDetails(data, line).map(detail => `<p>${esc(detail)}</p>`).join('')}${line.note ? `<p class="cart-line-note">${esc(line.note)}</p>` : ''}<div class="cart-line-actions">${stepper(line.quantity, String(index), lineName(data, line))}<button class="cart-edit" data-edit-line="${index}">Upravit</button><button class="cart-remove" data-remove-line="${index}" aria-label="Odebrat ${esc(lineName(data, line))}">${icon('close')}</button></div></div></article>`;
+    const label = esc(lineName(data, line));
+    return `<article class="cart-line">${productPhoto(line, 'cart-line-image')}<div class="cart-line-copy"><div class="cart-line-title"><h3>${label}</h3><button class="cart-remove" data-remove-line="${index}" aria-label="Odebrat ${label}">${icon('close')}</button></div><div class="cart-line-meta"><span>${line.size ? `${line.size} cm` : '1 porce / balení'}</span><button class="cart-edit" data-edit-line="${index}" aria-label="Upravit ${label}">Upravit</button></div>${lineDetails(data, line).map(detail => `<p>${esc(detail)}</p>`).join('')}${line.note ? `<p class="cart-line-note">${esc(line.note)}</p>` : ''}<div class="cart-line-purchase"><strong>${money(unitPrice(data, line) * line.quantity)}</strong>${stepper(line.quantity, String(index), lineName(data, line))}</div></div></article>`;
   }
   function openCart() {
     if (submitting) return;
     captureCustomer();
     renderCart();
     openDialog(cartDialog);
+    // Announce the drawer title without focusing (and highlighting) the close button.
+    $('#cart-title', cartDialog).focus({ preventScroll: true });
   }
   function upsellCards() {
-    return ['coca-cola-0-5l', 'fanta-pomeranc-0-5l', 'sprite-0-5l'].map(id => {
-      const item = getItem(data, id);
-      if (!item) return '';
-      return `<button class="cart-upsell-card" data-quick-drink="${esc(id)}" aria-label="Přidat ${esc(name(item))} za ${money(itemPrice(item))}">${item.image ? `<img src="./${esc(item.image)}" alt="" loading="lazy">` : icon('bag')}<span>${esc(name(item))}</span><strong>${money(itemPrice(item))} ${icon('plus')}</strong></button>`;
-    }).join('');
+    const drinks = data.categories.find(category => category.id === 'napoje')?.items || [];
+    const featured = ['coca-cola-0-5l', 'fanta-pomeranc-0-5l', 'sprite-0-5l'];
+    const ordered = [...featured.map(id => drinks.find(item => item.id === id)).filter(Boolean), ...drinks.filter(item => !featured.includes(item.id))];
+    return ordered.map(item => `<button class="cart-upsell-card" data-quick-drink="${esc(item.id)}" aria-label="Přidat ${esc(name(item))} za ${money(itemPrice(item))}">${item.image ? `<figure class="cart-upsell-photo"><img src="./${esc(item.image)}" alt="" loading="lazy"></figure>` : icon('bag')}<span>${esc(name(item))}</span><strong>${money(itemPrice(item))}<span class="cart-upsell-add" aria-hidden="true">${icon('plus')}</span></strong></button>`).join('');
   }
   function renderCart() {
+    const scrollTop = $('.cart-scroll', cartDialog)?.scrollTop || 0;
+    const drinkScrollLeft = $('.cart-upsell-grid', cartDialog)?.scrollLeft || 0;
     const branch = getBranch();
     const total = totals();
-    $('#cart-content').innerHTML = `<div class="cart-shell"><header class="cart-heading"><p class="eyebrow">DOBRÝ VEČER ZAČÍNÁ TADY</p><h2 id="cart-title">TVŮJ <em>KOŠÍK</em> <span>${total.quantity}</span></h2>${closeButton('Zavřít košík')}</header>${!cart.length ? `<div class="cart-scroll empty-cart">${icon('cart')}<h3>ZATÍM ANI KOUSEK</h3><p>Vyber si pizzu, přidej něco navíc<br>a udělej si hezký den.</p><button class="button" data-continue-menu>Vybrat si pizzu ${icon('arrow')}</button>${receipt ? `<button class="small-text-button last-receipt" data-last-receipt>Poslední objednávka ${icon('external')}</button>` : ''}</div>` : `<div class="cart-scroll"><div class="cart-body"><div class="cart-branch"><span>${icon('pin')} ${branch ? `Pizza Visi ${esc(branch.name)}` : 'Pobočku určíme v objednávce'}</span></div><p class="cart-next-step-note">Doručení nebo vyzvednutí vybereš v dalším kroku.</p><div class="cart-lines">${cart.map(cartLine).join('')}</div><section class="cart-upsell"><h3>JEŠTĚ NĚCO NA ZAPITÍ?</h3><div class="cart-upsell-grid">${upsellCards()}</div></section></div></div><footer class="cart-footer">${summaryRows(total)}<button class="button cart-checkout" data-checkout>Pokračovat k objednávce ${icon('arrow')}</button><button class="cart-continue" data-close-dialog>Ještě něco přihodím</button></footer>`}</div>`;
+    $('#cart-content').innerHTML = `<div class="cart-shell"><header class="cart-heading"><h2 id="cart-title" tabindex="-1">TVŮJ <em>KOŠÍK</em> <span>${total.quantity}</span></h2>${closeButton('Zavřít košík')}</header>${!cart.length ? `<div class="cart-scroll empty-cart">${icon('cart')}<h3>ZATÍM ANI KOUSEK</h3><p>Vyber si pizzu, přidej něco navíc<br>a udělej si hezký den.</p><button class="button" data-continue-menu>Vybrat si pizzu ${icon('arrow')}</button>${receipt ? `<button class="small-text-button last-receipt" data-last-receipt>Poslední objednávka ${icon('external')}</button>` : ''}</div>` : `<div class="cart-scroll"><div class="cart-body"><div class="cart-branch"><span>${icon('pin')} ${branch ? `Pizza Visi ${esc(branch.name)}` : 'Pobočku určíme v objednávce'}</span></div><p class="cart-next-step-note">Doručení nebo vyzvednutí vybereš v dalším kroku.</p><div class="cart-lines">${cart.map(cartLine).join('')}</div><section class="cart-upsell" aria-labelledby="cart-drinks-title"><div class="cart-upsell-heading"><h3 id="cart-drinks-title">JEŠTĚ NĚCO NA ZAPITÍ?</h3><div class="cart-upsell-nav"><button data-drinks-scroll="-1" aria-label="Předchozí nápoje">${icon('back')}</button><button data-drinks-scroll="1" aria-label="Další nápoje">${icon('arrow')}</button></div></div><div class="cart-upsell-grid">${upsellCards()}</div></section></div></div><footer class="cart-footer">${summaryRows(total)}<button class="button cart-checkout" data-checkout>Pokračovat k objednávce ${icon('arrow')}</button><button class="cart-continue" data-close-dialog>Ještě něco přihodím</button></footer>`}</div>`;
+    $('.cart-scroll', cartDialog).scrollTop = scrollTop;
+    const drinks = $('.cart-upsell-grid', cartDialog);
+    if (drinks) drinks.scrollLeft = drinkScrollLeft;
   }
   function openCheckout() {
     if (!cart.length) return openCart();
@@ -577,7 +584,8 @@ export function createOrdering(context) {
       if (!cart[index]) return;
       cart[index].quantity = Math.max(1, Math.min(MAX_QUANTITY, cart[index].quantity + delta));
       saveCart(); renderCart();
-      $(`[data-quantity="${index}"][data-delta="${delta}"]`, cartDialog).focus();
+      const quantityButton = $(`[data-quantity="${index}"][data-delta="${delta}"]:not(:disabled)`, cartDialog) || $(`[data-quantity="${index}"]:not(:disabled)`, cartDialog);
+      quantityButton?.focus({ preventScroll: true });
     }
     if (target.hasAttribute('data-remove-line')) { cart.splice(Number(target.dataset.removeLine), 1); saveCart(); renderCart(); }
     if (target.hasAttribute('data-edit-line')) { const index = Number(target.dataset.editLine); if (cart[index]) openProduct(cart[index].itemId, index); }
@@ -589,7 +597,14 @@ export function createOrdering(context) {
       $(`[data-fulfillment="${fulfillment}"]`, cartDialog.open ? cartDialog : checkoutPage).focus();
       onDeliveryChange?.(getDeliverySelection());
     }
-    if (target.dataset.quickDrink) quickAdd(target.dataset.quickDrink);
+    if (target.dataset.drinksScroll) {
+      const drinks = $('.cart-upsell-grid', cartDialog);
+      drinks.scrollBy({ left: Number(target.dataset.drinksScroll) * drinks.clientWidth * .85, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+    if (target.dataset.quickDrink) {
+      quickAdd(target.dataset.quickDrink);
+      $(`[data-quick-drink="${target.dataset.quickDrink}"]`, cartDialog)?.focus({ preventScroll: true });
+    }
     if (target.dataset.pickupBranch && fulfillment === 'pickup') {
       captureCustomer();
       ++deliverySelectionVersion;
