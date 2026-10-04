@@ -1,0 +1,96 @@
+/* Ordering surfaces follow the customer site's charcoal, cream and red palette. */
+dialog{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;box-shadow:0 28px 100px #0009}
+dialog::backdrop{background:rgba(9,9,10,.78);backdrop-filter:blur(6px)}
+dialog .dialog-close{width:36px;height:36px;border-radius:50%;background:var(--surface);border-color:var(--line);color:var(--text)}
+dialog .dialog-close:hover{background:var(--surface-light);border-color:var(--accent)}
+dialog .dialog-tricolor{background:var(--accent-solid)}
+dialog .button{border-radius:6px;background:var(--accent-solid);border-color:var(--accent-solid);color:var(--text);font:400 18px/1.15 var(--display);letter-spacing:.6px;text-transform:uppercase;box-shadow:none}
+dialog .button:hover{background:var(--accent-hover);border-color:var(--accent-hover);box-shadow:none}
+dialog .eyebrow{color:var(--accent);letter-spacing:1.6px}
+dialog .demo-pill{color:var(--muted);border:1px solid var(--line);background:var(--surface);border-radius:3px}
+dialog .order-demo-note{color:var(--muted)}
+dialog .small-text-button,dialog .cart-edit,dialog .cart-branch button{color:var(--accent)}
+
+/* Keep the compact chooser and its existing three-column mobile layout. */
+.branch-dialog .branch-dialog-inner::before{opacity:.025}
+.branch-dialog .modal-wordmark{letter-spacing:1px}
+.branch-dialog h2{letter-spacing:.2px}
+.branch-dialog .branch-option{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:none}
+.branch-dialog .branch-option:hover,.branch-dialog .branch-option.selected{border-color:var(--accent);box-shadow:none}
+.branch-dialog .branch-option.selected{background:rgba(239,35,69,.1)}
+.branch-dialog .branch-option-title>.icon{color:var(--accent)}
+.branch-dialog .branch-name{color:var(--text)}
+.branch-dialog .branch-selected-mark{background:var(--bg);border-color:var(--accent);border-radius:3px;color:var(--text)}
+.branch-dialog .branch-selected-mark>.icon{color:var(--accent)}
+.branch-dialog #delivery-address{background:var(--surface);border-color:rgba(255,255,255,.24);border-radius:6px;color:var(--text)}
+.branch-dialog #delivery-address::placeholder{color:var(--muted)}
+.branch-dialog #delivery-address[aria-invalid=true]{border-color:#de9b84}
+.branch-dialog .address-feedback{color:var(--accent)}
+.branch-dialog .address-demo-note{color:var(--muted)}
+.branch-dialog .branch-dialog-bottom>button{color:var(--text)}
+
+/* Product photography keeps its neutral background and original ingredients. */
+.product-dialog .customize-photo{background:#eeeae4 url('./assets/editorial/marble-light.webp') center/cover;color:#111112}
+.product-dialog .customize-photo img[src*="/pizzas/"]{width:auto;height:auto;max-width:100%;max-height:360px;aspect-ratio:1;border-radius:50%;mix-blend-mode:normal}
+.product-dialog .customize-photo-label{color:#b71330;letter-spacing:.7px}
+.product-dialog .customize-copy h2{letter-spacing:.2px}
+.product-dialog .customize-size legend{color:var(--text)}
+.product-dialog .product-sizes>button{border-color:var(--line);border-radius:6px;background:var(--surface);color:var(--text)}
+.product-dialog .product-sizes>button[aria-pressed=true]{border-color:var(--accent);background:rgba(239,35,69,.12);color:var(--accent)}
+.product-dialog .product-sizes>button[aria-pressed=true]>span{color:var(--text)}
+.product-dialog .addon-option{border-color:var(--line);border-radius:5px;background:var(--surface)}
+.product-dialog .addon-option:has(input:checked){border-color:var(--accent);background:rgba(239,35,69,.1)}
+.product-dialog .addon-option input{accent-color:var(--accent-solid)}
+.product-dialog .customize-footer{background:var(--bg);border-color:var(--line);box-shadow:0 -8px 24px #0003}
+.product-dialog .customize-footer>.button{font-size:18px}
+.product-dialog .customize-footer>.button strong{font-weight:400;white-space:nowrap}
+dialog .quantity-stepper{border-radius:5px;border-color:var(--line);background:var(--surface)}
+dialog .quantity-stepper button:hover:not(:disabled){background:rgba(239,35,69,.12);color:var(--accent)}
+dialog .customize-note textarea,dialog .checkout-field input,dialog .checkout-field textarea{background:var(--surface);border-color:rgba(255,255,255,.24);border-radius:6px;color:var(--text)}
+dialog .customize-note textarea::placeholder,dialog .checkout-field input::placeholder,dialog .checkout-field textarea::placeholder{color:var(--muted)}
+
+/* Cart drawer geometry and mobile behavior remain in ordering.css. */
+.cart-dialog{border-radius:0;background:var(--bg)}
+.cart-dialog .cart-heading h2{letter-spacing:.3px}
+.cart-dialog .cart-heading h2>span{border-color:var(--line);background:var(--surface);color:var(--text)}
+.cart-dialog .cart-line-image[src*="/pizzas/"]{border-radius:50%;mix-blend-mode:normal}
+.cart-dialog .cart-line-title h3{letter-spacing:.25px}
+.cart-dialog .cart-line-copy>.cart-line-note{color:var(--muted)}
+.cart-dialog .cart-remove:hover{color:var(--accent)}
+.cart-dialog .cart-upsell button{border-color:var(--line);border-radius:5px;background:var(--surface)}
+.cart-dialog .cart-upsell button:hover{border-color:var(--accent)}
+.cart-dialog .cart-footer{background:var(--bg)}
+.cart-dialog .cart-continue:hover,.checkout-dialog .checkout-back:hover{color:var(--text)}
+dialog .fulfillment-options>button{background:var(--surface);border-color:var(--line);border-radius:6px}
+dialog .fulfillment-options>button[aria-pressed=true]{background:rgba(239,35,69,.1);border-color:var(--accent);color:var(--text)}
+dialog .fulfillment-options>button[aria-pressed=true] small{color:var(--text)}
+dialog .price-total dd{letter-spacing:.5px}
+.cart-trigger{border-radius:6px;background:var(--accent-solid);border-color:var(--accent-solid);color:var(--text);font:400 18px/1.15 var(--display);letter-spacing:.5px;text-transform:uppercase}
+.cart-trigger:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.cart-trigger .cart-count{background:var(--text);color:var(--accent-solid);font-family:var(--body)}
+.mobile-cart{background:var(--accent-solid);border-color:var(--accent-solid);border-radius:6px;color:var(--text);box-shadow:0 8px 30px #0005}
+
+/* Checkout form, payment state and receipt retain their semantic feedback. */
+.checkout-dialog .checkout-top{border-color:var(--line)}
+.checkout-dialog .checkout-heading h2,.checkout-dialog .receipt-view h2{letter-spacing:.3px}
+.checkout-dialog .checkout-summary,.checkout-dialog .receipt-status{background:var(--surface);border-color:var(--line);border-radius:6px}
+.checkout-dialog .payment-options>label{background:var(--surface);border-color:var(--line);border-radius:6px}
+.checkout-dialog .payment-options>label:has(input:checked){background:rgba(239,35,69,.1);border-color:var(--accent)}
+.checkout-dialog .payment-options input{accent-color:var(--accent-solid)}
+.checkout-dialog .demo-credit-card{background:linear-gradient(130deg,var(--accent-solid),#97102b);border-color:#f36a80;border-radius:8px}
+.checkout-dialog .order-timeline li.done>span{border-color:var(--accent);background:rgba(239,35,69,.1)}
+
+@media(max-width:700px){
+  dialog .button{font-size:17px}
+  .product-dialog .customize-photo img[src*="/pizzas/"]{width:auto;height:175px;max-height:175px;max-width:100%}
+  .branch-dialog .address-input-row>.button{font-size:18px}
+  .branch-dialog #delivery-address,dialog .checkout-field input,dialog .checkout-field textarea{font-size:16px}
+  .product-dialog .customize-footer>.button{font-size:16px;letter-spacing:.25px}
+  .product-dialog .customize-footer>.button strong{font-size:17px}
+  .cart-trigger{border-radius:6px}
+  .cart-trigger .cart-count{border-color:var(--bg)}
+}
+@media(max-width:370px){
+  .product-dialog .customize-footer>.button{font-size:14px;letter-spacing:0}
+  .product-dialog .customize-footer>.button strong{font-size:16px}
+}

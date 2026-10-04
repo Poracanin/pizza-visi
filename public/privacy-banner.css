@@ -1,0 +1,28 @@
+.privacy-banner{position:fixed;z-index:80;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:26px;width:min(900px,calc(100% - 40px));padding:20px 24px;border:1px solid #ffffff30;border-radius:10px;background:#1b1b1dfc;color:#f8f5f0;box-shadow:0 12px 55px #0007;animation:privacy-banner-arrive .22s ease-out}
+.privacy-banner-copy{flex:1;min-width:0}
+.privacy-banner h2{margin:0 0 6px;font:650 17px/1.3 var(--body);letter-spacing:0}
+.privacy-banner p{margin:0;color:#d1cec9;font:400 12px/1.6 var(--body);max-width:510px}
+.privacy-banner-actions{display:flex;flex:none;gap:9px}
+.privacy-banner-actions button{display:flex;align-items:center;justify-content:center;min-width:119px;min-height:44px;padding:11px 15px;border:1px solid #ffffff65;border-radius:5px;background:#2d2d30;color:#fff;font:600 12px/1.3 var(--body);white-space:nowrap;transition:background .15s,border-color .15s}
+.privacy-banner-actions button[data-privacy-decision=accepted]{background:#a62b39;border-color:#d95765}
+.privacy-banner-actions button:hover{background:#424246;border-color:#fff}
+.privacy-banner-actions button[data-privacy-decision=accepted]:hover{background:#be3445;border-color:#f87785}
+.privacy-banner-actions button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+body.privacy-banner-open .mobile-cart{visibility:hidden;pointer-events:none}
+body:has(dialog[open]) .privacy-banner{display:none}
+@keyframes privacy-banner-arrive{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
+@media(max-width:900px){
+  body.product-open .privacy-banner{bottom:calc(108px + env(safe-area-inset-bottom))}
+  body.checkout-open .privacy-banner{bottom:calc(88px + env(safe-area-inset-bottom))}
+}
+@media(max-width:700px){
+  .privacy-banner{width:calc(100% - 24px);bottom:calc(12px + env(safe-area-inset-bottom));display:block;padding:17px 18px;border-radius:8px}
+  .privacy-banner h2{font-size:16px;margin-bottom:7px}
+  .privacy-banner p{font-size:12px;line-height:1.55}
+  .privacy-banner-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .privacy-banner-actions button{min-width:0;min-height:44px;padding-inline:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .privacy-banner{animation:none}
+  .privacy-banner-actions button{transition:none}
+}

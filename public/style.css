@@ -165,3 +165,6 @@ dialog{color:var(--text);background:var(--bg);border:1px solid rgba(255,77,93,.2
   .branch-dialog-bottom>button{font-size:9px;white-space:nowrap}
 }
 @media(max-width:370px){.branch-dialog-inner{padding-inline:14px}.branch-dialog h2{font-size:31px}.branch-dialog .branch-options{gap:6px}.branch-dialog .branch-name{font-size:20px}.branch-dialog-bottom>span{max-width:120px}.branch-dialog-bottom>button{font-size:8px}}
+
+/* Preserve the retouched pizza photographs and their neutral studio backgrounds. */
+.pizza-image-button img[src*="/pizzas/"],.customize-photo img[src*="/pizzas/"],.cart-line-image[src*="/pizzas/"]{mix-blend-mode:normal}

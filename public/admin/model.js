@@ -60,6 +60,7 @@ export function addOrder(state, site, input, now = new Date().toISOString()) {
   return {state: next, order};
 }
 export function requirements(state, order, seed, now = new Date().toISOString()) {
+  if (order.inventoryIncomplete) fail('Pro pizzu 40 cm nebo přísady není nastavená receptura. Nejdřív doplňte recepturu a ověřte sklad; potom lze zahájit přípravu.');
   const amounts = {};
   for (const line of order.lines) {
     if (line.size === null) continue; // Drinks are sold by piece; this stock module covers pizza ingredients.

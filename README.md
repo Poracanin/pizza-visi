@@ -46,23 +46,28 @@ Mobilní stránka **[rozvoz.html](https://poracanin.github.io/pizza-visi/rozvoz.
 
 Administrace / POS je dostupná na **https://poracanin.github.io/pizza-visi/admin/** (lokálně `/admin/`). Obsahuje objednávky podle kanálů včetně Woltu, samostatné sklady tří poboček, příjmy po šaržích s trvanlivostí a tabulku receptur 30 cm. Rozhraní je upravené pro tablet; při zahájení přípravy odečte suroviny jednou, ze šarží s nejbližší spotřebou. Jde o veřejné demo bez přihlášení a živých integrací, s ukládáním v prohlížeči a ukázkovými gramážemi. Podrobnosti: [docs/admin.md](docs/admin.md).
 
-- Kompaktní úvodní modal: nahoře tři pobočky s fotografiemi, pod nimi doručovací adresa bez přepínání. Zapamatování pobočky a možnost změny.
+- Kompaktní úvodní okno: nejprve Doručení / Vyzvednutí; doručení nabídne kanonické adresy RÚIAN, vyzvednutí tři pobočky bez adresního pole. Zvolená adresa i způsob převzetí se přenesou do objednávky.
 - Kompaktní hero se ztlumenou fotografií vybrané pobočky v pozadí.
-- V modalu lze zadat doručovací adresu: po potvrzení „Doručit sem“ demo automaticky vybere pobočku podle názvu města nebo rozvozové lokality a zavře modal. Překryvy nabídnou ruční volbu, neznámá lokalita se nepotvrdí. Nejde o geokódování ani ověření dostupnosti rozvozu; adresa se neodesílá na server a neukládá do úložiště prohlížeče.
+- Zaškrtnutí „Zapamatovat pro příště“ ukládá způsob převzetí, pobočku a případné RÚIAN ID do localStorage na nejvýše 180 dní od posledního použití. Adresa se po návratu znovu ověří proti adresáři; text adresy ani kontaktní údaje se do této preference neukládají. Změna je dostupná v hlavičce, úvodním okně i u adresy v objednávce. Bez zaškrtnutí je adresa pouze pro aktuální návštěvu.
+- Lišta „Cookies a uložené volby“ se otevře po skutečném rolování stránky, ne během úvodního dialogu ani při programovém skoku na menu. Nabízí Přijmout / Jen nezbytné; druhá volba odstraní zapamatovanou adresu, ale zachová aktuální návštěvu a košík. Nastavení jde znovu otevřít v patičce. Web nepřidává analytické ani reklamní cookies; využívá lokální úložiště pro košík a povolené volby.
 - Aktuální kontakty a rozvoz podle pobočky, odkazy na mapy a telefon.
-- 69 položek původního menu, 24 pizz, ceny 30/40 cm, kategorie, hledání a filtrování.
-- Kompletní demo objednávky: velikost pizzy, suroviny navíc, mozzarellové okraje, omáčky, množství a poznámka.
+- Veřejné menu: všech 24 pizz, 11 nápojů a 12 vín/prosecc se zobrazuje rovnou. Výchozí dlaždice lze přepnout na kompaktní řádky; volba se zachová mezi kategoriemi. Suroviny navíc, okraje a omáčky se vybírají u konkrétní pizzy. Hledání a filtrování zůstává zachované.
+- Samostatná stránka úprav pizzy: velikost, suroviny navíc, mozzarellové okraje, omáčky, množství a poznámka.
 - Košík s úpravou a odebráním položek, slučováním stejných konfigurací, nápojem navíc a automatickým součtem krabic a rozvozu. Nejvýše 20 kusů jedné konfigurace. Volby menu se obnoví i po reloadu; osobní údaje a poznámky se neukládají.
-- Pokladna pro doručení nebo vyzvednutí, kontrola kontaktů a lokality, tlačítko pro vyplnění demo údajů.
-- Simulovaná karta: úspěch, zamítnutí, opakování i návrat ke změně platby; alternativa hotově při převzetí. Po dokončení se vyprázdní košík a zobrazí demo potvrzení s ručně posouvatelným průběhem přípravy a doručení/vyzvednutí.
-- Žádná platební brána ani backend nejsou připojené. Skutečné karetní údaje se nezadávají, nic se neúčtuje a objednávka ani kontakt se nikam neodesílají.
+- Přidání do košíku potvrdí krátká zpráva uprostřed obrazovky s fotografií produktu; funguje i nad otevřeným košíkem a respektuje omezení animací.
+- Samostatná stránka objednávky s doručením nebo vyzvednutím, kontakty a úplným přehledem bez vnitřního posuvníku. U delší objednávky roluje celá stránka. Způsob převzetí se vybírá až zde. Košík má tři fotografické nabídky nápojů a ukotvené tlačítko pro pokračování; na mobilu zůstává dostupné také potvrzení objednávky.
+- Doručení vyžaduje výběr kanonické adresy RÚIAN. Změna textu výběr zneplatní. Veřejná projekce obsahuje 16 856 adres pro oblasti Rudné a Hostivic ze snímku 31. 8. 2026; Beroun nemá v dodaném výběru pokrytí a umožňuje vyzvednutí. SQLite zůstává neveřejný.
+- Potvrzení uloží objednávku do stejného lokálního úložiště jako administrace (`pizza-visi-pos-demo-v1`), včetně 30/40 cm, příplatků, poznámek a adresního snímku. Úspěch se zobrazí až po uložení. Opakování stejného požadavku nevytváří duplikát.
+- Objednávky, kontakt a adresa jsou dostupné v administraci ve stejném prohlížeči a na stejném originu. Neodesílají se restauraci ani mezi zařízeními. Ostrý backend není připojený.
+- Apple Pay, Google Pay a karta jsou připravené v rozhraní, ale bez platební brány zůstávají neaktivní. Aktivní je hotovost při převzetí; žádná online úhrada se nesimuluje ani neoznačuje jako zaplacená.
+- Objednávky 40 cm a s příplatky se v administraci zobrazí beze změn. Protože skladové receptury existují pouze pro základní 30cm pizzy, administrace u chybějících receptur nepředstírá automatický odečet surovin.
 - Mobilní rozvržení, klávesnicová navigace kategorií, nativní dialogy a omezení animací podle nastavení systému.
 - Všechny fotografie, fonty a data jsou lokální; prohlížení nevyžaduje externí služby. Mapy, sociální sítě a telefon se otevírají až na výslovné kliknutí.
 
 ## Soubory
 
 - `public/index.html`, `public/style.css`, `public/app.js`: rozhraní a chování.
-- `public/ordering.js`, `public/ordering.css`: konfigurátor, košík, pokladna a platební demo.
+- `public/ordering.js`, `public/ordering.css`, `public/checkout-page.css`: konfigurátor, košík a samostatná stránka objednávky; `public/storefront-orders.js`: zápis do lokální administrace.
 - `public/cart-model.js`: normalizace košíku, slučování položek, přísady, ceny a bezpečné obnovení uložených voleb.
 - `public/data/site.json`: pobočky, kontakty a menu pro web.
 - `public/assets/`: fotografie a místní fonty.
