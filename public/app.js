@@ -3,7 +3,7 @@ import { itemPrice, matchesItem, validBranch } from './menu-utils.js';
 import { createPrivacyBanner } from './privacy-banner.js';
 import { loadRuianAddresses } from './ruian-addresses.js';
 import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js';
-import { createOrdering } from './ordering.js?v=half-pizza-1';
+import { createOrdering } from './ordering.js?v=half-picker-2';
 import { showCartFeedback } from './cart-feedback.js?v=half-pizza-1';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);

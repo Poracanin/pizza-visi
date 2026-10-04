@@ -1,4 +1,4 @@
-import { itemPrice } from './menu-utils.js';
+import { itemPrice, normalizeSearch } from './menu-utils.js';
 import { MAX_QUANTITY, getItem, normalizeLine, mergeLine, unitPrice, cartTotals, restoreCart, serializeCart, basePrice, lineName, lineDetails, cloneLine } from './cart-model.js?v=half-pizza-1';
 import { PRODUCT_CATEGORIES, productHash, parseProductRoute, editSnapshot, findEditingLine } from './product-route.js?v=half-pizza-1';
 import { loadRuianAddresses, searchAddresses, resolveAddress } from './ruian-addresses.js';
@@ -22,6 +22,7 @@ export function createOrdering(context) {
   const storefront = $('#storefront');
   const siteFooter = $('#site-footer');
   const cartDialog = $('#cart-dialog');
+  const halfPicker = $('#half-picker-dialog');
   const checkoutPage = $('#checkout-page');
   let cart = [];
   try { cart = restoreCart(data, localStorage.getItem(CART_KEY)); } catch { /* Storage is optional. */ }
@@ -135,6 +136,7 @@ export function createOrdering(context) {
     });
   }
   function syncProductRoute(options = {}) {
+    if (halfPicker.open) halfPicker.close();
     if (location.hash === '#objednavka') { showCheckoutPage(); return; }
     const route = parseProductRoute(location.hash, data);
     if (route?.invalid) {
@@ -220,8 +222,23 @@ export function createOrdering(context) {
   }
   function halfChoices() {
     if (!draft.halves) return '';
-    const pizzas = data.categories.find(c => c.id === 'pizzy').items;
-    return `<div class="half-choices">${draft.halves.map((half, index) => `<label class="half-choice"><span><i class="pizza-disc ${index ? 'disc-right' : 'disc-left'}" aria-hidden="true"></i>${index + 1}. půlka</span><select data-half-pizza="${index}" aria-label="Pizza pro ${index + 1}. půlku">${pizzas.map(item => `<option value="${item.id}" ${item.id === half.itemId ? 'selected' : ''}>${esc(name(item))} · ${money(itemPrice(item, draft.size))}</option>`).join('')}</select><small>${esc(getItem(data, half.itemId).description)}</small></label>`).join('')}</div>`;
+    const second = getItem(data, draft.halves[1].itemId);
+    return `<div class="half-choice"><button type="button" class="half-choice-trigger" data-open-half-picker aria-haspopup="dialog" aria-controls="half-picker-dialog" aria-label="Změnit druhou půlku, ${esc(name(second))}"><img src="./${esc(second.image)}" alt=""><span class="half-choice-copy"><span>Druhá půlka</span><strong>${esc(name(second))}</strong><small>${esc(second.description)}</small></span><span class="half-choice-action"><b data-second-half-price>${money(itemPrice(second, draft.size))}</b><span>Změnit ${icon('chev')}</span></span></button></div>`;
+  }
+  function renderHalfPickerItems(query = '') {
+    const search = normalizeSearch(query.trim());
+    const pizzas = data.categories.find(c => c.id === 'pizzy').items.filter(item => normalizeSearch(name(item) + ' ' + item.description).includes(search));
+    $('#half-picker-results', halfPicker).innerHTML = pizzas.map(item => {
+      const selected = item.id === draft.halves[1].itemId;
+      return `<button type="button" class="half-picker-option" data-select-second-half="${item.id}" aria-pressed="${selected}" aria-label="Vybrat ${esc(name(item))} pro druhou půlku, ${money(itemPrice(item, draft.size))}"><img src="./${esc(item.image)}" width="58" height="58" alt="" loading="lazy"><span><strong>${esc(name(item))}</strong><small>${esc(item.description)}</small></span><span class="half-picker-price">${money(itemPrice(item, draft.size))}<i aria-hidden="true">${selected ? icon('check') : icon('plus')}</i></span></button>`;
+    }).join('') || '<p class="half-picker-empty">Takovou pizzu tu nemáme. Zkus jiný název nebo surovinu.</p>';
+    $('#half-picker-status', halfPicker).textContent = `${pizzas.length} ${pizzas.length === 1 ? 'pizza' : pizzas.length >= 2 && pizzas.length <= 4 ? 'pizzy' : 'pizz'} na výběr`;
+  }
+  function openHalfPicker() {
+    if (!draft?.halves) return;
+    halfPicker.innerHTML = `<div class="half-picker-shell"><header><p class="eyebrow">DRUHÁ PŮLKA TVOJÍ PIZZY</p><h2 id="half-picker-title">S ČÍM TO <em>SPOJÍME?</em></h2><p>První půlka: <strong>${esc(name(getItem(data, draft.itemId)))}</strong> · ${draft.size} cm</p>${closeButton('Zavřít výběr druhé půlky')}</header><label class="half-picker-search">${icon('search')}<input id="half-picker-search" type="search" placeholder="Najdi příchuť nebo surovinu…" aria-label="Najít pizzu pro druhou půlku" autocomplete="off" aria-controls="half-picker-results"></label><p id="half-picker-status" class="sr-only" role="status"></p><div id="half-picker-results" class="half-picker-results"></div><footer>Uvedené ceny jsou za celou pizzu. Základ se počítá podle dražší z obou půlek.</footer></div>`;
+    renderHalfPickerItems();
+    openDialog(halfPicker);
   }
   function halfTabs() {
     return draft.halves ? `<div class="half-tabs" role="group" aria-label="Přísady pro půlku pizzy">${draft.halves.map((half, index) => `<button type="button" data-edit-half="${index}" aria-pressed="${activeHalf === index}"><i class="pizza-disc ${index ? 'disc-right' : 'disc-left'}" aria-hidden="true"></i><span>${index + 1}. půlka<small>${esc(name(getItem(data, half.itemId)))}</small></span><b>${half.extras.length ? '+' + half.extras.length : ''}</b></button>`).join('')}</div><p class="half-editing-note">Přísady přidáváš na ${activeHalf + 1}. půlku: <strong>${esc(name(getItem(data, draft.halves[activeHalf].itemId)))}</strong></p>` : '';
@@ -240,7 +257,8 @@ export function createOrdering(context) {
   function updateProductPrice() {
     $$('[data-option-size]', productPage).forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.optionSize) === draft.size)));
     $$('[data-base-size]', productPage).forEach(label => { label.textContent = money(basePrice(data, draft, Number(label.dataset.baseSize))); });
-    $$('[data-half-pizza] option', productPage).forEach(option => { const item = getItem(data, option.value); option.textContent = `${name(item)} · ${money(itemPrice(item, draft.size))}`; });
+    const secondPrice = $('[data-second-half-price]', productPage);
+    if (secondPrice) secondPrice.textContent = money(itemPrice(getItem(data, draft.halves[1].itemId), draft.size));
     $$('[data-addon-price]', productPage).forEach(label => { label.textContent = '+' + money(itemPrice(getItem(data, label.dataset.addonPrice), draft.size)); });
     $('#product-total', productPage).textContent = money(unitPrice(data, draft) * draft.quantity);
     $('#product-quantity', productPage).innerHTML = stepper(draft.quantity, 'draft', lineName(data, draft));
@@ -529,6 +547,7 @@ export function createOrdering(context) {
   productPage.addEventListener('click', event => {
     const target = event.target.closest('button');
     if (!target || !draft) return;
+    if (target.hasAttribute('data-open-half-picker')) { openHalfPicker(); return; }
     if (target.hasAttribute('data-product-back')) { leaveProduct({ back: true }); return; }
     if (target.dataset.optionSize) {
       draft.size = Number(target.dataset.optionSize) === 40 ? 40 : 30;
@@ -566,17 +585,6 @@ export function createOrdering(context) {
   });
   productPage.addEventListener('change', event => {
     if (!draft) return;
-    if (event.target.dataset.halfPizza !== undefined && draft.halves) {
-      const index = Number(event.target.dataset.halfPizza);
-      if (getItem(data, event.target.value)?.categoryId !== 'pizzy') return;
-      draft.halves[index].itemId = event.target.value;
-      draft.itemId = draft.halves[0].itemId;
-      activeHalf = index;
-      history.replaceState(routeState(productSession.key), '', productHash(draft.itemId, draft.size));
-      activeProductHash = location.hash;
-      renderProduct();
-      $(`[data-half-pizza="${index}"]`, productPage).focus({ preventScroll: true });
-    }
     if (event.target.dataset.addon) {
       const part = event.target.dataset.half === undefined ? draft : draft.halves[Number(event.target.dataset.half)];
       const selected = new Set(part.extras);
@@ -619,6 +627,23 @@ export function createOrdering(context) {
     event.target.setAttribute('aria-activedescendant', `ruian-result-${addressActive}`);
     $$('[role="option"]', list).forEach((option, index) => option.setAttribute('aria-selected', String(index === addressActive)));
     $(`#ruian-result-${addressActive}`, list).scrollIntoView({ block: 'nearest' });
+  });
+  halfPicker.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { event.preventDefault(); halfPicker.close(); }
+  });
+  halfPicker.addEventListener('input', event => {
+    if (event.target.id === 'half-picker-search' && draft?.halves) renderHalfPickerItems(event.target.value);
+  });
+  halfPicker.addEventListener('click', event => {
+    const choice = event.target.closest('[data-select-second-half]');
+    if (!choice || !draft?.halves || getItem(data, choice.dataset.selectSecondHalf)?.categoryId !== 'pizzy') return;
+    draft.halves[1].itemId = choice.dataset.selectSecondHalf;
+    activeHalf = 1;
+    halfPicker.close();
+    renderProduct();
+  });
+  halfPicker.addEventListener('close', () => {
+    if (!productPage.hidden) $('[data-open-half-picker]', productPage)?.focus({ preventScroll: true });
   });
   cartDialog.addEventListener('close', () => { if (!checkoutPage.hidden && !receipt) { captureCustomer(); renderCheckout(); } });
   updateBadge();
