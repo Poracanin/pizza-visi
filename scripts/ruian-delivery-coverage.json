@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "branches": [
+    {
+      "id": "rudna",
+      "bit": 1,
+      "municipalities": [
+        {"code": "531723", "name": "Rudná", "districtCode": "3210"},
+        {"code": "531618", "name": "Nučice", "districtCode": "3210"},
+        {"code": "539295", "name": "Chrášťany", "districtCode": "3210"},
+        {"code": "531146", "name": "Drahelčice", "districtCode": "3210"},
+        {"code": "532991", "name": "Úhonice", "districtCode": "3210"},
+        {"code": "531821", "name": "Tachlovice", "districtCode": "3210"},
+        {"code": "539350", "name": "Jinočany", "districtCode": "3210"},
+        {"code": "539872", "name": "Zbuzany", "districtCode": "3210"},
+        {"code": "531961", "name": "Vysoký Újezd", "districtCode": "3202"}
+      ],
+      "parts": [
+        {"code": "400351", "name": "Zličín", "municipalityCode": "554782", "municipalityName": "Praha"},
+        {"code": "490211", "name": "Třebonice", "municipalityCode": "554782", "municipalityName": "Praha"}
+      ]
+    },
+    {
+      "id": "hostivice",
+      "bit": 2,
+      "municipalities": [
+        {"code": "539244", "name": "Hostivice", "districtCode": "3210"},
+        {"code": "539317", "name": "Jeneč", "districtCode": "3210"},
+        {"code": "532347", "name": "Hostouň", "districtCode": "3203"},
+        {"code": "539171", "name": "Dobrovíz", "districtCode": "3210"},
+        {"code": "539384", "name": "Kněževes", "districtCode": "3210"},
+        {"code": "539708", "name": "Středokluky", "districtCode": "3210"},
+        {"code": "599433", "name": "Svárov", "districtCode": "3203"},
+        {"code": "539309", "name": "Chýně", "districtCode": "3210"},
+        {"code": "532215", "name": "Červený Újezd", "districtCode": "3210"}
+      ],
+      "parts": [
+        {"code": "400351", "name": "Zličín", "municipalityCode": "554782", "municipalityName": "Praha"},
+        {"code": "400483", "name": "Řepy", "municipalityCode": "554782", "municipalityName": "Praha"},
+        {"code": "400394", "name": "Ruzyně", "municipalityCode": "554782", "municipalityName": "Praha"},
+        {"code": "193259", "name": "Sobín", "municipalityCode": "554782", "municipalityName": "Praha"}
+      ]
+    },
+    {
+      "id": "beroun",
+      "bit": 4,
+      "municipalities": [
+        {"code": "531057", "name": "Beroun", "districtCode": "3202"},
+        {"code": "533203", "name": "Králův Dvůr", "districtCode": "3202"},
+        {"code": "531944", "name": "Vráž", "districtCode": "3202"},
+        {"code": "531243", "name": "Hýskov", "districtCode": "3202"},
+        {"code": "531839", "name": "Tetín", "districtCode": "3202"},
+        {"code": "533106", "name": "Trubín", "districtCode": "3202"}
+      ],
+      "parts": [
+        {"code": "72966", "name": "Popovice", "municipalityCode": "533203", "municipalityName": "Králův Dvůr"}
+      ],
+      "note": "Popovice jsou částí Králova Dvora a jsou již zahrnuty v celé obci; nejsou další samostatnou obcí."
+    }
+  ]
+}

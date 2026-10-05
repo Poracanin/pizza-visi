@@ -1,4 +1,4 @@
-import { loadRuianAddresses, searchAddresses, resolveAddress } from './ruian-addresses.js';
+import { loadRuianAddresses, searchAddresses, resolveAddress } from './ruian-addresses.js?v=coverage-20261005';
 
 const escape = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
 const paths = {
@@ -89,7 +89,7 @@ export function createDeliveryDialog({ data, getSelection, onApply, onClose }) {
     input.removeAttribute('aria-activedescendant');
     $('#delivery-choice-address-status').textContent = results.length
       ? `${results.length} ${results.length === 1 ? 'adresa' : results.length < 5 ? 'adresy' : 'adres'} v nabídce. Vyber kliknutím nebo šipkami a Enterem.`
-      : input.value.trim().length < 2 ? 'Napiš alespoň 2 znaky ulice nebo města.' : 'Adresu jsme nenašli. Zkus přidat ulici, číslo domu nebo město. Rozvoz ověřujeme pro Rudnou a Hostivici.';
+      : input.value.trim().length < 2 ? 'Napiš alespoň 2 znaky ulice nebo města.' : 'Adresu jsme nenašli. Zkus přidat ulici, číslo domu nebo město. Rozvážíme z Rudné, Hostivic a Berouna.';
   }
   function selectAddress(id) {
     if (busy || !addresses) return;

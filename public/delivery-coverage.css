@@ -1,0 +1,59 @@
+/* One delivery section: facts, address lookup, map and expandable localities. */
+.delivery-overview{display:flex;align-items:center;justify-content:space-between;gap:32px;margin-bottom:22px}
+.delivery-overview h2{font-size:clamp(38px,4vw,56px);white-space:nowrap}
+.delivery-overview .delivery-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin:0;padding:0;border:0}
+.delivery-overview .delivery-facts strong{font-size:30px;white-space:nowrap}
+.delivery-overview .delivery-facts strong>small{font-size:17px}
+.delivery-overview .delivery-facts span{font-size:10px;margin-top:3px;line-height:1.4;color:var(--muted)}
+.delivery-overview .fine-print{font-size:10px;margin-top:8px;color:var(--muted)}
+.delivery-localities{margin-top:22px}
+.delivery-localities>h3{font:400 23px/1.2 var(--display);margin-bottom:10px;color:var(--text)}
+.coverage-branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:22px}
+.coverage-branch{border-block:1px solid var(--line);min-width:0}
+.coverage-branch>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;cursor:pointer;min-height:66px;padding:12px 0}
+.coverage-branch>summary::-webkit-details-marker{display:none}
+.coverage-branch>summary:focus-visible,.coverage-call:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+.coverage-branch-info{display:flex;flex-direction:column;gap:4px;min-width:0}
+.coverage-branch-info>strong{font:400 25px/1 var(--display);letter-spacing:.4px;color:var(--text)}
+.coverage-branch-info>span{font-size:11px;line-height:1.5;color:var(--muted)}
+.coverage-toggle{position:relative;display:block;width:25px;height:25px;flex-shrink:0;border:1px solid #c9c2b9;border-radius:50%;color:var(--accent)}
+.coverage-toggle::before,.coverage-toggle::after{content:'';position:absolute;top:11px;left:6px;width:11px;height:1px;background:currentColor}
+.coverage-toggle::after{transform:rotate(90deg)}
+.coverage-branch[open] .coverage-toggle{border-color:var(--accent);background:#c9103108}
+.coverage-branch[open] .coverage-toggle::after{transform:rotate(0)}
+.coverage-branch>summary:hover .coverage-branch-info>strong{color:var(--accent)}
+.coverage-content{padding:0 0 10px}
+.coverage-area-label{font-size:11px;line-height:1.5;color:var(--muted);margin-bottom:8px}
+.coverage-areas{display:flex;flex-wrap:wrap;gap:5px;list-style:none;padding:0;margin:0}
+.coverage-areas>li{font-size:11px;line-height:1.5;padding:4px 7px;border:1px solid #d6cec3;border-radius:3px;background:#faf8f3;color:#514a44;overflow-wrap:anywhere}
+.coverage-call{display:flex;align-items:center;gap:7px;width:fit-content;max-width:100%;min-height:44px;margin-top:6px;font-size:12px;color:var(--text)}
+.coverage-call>.icon{color:var(--accent);flex-shrink:0}
+.coverage-call>span{color:var(--muted);font-size:11px}
+.coverage-call:hover{color:var(--accent)}
+.branches-section.branches-compact{padding-block:38px}
+.branches-compact .branches-grid{gap:20px}
+@media(max-width:900px){
+  .delivery-overview{align-items:flex-start;gap:18px}
+  .delivery-overview h2{font-size:38px}
+  .delivery-overview .delivery-facts{gap:16px}
+  .coverage-branches{gap:14px}
+}
+@media(max-width:700px){
+  .delivery-overview{display:block;margin-bottom:16px}
+  .delivery-overview h2{font-size:38px;margin-bottom:14px}
+  .delivery-overview .delivery-facts{gap:12px}
+  .delivery-overview .delivery-facts strong{font-size:28px}
+  .delivery-overview .delivery-facts span{font-size:10px;max-width:none}
+  .coverage-branches{grid-template-columns:1fr;gap:0}
+  .coverage-branch+.coverage-branch{border-top:0}
+  .coverage-branch>summary{min-height:64px;padding-block:11px}
+  .delivery-localities{margin-top:18px}
+  .delivery-localities>h3{font-size:22px;margin-bottom:8px}
+  .branches-section.branches-compact{padding-block:24px}
+  .branches-compact .branches-grid{gap:16px}
+}
+@media(max-width:600px){
+  .delivery-map-section>.container{width:100%;padding:0}
+  .delivery-overview,.delivery-localities{margin-inline:16px}
+  .delivery-map-section noscript>p{margin-inline:16px}
+}

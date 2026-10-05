@@ -2,10 +2,12 @@ import { createOpeningStatus, updateOrderControls } from './opening-status.js?v=
 import { createHeroCarousel } from './hero-carousel.js?v=2';
 import { itemPrice, matchesItem, validBranch } from './menu-utils.js';
 import { createPrivacyBanner } from './privacy-banner.js';
-import { loadRuianAddresses } from './ruian-addresses.js';
-import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js';
-import { createOrdering } from './ordering.js?v=opening-hours-1';
+import { loadRuianAddresses } from './ruian-addresses.js?v=coverage-20261005';
+import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js?v=coverage-20261005';
+import { createOrdering } from './ordering.js?v=half40-pricing-1';
 import { showCartFeedback } from './cart-feedback.js?v=half-pizza-1';
+import { initDeliveryMap, setDeliveryMapBranch } from './delivery-map.js?v=auto-pan-4';
+import { initDeliveryAddressChecker } from './delivery-address-checker.js?v=compact-2';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -85,7 +87,14 @@ function renderBranches() {
 }
 
 function renderDelivery() {
-  $('#delivery-card').innerHTML = `<div class="delivery-empty"><div class="delivery-drawing">${icon('truck')}</div><p class="eyebrow">Rudná · Hostivice · Beroun</p><h3>ADRESU ZADÁŠ<br><em>V OBJEDNÁVCE</em></h3><p>Podle místa doručení vybereme pobočku.<br>Pro osobní vyzvednutí si ji zvolíš sám.</p><a class="button button-outline" href="#menu">Vybrat si pizzu ${icon('arrow')}</a></div>`;
+  const card = $('#delivery-card');
+  const currentBranches = $$('.coverage-branch', card);
+  const openBranches = new Set(currentBranches.filter(branch => branch.open).map(branch => branch.dataset.branch));
+  card.innerHTML = `<h3 id="delivery-coverage-title">Lokality podle pobočky</h3>
+    <div class="coverage-branches">${state.data.branches.map(branch => `<details class="coverage-branch" data-branch="${escape(branch.id)}"${openBranches.has(branch.id) ? ' open' : ''}>
+      <summary><span class="coverage-branch-info"><strong>${escape(branch.name)}</strong><span>${escape(branch.address)}</span></span><span class="coverage-toggle" aria-hidden="true"></span></summary>
+      <div class="coverage-content"><p class="coverage-area-label">Dovážíme do těchto lokalit:</p><ul class="coverage-areas">${branch.delivery_areas.map(area => `<li>${escape(area)}</li>`).join('')}</ul><a class="coverage-call" href="${escape(branch.phone_uri)}" aria-label="Zavolat na pobočku ${escape(branch.name)}">${icon('phone', 'icon-small')} Zavolat <span>${escape(branch.phone)}</span></a></div>
+    </details>`).join('')}</div>`;
 }
 
 function selectBranch(id) {
@@ -191,16 +200,23 @@ menuSizing.observe($('.menu-controls'));
 measureMenuControls();
 
 const siteHeader = $('.site-header');
+const backToTop = $('#back-to-top');
 let headerFrame = null;
 function syncCompactHeader() {
   headerFrame = null;
   if (window.scrollY > 96) siteHeader.classList.add('is-compact');
   else if (window.scrollY < 24) siteHeader.classList.remove('is-compact');
+  backToTop.hidden = window.scrollY < 240;
 }
 window.addEventListener('scroll', () => {
   if (headerFrame === null) headerFrame = requestAnimationFrame(syncCompactHeader);
 }, { passive: true });
 syncCompactHeader();
+backToTop.addEventListener('click', () => {
+  history.replaceState(history.state, '', `${location.pathname}${location.search}`);
+  $('.wordmark', siteHeader).focus({ preventScroll: true });
+  window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+});
 
 $('.category-tabs').addEventListener('keydown', event => {
   const tabs = $$('.category-tabs button');
@@ -225,7 +241,7 @@ $$('dialog').forEach(dialog => {
 
 async function init() {
   try {
-    const response = await fetch('./data/site.json?v=webp-1');
+    const response = await fetch('./data/site.json?v=delivery-20261005');
     if (!response.ok) throw new Error('Menu unavailable');
     state.data = await response.json();
     createHeroCarousel({ branches: state.data.branches, icon, escape });
@@ -262,6 +278,10 @@ async function init() {
       } catch { /* An unavailable address book leaves checkout editable. */ }
     }
     renderBranches(); renderMenu();
+    initDeliveryMap($('#home-delivery-map'), state.data.branches);
+    initDeliveryAddressChecker($('#delivery-address-checker'), state.data.branches, {
+      onSelect: address => setDeliveryMapBranch($('#home-delivery-map'), address?.branchIds.length === 1 ? address.branchIds[0] : 'all'),
+    });
     ordering.initRoute();
     $('#copyright-year').textContent = new Date().getFullYear();
   } catch (error) {

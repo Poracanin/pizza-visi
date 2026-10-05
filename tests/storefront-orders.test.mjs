@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createState, restoreState, requirements, transitionOrder, STORAGE_KEY } from '../public/admin/model.js';
 import { createStorefrontOrder, submitLocalOrder } from '../public/storefront-orders.js';
-import { resolveAddress } from '../public/ruian-addresses.js';
+import { resolveAddress, searchAddresses } from '../public/ruian-addresses.js';
 
 const json = async path => JSON.parse(await readFile(new URL(path, import.meta.url)));
 const [data, seed, addresses] = await Promise.all([json('../public/data/site.json'), json('../public/admin/seed.json'), json('../public/data/ruian-addresses.json')]);
@@ -32,6 +32,20 @@ test('A retry returns the same order while changed payload cannot reuse its requ
  assert.equal(again.duplicate,true); assert.equal(again.state,first.state); assert.equal(again.order.id,first.order.id); assert.equal(again.state.orders.length,1);
  request.cart[0].quantity=3;
  assert.throws(()=>createStorefrontOrder(first.state,request,addresses,now),/jinými údaji/);
+});
+
+test('Beroun delivery retains its canonical address and branch through the POS roundtrip',()=>{
+ const canonical=searchAddresses(addresses,'Beroun Pivovarska 105').find(address=>address.branchIds.includes('beroun'));
+ assert.ok(canonical);
+ const request=input();request.branchId='beroun';request.addressId=canonical.id;request.customer.address=canonical.label;
+ const result=createStorefrontOrder(initial(),request,addresses,now);
+ assert.match(result.order.id,/^VISI-BER-/);
+ assert.equal(result.order.branchId,'beroun');
+ assert.equal(result.order.addressSnapshot.id,canonical.id);
+ assert.equal(result.order.deliveryAddress,canonical.label);
+ assert.deepEqual(restoreState(JSON.stringify(result.state),data,seed).orders[0],result.order);
+ request.branchId='rudna';
+ assert.throws(()=>createStorefrontOrder(initial(),request,addresses,now),/nerozváží/);
 });
 
 test('Arbitrary or edited addresses, uncovered branches, fake online payments and invalid cart lines are rejected',()=>{

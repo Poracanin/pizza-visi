@@ -1,0 +1,45 @@
+/* A compact lookup panel joins the map without clipping its suggestions. */
+.delivery-address-checker{position:relative;z-index:1100;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;gap:24px;margin-bottom:0;padding:20px 24px;border:1px solid #ddd7cd;border-bottom:0;border-radius:8px 8px 0 0;background:#faf8f3;color:#242326;color-scheme:light}
+.delivery-address-intro{min-width:0;padding-top:9px}
+.delivery-address-intro h3{margin:0;font:400 29px/1.08 var(--display);letter-spacing:.2px;text-transform:uppercase}
+.delivery-address-intro h3 em{display:inline;font-style:normal;color:#c91031}
+.delivery-address-form{min-width:0}
+.delivery-address-row{position:relative;display:flex;align-items:stretch;gap:8px}
+.delivery-address-checker .delivery-address-combobox{position:relative;flex:1;min-width:0}
+.delivery-address-input-wrap{position:relative;display:flex;align-items:center}
+.delivery-address-input-wrap>svg{position:absolute;left:13px;width:18px;height:20px;color:#b6112d;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.delivery-address-checker input{display:block;width:100%;min-width:0;height:48px;padding:11px 44px 11px 39px;border:1px solid #cfc8be;border-radius:4px;background:#fffdf9;color:#242326;font:400 13px/1.5 var(--body);appearance:none;outline:none;transition:border-color .15s,box-shadow .15s}
+.delivery-address-checker input::placeholder{color:#817971;opacity:1}
+.delivery-address-checker input:focus{border-color:#c91031;box-shadow:0 0 0 3px #c9103110}
+.delivery-address-clear{position:absolute;right:2px;top:2px;display:grid;place-items:center;width:44px;height:44px;border-radius:3px;color:#766e66}
+.delivery-address-clear:hover{color:#c91031;background:#f2ede5}
+.delivery-address-clear svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+.delivery-address-submit{display:flex;align-items:center;justify-content:center;gap:13px;min-height:48px;padding:10px 16px;border-radius:4px;background:#c91031;color:#fff;font:600 11px/1.5 var(--body);white-space:nowrap;transition:background .15s}
+.delivery-address-submit:hover{background:#ae0d29}
+.delivery-address-submit-arrow{font-size:19px;font-weight:400}
+.delivery-address-options{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:1200;max-height:310px;overflow:auto;overscroll-behavior:contain;list-style:none;margin:0;padding:5px;border:1px solid #d4ccc1;border-radius:5px;background:#fffdf8;box-shadow:0 14px 35px #30261925;touch-action:pan-y}
+.delivery-address-options>li{display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:58px;margin:0;padding:8px 10px;border:1px solid transparent;border-radius:3px;cursor:pointer;touch-action:pan-y}
+.delivery-address-options>li>span{color:#302b28;font:500 12px/1.5 var(--body);overflow-wrap:anywhere}
+.delivery-address-options>li>small{color:#776c62;font:400 10px/1.4 var(--body)}
+.delivery-address-options>li:hover,.delivery-address-options>li[aria-selected=true]{border-color:#e4c7c9;background:#f9edeb}
+.delivery-address-status{margin:6px 0 0;color:#69615b;font:400 11px/1.5 var(--body)}
+.delivery-address-contact{margin:5px 0 0;color:#69615b;font:400 11px/1.6 var(--body)}
+.delivery-address-contact a{color:#a60e29;text-decoration:underline;text-underline-offset:3px}
+.delivery-address-retry{min-height:44px;margin-top:2px;color:#a60e29;text-decoration:underline;text-underline-offset:4px;font:600 11px/1.5 var(--body)}
+.delivery-address-result{display:flex;align-items:flex-start;gap:9px;margin-top:12px;padding-top:12px;border-top:1px solid #e5ded4}
+.delivery-address-success-mark{display:grid;place-items:center;flex:none;width:25px;height:25px;margin-top:1px;border:1px solid #d6b6af;border-radius:50%;background:#f7ebe5;color:#af1830}
+.delivery-address-success-mark svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.delivery-address-result>div{min-width:0;flex:1}
+.delivery-address-result strong{display:block;color:#302b28;font:600 13px/1.5 var(--body)}
+.delivery-address-confirmed{margin:2px 0 0;color:#514a44;font:500 11px/1.5 var(--body);overflow-wrap:anywhere}
+.delivery-address-serving{display:inline;margin:0;color:#69615b;font:400 11px/1.5 var(--body)}
+.delivery-address-serving b{font-weight:600;color:#514a44}
+.delivery-address-menu{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin:0 0 0 14px;color:#b40e2b;font:600 11px/1.5 var(--body)}
+.delivery-address-menu:hover{text-decoration:underline;text-underline-offset:4px}
+.delivery-address-checker button:focus-visible,.delivery-address-checker a:focus-visible{outline:2px solid #c91031;outline-offset:3px}
+.delivery-address-checker [hidden]{display:none!important}
+@media(max-width:1100px){.delivery-address-checker{gap:18px;padding:18px 20px}.delivery-address-intro h3{font-size:27px}.delivery-address-submit{padding-inline:13px;gap:10px}}
+@media(max-width:900px){.delivery-address-checker{grid-template-columns:1fr;gap:12px}.delivery-address-intro{padding:0}.delivery-address-intro h3{font-size:29px}}
+@media(max-width:600px){.delivery-address-checker{padding:16px;gap:12px;border-radius:0;border-inline:0}.delivery-address-intro h3{font-size:28px}.delivery-address-checker .delivery-address-combobox{position:static}.delivery-address-row{gap:7px}.delivery-address-submit{min-height:48px;padding:10px 13px;font-size:12px}.delivery-address-submit-detail,.delivery-address-submit-arrow{display:none}.delivery-address-checker input{font-size:16px;padding-left:12px;padding-right:44px}.delivery-address-input-wrap>svg{display:none}.delivery-address-options{max-height:270px}.delivery-address-options>li{min-height:58px}.delivery-address-status,.delivery-address-contact{font-size:11px;line-height:1.5}.delivery-address-result{margin-top:10px;padding-top:10px}.delivery-address-menu{margin-left:10px}}
+@media(max-width:359px){.delivery-address-checker{padding-inline:14px}.delivery-address-intro h3{font-size:26px}.delivery-address-submit{padding-inline:11px}.delivery-address-menu{margin-left:0;display:flex;width:fit-content}}
+@media(prefers-reduced-motion:reduce){.delivery-address-checker input,.delivery-address-submit{transition:none}}

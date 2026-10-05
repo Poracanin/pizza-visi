@@ -1,7 +1,7 @@
 import {demoQrSvg} from './courier-qr.js?v=1';
 import {hasSampleMap, clearSampleMaps, mountSampleMaps} from './courier-maps.js?v=1';
-import {STORAGE_KEY, restoreState, createState} from './admin/model.js?v=combined-removals-1';
-import {PREVIEW_KEY, ISSUE_REASONS, createCourierPreview, upgradeCourierPreviewAddresses, validateCourierState, courierOrders, courierHistory, deliveryStatus, takeOrder, finishDelivery, setDeliveryIssue, courierPaymentQuote, collectDemoPayment, courierPaymentTotals} from './courier-model.js?v=combined-removals-1';
+import {STORAGE_KEY, restoreState, createState} from './admin/model.js?v=half40-pricing-1';
+import {PREVIEW_KEY, ISSUE_REASONS, createCourierPreview, upgradeCourierPreviewAddresses, validateCourierState, courierOrders, courierHistory, deliveryStatus, takeOrder, finishDelivery, setDeliveryIssue, courierPaymentQuote, collectDemoPayment, courierPaymentTotals} from './courier-model.js?v=half40-pricing-1';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -314,7 +314,7 @@ window.addEventListener('storage', async event => {
 });
 async function init() {
   try {
-    const responses = await Promise.all([fetch('./data/site.json?v=webp-1'), fetch('./admin/seed.json')]);
+    const responses = await Promise.all([fetch('./data/site.json?v=delivery-20261005'), fetch('./admin/seed.json')]);
     if (responses.some(r => !r.ok)) throw new Error('Nepodařilo se načíst data poboček.');
     [site,seed] = await Promise.all(responses.map(r => r.json()));
     let settings = null;

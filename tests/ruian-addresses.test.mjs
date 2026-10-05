@@ -32,23 +32,47 @@ test('Search accepts diacritics, reordered words, prefixes, house numbers and co
   assert.deepEqual(searchAddresses(data, 'rieg', 0), []);
 });
 
-test('Coverage keeps both overlapping branches and does not invent Beroun delivery coverage', () => {
-  assert.equal(data.count, 16856);
+test('Every requested delivery locality resolves to the serving branch', () => {
+  const localities = {
+    rudna: ['Rudná', 'Nučice', 'Chrášťany', 'Drahelčice', 'Úhonice', 'Tachlovice', 'Jinočany', 'Zbuzany', 'Vysoký Újezd', 'Praha Zličín', 'Praha Třebonice'],
+    hostivice: ['Hostivice', 'Praha Zličín', 'Praha Řepy', 'Praha Ruzyně', 'Jeneč', 'Hostouň', 'Dobrovíz', 'Kněževes', 'Středokluky', 'Svárov', 'Chýně', 'Červený Újezd', 'Praha Sobín'],
+    beroun: ['Beroun', 'Králův Dvůr', 'Vráž', 'Hýskov', 'Tetín', 'Popovice Králův Dvůr', 'Trubín'],
+  };
+  for (const [branch, places] of Object.entries(localities)) {
+    for (const place of places) {
+      const results = searchAddresses(data, place, 20);
+      assert.ok(results.some(address => address.branchIds.includes(branch)), `${place} → ${branch}`);
+    }
+  }
+  assert.ok(searchAddresses(data, 'Beroun Pivovarska 105').some(address => address.branchIds.includes('beroun')));
+});
+
+test('Only Zličín overlaps and unlisted polygon localities are excluded', () => {
   const overlaps = data.records.filter(row => row[2] === 3);
-  assert.equal(overlaps.length, 1818);
+  assert.ok(overlaps.length > 0);
+  const inPart = (label, part) => label.includes(`${part},`) || label.startsWith(`${part} č. `);
+  assert.ok(overlaps.every(row => inPart(row[1], 'Zličín')));
   assert.deepEqual(resolveAddress(data, overlaps[0][0]).branchIds, ['rudna', 'hostivice']);
   for (const row of data.records) {
     const address = resolveAddress(data, row[0]);
     assert.ok(address.branchIds.length > 0);
-    assert.ok(address.branchIds.every(branch => ['rudna', 'hostivice'].includes(branch)));
+    assert.ok(address.branchIds.every(branch => ['rudna', 'hostivice', 'beroun'].includes(branch)));
+    if (inPart(row[1], 'Zličín')) assert.deepEqual(address.branchIds, ['rudna', 'hostivice']);
+    if (inPart(row[1], 'Třebonice')) assert.deepEqual(address.branchIds, ['rudna']);
+    if (['Řepy', 'Ruzyně', 'Sobín'].some(part => inPart(row[1], part))) assert.deepEqual(address.branchIds, ['hostivice']);
   }
-  // A prefix may legitimately find Berounská street in a covered municipality.
-  assert.ok(data.records.every(row => !/,\s*\d{3}\s?\d{2}\s+Beroun$/.test(row[1])));
-  assert.deepEqual(searchAddresses(data, 'Beroun Pivovarska 105'), []);
+  for (const excluded of ['Dobříč', 'Mezouň', 'Lužce', 'Běloky', 'Ptice', 'Tuchoměřice']) {
+    assert.ok(data.records.every(row => !row[1].endsWith(` ${excluded}`)), excluded);
+  }
+  for (const part of ['Stodůlky', 'Břevnov']) {
+    assert.ok(data.records.every(row => !inPart(row[1], part)), part);
+  }
   assert.equal(data.source.license, 'CC-BY-4.0');
 });
 
 test('Malformed projections cannot become canonical address data', () => {
-  const invalid = { version: 1, source: { dataDate: '2026-08-31' }, count: 1, records: [['123', 'Made up', 4, '']] };
-  assert.throws(() => resolveAddress(invalid, '123'), /neplatnou/);
+  for (const mask of [0, -1, 1.5, 8, '4', null]) {
+    const invalid = { version: 1, source: { dataDate: '2026-08-31' }, count: 1, records: [['123', 'Made up', mask, '']] };
+    assert.throws(() => resolveAddress(invalid, '123'), /neplatnou/);
+  }
 });

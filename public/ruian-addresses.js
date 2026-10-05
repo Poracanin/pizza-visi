@@ -1,6 +1,7 @@
 // Public projection of the RÚIAN snapshot. Canonical selected IDs, never typed
 // labels, establish a valid delivery address in the local ordering flow.
 const indexes = new WeakMap();
+const branchBits = Object.freeze({ rudna: 1, hostivice: 2, beroun: 4 });
 let pendingData;
 
 function normalize(value) {
@@ -21,9 +22,9 @@ function indexFor(data) {
     if (!Array.isArray(row) || row.length !== 4) throw new Error('Adresář RÚIAN obsahuje neplatnou adresu.');
     const [id, label, mask, postalCode] = row;
     if (typeof id !== 'string' || !/^[1-9]\d*$/.test(id) || byId.has(id)
-      || typeof label !== 'string' || !label.trim() || ![1, 2, 3].includes(mask)
+      || typeof label !== 'string' || !label.trim() || !Number.isInteger(mask) || mask < 1 || mask > 7
       || typeof postalCode !== 'string') throw new Error('Adresář RÚIAN obsahuje neplatnou adresu.');
-    const branchIds = Object.freeze([...(mask & 1 ? ['rudna'] : []), ...(mask & 2 ? ['hostivice'] : [])]);
+    const branchIds = Object.freeze(Object.entries(branchBits).filter(([, bit]) => mask & bit).map(([id]) => id));
     const address = Object.freeze({ id, label, sourceDate: data.source.dataDate, branchIds });
     const labelText = normalize(label);
     const words = [...new Set(normalize(`${label} ${postalCode}`).split(' '))];
@@ -38,7 +39,7 @@ function indexFor(data) {
 export async function loadRuianAddresses() {
   if (!pendingData) {
     pendingData = (async () => {
-      const response = await fetch(new URL('./data/ruian-addresses.json', import.meta.url));
+      const response = await fetch(new URL('./data/ruian-addresses.json?v=coverage-20261005', import.meta.url));
       if (!response.ok) throw new Error('Adresář se nepodařilo načíst. Zkus to prosím znovu.');
       const data = await response.json();
       indexFor(data);

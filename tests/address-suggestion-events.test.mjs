@@ -11,17 +11,18 @@ class Element extends EventTarget {
   }
   contains(element) { return element === this || Boolean(element?.parentElement && this.contains(element.parentElement)); }
 }
-function fixture() {
+function fixture(inputId = 'checkout-address') {
   const doc = new EventTarget();
   const root = new Element(null, { ownerDocument: doc });
   const combo = new Element(root, { combo: true });
-  const input = new Element(combo, { id: 'checkout-address' });
+  const input = new Element(combo, { id: inputId });
   const option = new Element(combo, { dataset: { addressId: '6348416' } });
   const second = new Element(combo, { dataset: { addressId: '12757250' } });
   const contact = new Element(root, { id: 'contact' });
   let open = true;
   const selections = [];
-  bindAddressSuggestionEvents(root, {
+  const cleanup = bindAddressSuggestionEvents(root, {
+    inputId,
     select(id, options) { selections.push({ id, ...options }); open = false; },
     close() { open = false; }
   });
@@ -33,7 +34,7 @@ function fixture() {
     doc.dispatchEvent(event);
     return event;
   }
-  return { root, input, option, second, contact, fire, selections, isOpen: () => open };
+  return { cleanup, root, input, option, second, contact, fire, selections, isOpen: () => open };
 }
 
 test('A mobile tap survives input blur and selects on release even without a click', () => {
@@ -109,4 +110,26 @@ test('A second finger cannot replace the active tap', () => {
   f.fire('pointerup', f.second, { pointerId: 8, isPrimary: false });
   f.fire('pointerup');
   assert.deepEqual(f.selections, [{ id: '6348416', pointerType: 'touch' }]);
+});
+
+
+test('Independent homepage input closes on focus loss while preserving touch selection', () => {
+  const keyboard = fixture('delivery-coverage-address');
+  keyboard.fire('focusout', keyboard.input, { relatedTarget: keyboard.contact });
+  assert.equal(keyboard.isOpen(), false);
+  const touch = fixture('delivery-coverage-address');
+  touch.fire('pointerdown');
+  touch.fire('focusout', touch.input);
+  assert.equal(touch.isOpen(), true);
+  touch.fire('pointerup');
+  assert.deepEqual(touch.selections, [{ id: '6348416', pointerType: 'touch' }]);
+});
+
+test('Cleanup removes root and document listeners without affecting other address fields', () => {
+  const f = fixture('delivery-coverage-address');
+  f.cleanup();
+  f.fire('click');
+  f.fire('pointerdown', new Element(null));
+  assert.equal(f.isOpen(), true);
+  assert.deepEqual(f.selections, []);
 });

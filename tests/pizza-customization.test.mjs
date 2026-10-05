@@ -21,8 +21,8 @@ test('Default recipes remain compatible; both base swaps and removals are free a
     const changed = whole({ size, base: 'cream', removedIngredients: ['oregano', 'mozzarella', 'oregano'] });
     assert.equal(unitPrice(data, changed), unitPrice(data, plain));
     assert.deepEqual(changed.removedIngredients, ['mozzarella', 'oregano']);
-    assert.equal(unitPrice(data, half({ size })), size === 40 ? 240 + 45 : 170 + 30);
   }
+  assert.equal(unitPrice(data, half()), 240 + 30);
   assert.equal(recipeBase(mushroom), 'cream');
   assert.equal(recipeBase(data.categories.find(c => c.id === 'pizzy').items.find(item => item.id === '19-zeleninova')), 'cream');
   assert.deepEqual(removableIngredients(margherita), ['drcená rajčata', 'mozzarella', 'oregano']);
@@ -76,7 +76,7 @@ test('Previously saved one-half omissions remain mixed until explicitly changed 
 
 test('The combined list includes actual bases and merges case variants without losing per-half spelling', () => {
   const vegetables = lookup('19-zeleninova');
-  const line = normalizeLine(data, { itemId: mushroom.id, size: 30, halves: [{ itemId: mushroom.id, extras: [] }, { itemId: vegetables.id, extras: [] }] });
+  const line = normalizeLine(data, { itemId: mushroom.id, size: 40, halves: [{ itemId: mushroom.id, extras: [] }, { itemId: vegetables.id, extras: [] }] });
   const creams = removalChoices(line, lookup).filter(choice => choice.ingredient.toLowerCase().includes('smetana'));
   assert.equal(creams.length, 1);
   assert.equal(creams[0].targets.length, 2);
@@ -123,7 +123,7 @@ test('Local order retains recipe changes after reload and duplicate submission w
   const state = restoreState(values.get(STORAGE_KEY), data, seed);
   const order = state.orders[0];
   assert.equal(order.configurationVersion, 3);
-  assert.equal(order.total, 240 + 45 + 23);
+  assert.equal(order.total, 240 + 30 + 23);
   assert.equal(result.total, order.total);
   assert.equal(order.lines[0].halves[0].base, 'cream');
   assert.deepEqual(order.lines[0].halves[1].removedIngredients, ['šunka – prosciutto cotto']);
@@ -135,12 +135,27 @@ test('Local order retains recipe changes after reload and duplicate submission w
 });
 
 test('Modified recipes never consume the original stock recipe, including tampered inventory flags', () => {
-  for (const line of [whole({ size: 30, base: 'cream' }), whole({ size: 30, removedIngredients: ['mozzarella'] }), half({ size: 30 })]) {
+  for (const line of [whole({ size: 30, base: 'cream' }), whole({ size: 30, removedIngredients: ['mozzarella'] }), half()]) {
     const { state, order } = createStorefrontOrder(createState(data, seed), request(line), null, now);
     assert.equal(order.inventoryIncomplete, true);
     assert.equal(hasRecipeChanges(order.lines[0]), true);
     order.inventoryIncomplete = false;
     assert.throws(() => requirements(state, order, seed), /receptura/);
     assert.equal(restoreState(JSON.stringify(state), data, seed).orders[0].inventoryIncomplete, true);
+  }
+});
+
+test('Historical customized halves keep their size, recipe choices and saved price without repricing', () => {
+  for (const [size, quotedPrice, packaging] of [[30, 200, 16], [40, 285, 23]]) {
+    const { state, order } = createStorefrontOrder(createState(data, seed), request(half()), null, now);
+    Object.assign(order.lines[0], { size, unitPrice: quotedPrice });
+    Object.assign(order, { subtotal: quotedPrice, packaging, total: quotedPrice + packaging });
+    const restored = restoreState(JSON.stringify(state), data, seed).orders[0];
+    assert.deepEqual(restored, order);
+    assert.equal(restored.lines[0].size, size);
+    assert.equal(restored.lines[0].unitPrice, quotedPrice);
+    const corrupt = structuredClone(state);
+    corrupt.orders[0].lines[0].halves[0].removedIngredients = ['nonexistent ingredient'];
+    assert.throws(() => restoreState(JSON.stringify(corrupt), data, seed), /Základ/);
   }
 });

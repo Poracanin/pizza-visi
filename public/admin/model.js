@@ -1,6 +1,6 @@
 import {stockSummary, makeInitialBatches, addBatch, allocateBatches, validateBatches} from './inventory.js';
 import {deliveryAssignment, removeDeliveryOrder, validateDeliveryPlans, platformCourier, migrateCourierPolicy} from './delivery.js?v=bb45e9a7';
-import { normalizeLine } from '../cart-model.js?v=combined-removals-1';
+import { normalizeLine } from '../cart-model.js?v=half40-pricing-1';
 import { hasRecipeChanges } from '../pizza-customization.js?v=combined-removals-1';
 // Amounts are whole grams or millilitres. Mutations are pure: one complete state
 // is persisted only after the entire operation succeeds.
@@ -193,11 +193,12 @@ export function restoreState(raw, site, seed) {
       const item = products(site).find(p => p.id === line.pizzaId);
       if (!item || (item.category === 'pizzy' ? ![30, 40].includes(line.size) : line.size !== null) || !integer(line.quantity, 1, 20)) fail('Položka objednávky je neplatná.');
       if (line.base !== undefined || line.removedIngredients !== undefined || line.halves?.some(half => half?.base !== undefined || half?.removedIngredients !== undefined)) {
-        if (!normalizeLine(site, { ...line, itemId: line.pizzaId })) fail('Základ nebo odebrané suroviny nejsou platné.');
+        if (!normalizeLine(site, { ...line, itemId: line.pizzaId }, { allowLegacyHalfPizza: true })) fail('Základ nebo odebrané suroviny nejsou platné.');
         if (hasRecipeChanges(line)) order.inventoryIncomplete = true;
       }
       if (line.halves !== undefined) {
-        const normalized = normalizeLine(site, { ...line, itemId: line.pizzaId });
+        // Historical orders keep their original configuration and quoted amount.
+        const normalized = normalizeLine(site, { ...line, itemId: line.pizzaId }, { allowLegacyHalfPizza: true });
         if (!normalized || line.halves.some((half, index) => typeof half.name !== 'string' || !Array.isArray(half.extraNames) || half.extraNames.some(name => typeof name !== 'string') || !Array.isArray(half.extras) || half.extras.length !== normalized.halves[index].extras.length || half.extras.some(id => !normalized.halves[index].extras.includes(id)))) fail('Půlky pizzy nejsou platné.');
         if (line.size === 40 || line.extras?.length || line.halves.some(half => half.extras.length)) order.inventoryIncomplete = true;
       }

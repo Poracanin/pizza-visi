@@ -1,5 +1,5 @@
 import {stockSummary, batchStatus, daysLeft, localDay, updateBatch, discardBatch} from './inventory.js';
-import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, ensureDemoDeliveryOrders, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=combined-removals-1';
+import {STORAGE_KEY, SOURCES, pizzas, products, pizzaName, createDemoState, ensureDemoDeliveryOrders, restoreState, addOrder, requirements, transitionOrder, restock, saveRecipeCells} from './model.js?v=half40-pricing-1';
 import {normalizeSearch, itemPrice} from '../menu-utils.js';
 import {customizationDetails} from '../pizza-customization.js?v=combined-removals-1';
 import {COURIERS, deliveryOrders, deliveryPlan, deliveryAssignment, saveDeliveryPlan, platformCourier, toggleDeliveryStop} from './delivery.js?v=bb45e9a7';
@@ -450,7 +450,7 @@ window.addEventListener('storage', event => {
 });
 async function init() {
   try {
-    const responses = await Promise.all([fetch('../data/site.json?v=webp-1'), fetch('./seed.json')]);
+    const responses = await Promise.all([fetch('../data/site.json?v=delivery-20261005'), fetch('./seed.json')]);
     if (responses.some(r => !r.ok)) throw new Error('Nepodařilo se načíst menu nebo receptury.');
     [site, seed] = await Promise.all(responses.map(r => r.json()));
     await locked(async () => {

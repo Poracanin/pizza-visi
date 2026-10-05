@@ -10,7 +10,7 @@ export function getItem(data, id) {
   }
   return null;
 }
-export function normalizeLine(data, input) {
+export function normalizeLine(data, input, { allowLegacyHalfPizza = false } = {}) {
   if (!input || typeof input !== 'object') return null;
   const item = getItem(data, input.itemId);
   if (!item || item.categoryId === 'baleni') return null;
@@ -25,6 +25,8 @@ export function normalizeLine(data, input) {
   let halves;
   if (input.halves !== undefined) {
     // Never silently turn a broken half-and-half order into a different whole pizza.
+    // Only saved order snapshots may retain an older 30 cm half pizza.
+    if (size !== 40 && !allowLegacyHalfPizza) return null;
     if (item.categoryId !== 'pizzy' || !Array.isArray(input.halves) || input.halves.length !== 2 || input.halves[0]?.itemId !== item.id || input.halves.some(half => getItem(data, half?.itemId)?.categoryId !== 'pizzy')) return null;
     const toppings = new Set(data.categories.find(c => c.id === 'dej-si-navic').items.map(i => i.id));
     if (input.base !== undefined || input.removedIngredients !== undefined) return null;
@@ -49,9 +51,13 @@ export function mergeLine(cart, line, replaceIndex = -1) {
 }
 export function unitPrice(data, line) {
   const base = basePrice(data, line);
-  const extras = [...line.extras, ...(line.halves || []).flatMap(half => half.extras)];
-  // Each half's toppings cost the normal full amount, even when selected on both halves.
-  return base + extras.reduce((sum, id) => sum + itemPrice(getItem(data, id), line.size), 0);
+  const wholeExtras = line.extras.reduce((sum, id) => sum + addonPrice(data, id, line.size), 0);
+  // Each half is charged independently at the small pizza topping tariff.
+  const halfExtras = (line.halves || []).reduce((sum, half) => sum + half.extras.reduce((total, id) => total + addonPrice(data, id, line.size, { half: true }), 0), 0);
+  return base + wholeExtras + halfExtras;
+}
+export function addonPrice(data, extraId, size, { half = false } = {}) {
+  return itemPrice(getItem(data, extraId), half ? 30 : size);
 }
 export function basePrice(data, line, size = line.size) {
   return Math.max(...(line.halves || [line]).map(part => itemPrice(getItem(data, part.itemId), size)));

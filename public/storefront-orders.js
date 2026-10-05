@@ -1,7 +1,7 @@
 import { storeOpeningStatus, closedOrderingMessage } from './opening-hours.js?v=1';
-import { STORAGE_KEY, createState, restoreState, orderId } from './admin/model.js?v=combined-removals-1';
-import { getItem, normalizeLine, unitPrice, cartTotals, lineName } from './cart-model.js?v=combined-removals-1';
-import { loadRuianAddresses, resolveAddress } from './ruian-addresses.js';
+import { STORAGE_KEY, createState, restoreState, orderId } from './admin/model.js?v=half40-pricing-1';
+import { getItem, normalizeLine, unitPrice, cartTotals, lineName } from './cart-model.js?v=half40-pricing-1';
+import { loadRuianAddresses, resolveAddress } from './ruian-addresses.js?v=coverage-20261005';
 import { customizationFields, hasRecipeChanges } from './pizza-customization.js?v=combined-removals-1';
 
 const reject = message => { throw new Error(message); };
@@ -37,6 +37,7 @@ export function createStorefrontOrder(state, input, addressCatalog, now = new Da
     if (!item || !['pizzy', 'napoje', 'vino-prosecco'].includes(item.categoryId)) reject('Suroviny navíc přidávej přímo k vybrané pizze.');
     if (!Number.isSafeInteger(line.quantity) || line.quantity < 1 || line.quantity > 20) reject('Zkontroluj počet kusů v košíku.');
     if (item.categoryId === 'pizzy' && ![30, 40].includes(line.size)) reject('Vyber velikost 30 nebo 40 cm.');
+    if (line.halves !== undefined && line.size !== 40) reject('Pizzu půl na půl připravujeme pouze ve velikosti 40 cm.');
     const result = normalizeLine(data, line);
     if (!result) reject('Zkontroluj výběr pizzy, základu a odebraných surovin.');
     if ((line.extras || []).length !== result.extras.length || (line.extras || []).some(id => !result.extras.includes(id))) reject('Některá přísada už není v nabídce. Uprav pizzu znovu.');
