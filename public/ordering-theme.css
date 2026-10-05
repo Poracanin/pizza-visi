@@ -30,7 +30,7 @@ dialog .small-text-button,dialog .cart-edit,dialog .cart-branch button{color:var
 .branch-dialog .branch-dialog-bottom>button{color:var(--text)}
 
 /* Product photography keeps its neutral background and original ingredients. */
-.product-dialog .customize-photo{background:#eeeae4 url('./assets/editorial/marble-light.webp') center/cover;color:#111112}
+.product-dialog .customize-photo{background:#eeeae4 url('./assets/editorial/marble-light-optimized.webp') center/cover;color:#111112}
 .product-dialog .customize-photo img[src*="/pizzas/"]{width:auto;height:auto;max-width:100%;max-height:360px;aspect-ratio:1;border-radius:50%;mix-blend-mode:normal}
 .product-dialog .customize-photo-label{color:#b71330;letter-spacing:.7px}
 .product-dialog .customize-copy h2{letter-spacing:.2px}

@@ -1,24 +1,24 @@
 /* Normalize packshot whitespace in CSS; preserve every original label. */
 .beverage-photo:has(img[src*="/assets/drinks/"]){padding:16px;overflow:hidden}
-.beverage-photo img[src*="/assets/drinks/"]:not([src$="water-neutral.jpg"]){
+.beverage-photo img[src*="/assets/drinks/"]{
   --drink-photo-scale:1;
   flex:none;width:auto;max-width:none;height:100%;object-fit:contain;
   transform:scale(var(--drink-photo-scale));
 }
-.beverage-photo img[src$="coca-cola-0-5l.jpg"],
-.beverage-photo img[src$="fanta-pomeranc-0-5l.jpg"],
-.beverage-photo img[src$="sprite-0-5l.png"]{--drink-photo-scale:1.1!important}
-.beverage-photo:hover img[src*="/assets/drinks/"]:not([src$="water-neutral.jpg"]){transform:scale(calc(var(--drink-photo-scale) * 1.025))}
+.beverage-photo img[src$="coca-cola-0-5l.webp"],
+.beverage-photo img[src$="fanta-pomeranc-0-5l.webp"],
+.beverage-photo img[src$="sprite-0-5l.webp"]{--drink-photo-scale:1.1!important}
+.beverage-photo:hover img[src*="/assets/drinks/"]{transform:scale(calc(var(--drink-photo-scale) * 1.025))}
 
 .cart-dialog .cart-upsell-card{overflow:hidden}
-.cart-dialog .cart-upsell-card>img[src*="/assets/drinks/"]:not([src$="water-neutral.jpg"]){
+.cart-dialog .cart-upsell-card>img[src*="/assets/drinks/"]{
   flex:none;width:auto;max-width:none;height:90px;object-fit:contain;
 }
-.cart-dialog .cart-upsell-card>img[src$="coca-cola-0-5l.jpg"],
-.cart-dialog .cart-upsell-card>img[src$="fanta-pomeranc-0-5l.jpg"],
-.cart-dialog .cart-upsell-card>img[src$="sprite-0-5l.png"]{transform:scale(1.1)}
+.cart-dialog .cart-upsell-card>img[src$="coca-cola-0-5l.webp"],
+.cart-dialog .cart-upsell-card>img[src$="fanta-pomeranc-0-5l.webp"],
+.cart-dialog .cart-upsell-card>img[src$="sprite-0-5l.webp"]{transform:scale(1.1)}
 
 @media(max-width:700px){
   .beverage-photo:has(img[src*="/assets/drinks/"]){padding:12px}
-  .cart-dialog .cart-upsell-card>img[src*="/assets/drinks/"]:not([src$="water-neutral.jpg"]){height:80px}
+  .cart-dialog .cart-upsell-card>img[src*="/assets/drinks/"]{height:80px}
 }

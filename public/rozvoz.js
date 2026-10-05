@@ -314,7 +314,7 @@ window.addEventListener('storage', async event => {
 });
 async function init() {
   try {
-    const responses = await Promise.all([fetch('./data/site.json'), fetch('./admin/seed.json')]);
+    const responses = await Promise.all([fetch('./data/site.json?v=webp-1'), fetch('./admin/seed.json')]);
     if (responses.some(r => !r.ok)) throw new Error('Nepodařilo se načíst data poboček.');
     [site,seed] = await Promise.all(responses.map(r => r.json()));
     let settings = null;

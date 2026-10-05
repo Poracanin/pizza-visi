@@ -119,7 +119,6 @@ function renderMenu() {
     return `<article class="beverage-card" data-menu-product="${item.id}"><button class="beverage-photo" data-product="${item.id}" aria-label="Prohlédnout ${escape(cleanName(item))}">${item.image ? `<img src="./${escape(item.image)}" alt="${escape(cleanName(item))}" width="300" height="300" loading="lazy">` : icon('bag')}</button><div class="beverage-copy"><span class="beverage-category">${state.category === 'wine' ? 'Víno & prosecco' : 'Nápoje'}</span><h3>${escape(cleanName(item))}</h3><div class="beverage-bottom"><strong>${money(productPrice)}</strong><button class="beverage-add" data-quick-add="${item.id}" aria-label="Přidat ${escape(cleanName(item))} do košíku">${icon('plus', 'icon-small')} Přidat do košíku</button></div></div></article>`;
   }).join('') : `<div class="empty-menu">${icon('search')}<h3>TAHLE CHUŤ TU ZATÍM NENÍ</h3><p>Zkus jiný filtr.</p><button class="button button-outline" data-reset-filters>Zobrazit celou nabídku</button></div>`;
   $('#menu-results').textContent = `Nalezeno ${items.length} položek. Zobrazení: ${state.menuView === 'rows' ? 'řádky' : 'dlaždice'}.`;
-  $('#drink-photo-credit').hidden = state.category !== 'drinks';
   $('#menu-note').textContent = { pizza: 'Každou pizzu pečeme ve velikosti 30 nebo 40 cm.', drinks: 'Něco na osvěžení k tvé oblíbené pizze.', wine: 'Víno a prosecco z nabídky vinařství Valdo.' }[state.category];
 }
 
@@ -222,7 +221,7 @@ $$('dialog').forEach(dialog => {
 
 async function init() {
   try {
-    const response = await fetch('./data/site.json');
+    const response = await fetch('./data/site.json?v=webp-1');
     if (!response.ok) throw new Error('Menu unavailable');
     state.data = await response.json();
     createHeroCarousel({ branches: state.data.branches, icon, escape });

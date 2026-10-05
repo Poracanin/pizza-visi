@@ -25,7 +25,7 @@ const ingredient = id => seed.ingredients.find(i => i.id === id);
 const stopsText = count => `${count} ${count === 1 ? 'zastávka' : count >= 2 && count <= 4 ? 'zastávky' : 'zastávek'}`;
 const quantity = (value, unit) => value >= 1000 ? `${number(value / 1000)} ${unit === 'g' ? 'kg' : 'l'}` : `${number(value)} ${unit}`;
 const sourceBadge = source => ['wolt', 'foodora', 'bolt'].includes(source)
-  ? `<span class="source-badge source-${source}"><img src="./assets/logos/${source === 'wolt' ? 'wolt.png' : source === 'bolt' ? 'bolt-food.svg' : 'foodora.svg'}" alt="${sourceNames[source]}"></span>`
+  ? `<span class="source-badge source-${source}"><img src="./assets/logos/${source === 'wolt' ? 'wolt.webp' : source === 'bolt' ? 'bolt-food.svg' : 'foodora.svg'}" alt="${sourceNames[source]}"></span>`
   : `<span class="source-badge source-${source}">${source === 'web' ? 'PIZZA <b>VISI</b>' : 'POS · Pokladna'}</span>`;
 function notify(message, error = false) {
   clearTimeout(toastTimer); $('#toast').textContent = message; $('#toast').className = `visible ${error ? 'error' : ''}`;
@@ -450,7 +450,7 @@ window.addEventListener('storage', event => {
 });
 async function init() {
   try {
-    const responses = await Promise.all([fetch('../data/site.json'), fetch('./seed.json')]);
+    const responses = await Promise.all([fetch('../data/site.json?v=webp-1'), fetch('./seed.json')]);
     if (responses.some(r => !r.ok)) throw new Error('Nepodařilo se načíst menu nebo receptury.');
     [site, seed] = await Promise.all(responses.map(r => r.json()));
     await locked(async () => {

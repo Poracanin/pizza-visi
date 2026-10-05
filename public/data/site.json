@@ -39,7 +39,7 @@
         "https://pizzavisi.cz/",
         "https://pizzavisi.cz/rozvoz/"
       ],
-      "image": "assets/branches/rudna.png"
+      "image": "assets/branches/rudna.webp"
     },
     {
       "id": "hostivice",
@@ -82,7 +82,7 @@
         "https://pizzavisi.cz/",
         "https://pizzavisi.cz/rozvoz/"
       ],
-      "image": "assets/branches/hostivice.png"
+      "image": "assets/branches/hostivice.webp"
     },
     {
       "id": "beroun",
@@ -119,7 +119,7 @@
         "https://pizzavisi.cz/",
         "https://pizzavisi.cz/rozvoz/"
       ],
-      "image": "assets/branches/beroun.png"
+      "image": "assets/branches/beroun.webp"
     }
   ],
   "categories": [
@@ -182,7 +182,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/1-margherita.jpg",
+          "image": "assets/pizzas/1-margherita.webp",
           "allergens": null,
           "number": 1
         },
@@ -212,7 +212,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/2-sunkova.jpg",
+          "image": "assets/pizzas/2-sunkova.webp",
           "allergens": null,
           "number": 2
         },
@@ -243,7 +243,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/3-olivova.jpg",
+          "image": "assets/pizzas/3-olivova.webp",
           "allergens": null,
           "number": 3
         },
@@ -274,7 +274,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/4-zampionova.jpg",
+          "image": "assets/pizzas/4-zampionova.webp",
           "allergens": null,
           "number": 4
         },
@@ -305,7 +305,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/5-ananasova.jpg",
+          "image": "assets/pizzas/5-ananasova.webp",
           "allergens": null,
           "number": 5
         },
@@ -337,7 +337,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/6-syrova.jpg",
+          "image": "assets/pizzas/6-syrova.webp",
           "allergens": null,
           "number": 6
         },
@@ -368,7 +368,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/7-salamova.jpg",
+          "image": "assets/pizzas/7-salamova.webp",
           "allergens": null,
           "number": 7
         },
@@ -399,7 +399,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/8-slaninova.jpg",
+          "image": "assets/pizzas/8-slaninova.webp",
           "allergens": null,
           "number": 8
         },
@@ -430,7 +430,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/9-tunakova.jpg",
+          "image": "assets/pizzas/9-tunakova.webp",
           "allergens": null,
           "number": 9
         },
@@ -463,7 +463,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/10-symfonie.jpg",
+          "image": "assets/pizzas/10-symfonie.webp",
           "allergens": null,
           "number": 10
         },
@@ -496,7 +496,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/11-vegetarianska.jpg",
+          "image": "assets/pizzas/11-vegetarianska.webp",
           "allergens": null,
           "number": 11
         },
@@ -528,7 +528,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/12-hermelinova.jpg",
+          "image": "assets/pizzas/12-hermelinova.webp",
           "allergens": null,
           "number": 12
         },
@@ -562,7 +562,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/13-mexicka.jpg",
+          "image": "assets/pizzas/13-mexicka.webp",
           "allergens": null,
           "number": 13
         },
@@ -595,7 +595,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/14-uzenarska.jpg",
+          "image": "assets/pizzas/14-uzenarska.webp",
           "allergens": null,
           "number": 14
         },
@@ -628,7 +628,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/15-tunakova-special.jpg",
+          "image": "assets/pizzas/15-tunakova-special.webp",
           "allergens": null,
           "number": 15
         },
@@ -664,7 +664,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/16-visi.jpg",
+          "image": "assets/pizzas/16-visi.webp",
           "allergens": null,
           "number": 16
         },
@@ -697,7 +697,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/17-dabelska.jpg",
+          "image": "assets/pizzas/17-dabelska.webp",
           "allergens": null,
           "number": 17
         },
@@ -731,7 +731,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/18-ohniva.jpg",
+          "image": "assets/pizzas/18-ohniva.webp",
           "allergens": null,
           "number": 18
         },
@@ -766,7 +766,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/19-zeleninova.jpg",
+          "image": "assets/pizzas/19-zeleninova.webp",
           "allergens": null,
           "number": 19
         },
@@ -798,7 +798,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/20-z-komina.jpg",
+          "image": "assets/pizzas/20-z-komina.webp",
           "allergens": null,
           "number": 20
         },
@@ -830,7 +830,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/21-hovezi.jpg",
+          "image": "assets/pizzas/21-hovezi.webp",
           "allergens": null,
           "number": 21
         },
@@ -863,7 +863,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/22-susena-sunka.jpg",
+          "image": "assets/pizzas/22-susena-sunka.webp",
           "allergens": null,
           "number": 22
         },
@@ -894,7 +894,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/23-pikantni.jpg",
+          "image": "assets/pizzas/23-pikantni.webp",
           "allergens": null,
           "number": 23
         },
@@ -927,7 +927,7 @@
           ],
           "price_czk": null,
           "price_text": null,
-          "image": "assets/pizzas/24-kremova.jpg",
+          "image": "assets/pizzas/24-kremova.webp",
           "allergens": null,
           "number": 24
         }
@@ -945,7 +945,7 @@
           "prices": [],
           "price_czk": 479.0,
           "price_text": "479 Kč",
-          "image": "assets/wine/valdo-cuvee-del-fondatore.png",
+          "image": "assets/wine/valdo-cuvee-del-fondatore.webp",
           "allergens": null
         },
         {
@@ -956,7 +956,7 @@
           "prices": [],
           "price_czk": 329.0,
           "price_text": "329 Kč",
-          "image": "assets/wine/cantina-di-rauscedo-chardonnay-0-75l.png",
+          "image": "assets/wine/cantina-di-rauscedo-chardonnay-0-75l.webp",
           "allergens": null
         },
         {
@@ -967,7 +967,7 @@
           "prices": [],
           "price_czk": 329.0,
           "price_text": "329 Kč",
-          "image": "assets/wine/cantina-di-rauscedo-pinot-grigio-0-75l.png",
+          "image": "assets/wine/cantina-di-rauscedo-pinot-grigio-0-75l.webp",
           "allergens": null
         },
         {
@@ -978,7 +978,7 @@
           "prices": [],
           "price_czk": 399.0,
           "price_text": "399 Kč",
-          "image": "assets/wine/valdo-aquarius-blanc-de-blancs-0-75l.jpeg",
+          "image": "assets/wine/valdo-aquarius-blanc-de-blancs-0-75l.webp",
           "allergens": null
         },
         {
@@ -989,7 +989,7 @@
           "prices": [],
           "price_czk": 329.0,
           "price_text": "329 Kč",
-          "image": "assets/wine/cantina-di-rauscedo-sauvignon-0-75l.png",
+          "image": "assets/wine/cantina-di-rauscedo-sauvignon-0-75l.webp",
           "allergens": null
         },
         {
@@ -1000,7 +1000,7 @@
           "prices": [],
           "price_czk": 359.0,
           "price_text": "359 Kč",
-          "image": "assets/wine/valdo-extra-dry-doc-etichetta-nera-0-75l.jpg",
+          "image": "assets/wine/valdo-extra-dry-doc-etichetta-nera-0-75l.webp",
           "allergens": null
         },
         {
@@ -1011,7 +1011,7 @@
           "prices": [],
           "price_czk": 329.0,
           "price_text": "329 Kč",
-          "image": "assets/wine/valdo-iki-extra-dry-0-75l.png",
+          "image": "assets/wine/valdo-iki-extra-dry-0-75l.webp",
           "allergens": null
         },
         {
@@ -1022,7 +1022,7 @@
           "prices": [],
           "price_czk": 389.0,
           "price_text": "389 Kč",
-          "image": "assets/wine/valdo-origine-brut-0-75l.png",
+          "image": "assets/wine/valdo-origine-brut-0-75l.webp",
           "allergens": null
         },
         {
@@ -1033,7 +1033,7 @@
           "prices": [],
           "price_czk": 389.0,
           "price_text": "389 Kč",
-          "image": "assets/wine/valdo-origine-extra-dry-fluo-0-75l.png",
+          "image": "assets/wine/valdo-origine-extra-dry-fluo-0-75l.webp",
           "allergens": null
         },
         {
@@ -1044,7 +1044,7 @@
           "prices": [],
           "price_czk": 389.0,
           "price_text": "389 Kč",
-          "image": "assets/wine/valdo-origine-rose-brut-0-75l.png",
+          "image": "assets/wine/valdo-origine-rose-brut-0-75l.webp",
           "allergens": null
         },
         {
@@ -1055,7 +1055,7 @@
           "prices": [],
           "price_czk": 399.0,
           "price_text": "399 Kč",
-          "image": "assets/wine/valdo-paradise-rose-brut-0-75l.png",
+          "image": "assets/wine/valdo-paradise-rose-brut-0-75l.webp",
           "allergens": null
         },
         {
@@ -1066,7 +1066,7 @@
           "prices": [],
           "price_czk": 519.0,
           "price_text": "519 Kč",
-          "image": "assets/wine/valdo-rive-di-san-pietro-extra-brut-0-75l.jpeg",
+          "image": "assets/wine/valdo-rive-di-san-pietro-extra-brut-0-75l.webp",
           "allergens": null
         }
       ]
@@ -1566,7 +1566,7 @@
           "prices": [],
           "price_czk": 50.0,
           "price_text": "50 Kč",
-          "image": "assets/drinks/nestea-zeleny-caj-0-5l.png",
+          "image": "assets/drinks/nestea-zeleny-caj-0-5l.webp",
           "allergens": null
         },
         {
@@ -1577,7 +1577,7 @@
           "prices": [],
           "price_czk": 50.0,
           "price_text": "50 Kč",
-          "image": "assets/drinks/nestea-broskev-0-5l.png",
+          "image": "assets/drinks/nestea-broskev-0-5l.webp",
           "allergens": null
         },
         {
@@ -1588,7 +1588,7 @@
           "prices": [],
           "price_czk": 50.0,
           "price_text": "50 Kč",
-          "image": "assets/drinks/fanta-pomeranc-0-5l.jpg",
+          "image": "assets/drinks/fanta-pomeranc-0-5l.webp",
           "allergens": null
         },
         {
@@ -1599,7 +1599,7 @@
           "prices": [],
           "price_czk": 50.0,
           "price_text": "50 Kč",
-          "image": "assets/drinks/coca-cola-0-5l.jpg",
+          "image": "assets/drinks/coca-cola-0-5l.webp",
           "allergens": null
         },
         {
@@ -1610,7 +1610,7 @@
           "prices": [],
           "price_czk": 50.0,
           "price_text": "50 Kč",
-          "image": "assets/drinks/coca-cola-light-0-5l.jpg",
+          "image": "assets/drinks/coca-cola-light-0-5l.webp",
           "allergens": null
         },
         {
@@ -1621,7 +1621,7 @@
           "prices": [],
           "price_czk": 50.0,
           "price_text": "50 Kč",
-          "image": "assets/drinks/sprite-0-5l.png",
+          "image": "assets/drinks/sprite-0-5l.webp",
           "allergens": null
         },
         {
@@ -1632,7 +1632,7 @@
           "prices": [],
           "price_czk": 40.0,
           "price_text": "40 Kč",
-          "image": "assets/drinks/coca-cola-plech.jpg",
+          "image": "assets/drinks/coca-cola-plech.webp",
           "allergens": null
         },
         {
@@ -1643,7 +1643,7 @@
           "prices": [],
           "price_czk": 40.0,
           "price_text": "40 Kč",
-          "image": "assets/drinks/sprite-plech.jpg",
+          "image": "assets/drinks/sprite-plech.webp",
           "allergens": null
         },
         {
@@ -1654,7 +1654,7 @@
           "prices": [],
           "price_czk": 40.0,
           "price_text": "40 Kč",
-          "image": "assets/drinks/fanta-pomeranc-plech.jpg",
+          "image": "assets/drinks/fanta-pomeranc-plech.webp",
           "allergens": null
         },
         {
@@ -1665,7 +1665,7 @@
           "prices": [],
           "price_czk": 30.0,
           "price_text": "30 Kč",
-          "image": "assets/drinks/water-neutral.jpg",
+          "image": "assets/drinks/voda-jemne-sycena-0-5l.webp",
           "allergens": null
         },
         {
@@ -1676,7 +1676,7 @@
           "prices": [],
           "price_czk": 30.0,
           "price_text": "30 Kč",
-          "image": "assets/drinks/water-neutral.jpg",
+          "image": "assets/drinks/voda-neperliva.webp",
           "allergens": null
         }
       ]
