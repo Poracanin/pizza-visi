@@ -38,6 +38,9 @@ export function initDeliveryMap(container, branches) {
   let pendingFit = false;
   let lastWidth = 0;
   let lastHeight = 0;
+  let fullscreenDialog;
+  let mapPlaceholder;
+  let pageScroll;
 
   container.classList.add('delivery-coverage-map');
   container.innerHTML = `
@@ -46,7 +49,7 @@ export function initDeliveryMap(container, branches) {
         <button type="button" class="delivery-map-filter" data-map-branch="all" aria-pressed="true" aria-label="Všechny pobočky"><span>Všechny<span class="delivery-map-all-suffix"> pobočky</span></span></button>
         ${mapBranches.map((branch) => `<button type="button" class="delivery-map-filter" data-map-branch="${escapeHtml(branch.id)}" aria-pressed="false" style="--branch-color:${BRANCH_COLORS[branch.id]}"><i aria-hidden="true"></i>${escapeHtml(branch.name)}</button>`).join('')}
       </div>
-      <button type="button" class="delivery-map-fit" disabled aria-label="Zobrazit celou vybranou oblast rozvozu" title="Zobrazit celou oblast"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5M8 8l-5-5M16 8l5-5M8 16l-5 5M16 16l5 5"/></svg><span>Celá oblast</span></button>
+      <button type="button" class="delivery-map-fit" disabled aria-label="Otevřít mapu na celou obrazovku" aria-haspopup="dialog" title="Mapa na celou obrazovku"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5M8 8l-5-5M16 8l5-5M8 16l-5 5M16 16l5 5"/></svg><span>Celá obrazovka</span></button>
     </div>
     <div class="delivery-map-stage">
       <div class="delivery-map-canvas" aria-label="Mapa oblastí rozvozu Pizza Visi"></div>
@@ -65,6 +68,74 @@ export function initDeliveryMap(container, branches) {
   const tileNote = container.querySelector('.delivery-map-tile-note');
   const summary = container.querySelector('.delivery-map-summary');
   const status = container.querySelector('.delivery-map-status');
+  const footerNote = container.querySelector('.delivery-map-footer p');
+  const expandIconPath = fitButton.querySelector('path').getAttribute('d');
+
+  function updateFullscreenButton(expanded) {
+    footerNote.textContent = expanded ? 'Orientační mapa rozvozu.' : 'Orientační mapa. Přesnou adresu ověř výše.';
+    fitButton.setAttribute('aria-label', expanded ? 'Zavřít mapu na celou obrazovku' : 'Otevřít mapu na celou obrazovku');
+    fitButton.title = expanded ? 'Zavřít mapu' : 'Mapa na celou obrazovku';
+    if (expanded) fitButton.removeAttribute('aria-haspopup');
+    else fitButton.setAttribute('aria-haspopup', 'dialog');
+    fitButton.querySelector('path').setAttribute('d', expanded ? 'M6 6l12 12M18 6 6 18' : expandIconPath);
+    fitButton.querySelector('span').textContent = expanded ? 'Zavřít' : 'Celá obrazovka';
+  }
+
+  function restoreInlineMap(restoreFocus = true) {
+    if (!mapPlaceholder) return;
+    mapPlaceholder.replaceWith(container);
+    mapPlaceholder = null;
+    updateFullscreenButton(false);
+    if (!document.querySelector('dialog[open]')) document.body.classList.remove('modal-open');
+    if (destroyed) return;
+    refreshSize();
+    if (restoreFocus) {
+      window.scrollTo({ ...pageScroll, behavior: 'instant' });
+      fitButton.focus({ preventScroll: true });
+    }
+  }
+
+  function closeFullscreen(restoreFocus = true) {
+    if (!fullscreenDialog?.open) return;
+    fullscreenDialog.close();
+    restoreInlineMap(restoreFocus);
+  }
+
+  function handleDialogClose() {
+    // A queued close event must not tear down a newly reopened map.
+    if (!fullscreenDialog.open) restoreInlineMap();
+  }
+
+  function handleDialogCancel(event) {
+    event.preventDefault();
+    closeFullscreen();
+  }
+
+  function closeForNavigation() { closeFullscreen(false); }
+
+  function openFullscreen() {
+    if (!map || destroyed || fullscreenDialog?.open) return;
+    if (!fullscreenDialog) {
+      fullscreenDialog = document.createElement('dialog');
+      fullscreenDialog.className = 'delivery-map-dialog';
+      fullscreenDialog.setAttribute('aria-label', 'Mapa rozvozu na celou obrazovku');
+      fullscreenDialog.addEventListener('close', handleDialogClose);
+      fullscreenDialog.addEventListener('cancel', handleDialogCancel);
+      document.body.append(fullscreenDialog);
+    }
+    pageScroll = { left: window.scrollX, top: window.scrollY };
+    // Keep the page's height while moving the same live map into the modal.
+    mapPlaceholder = document.createElement('div');
+    mapPlaceholder.style.height = `${container.getBoundingClientRect().height}px`;
+    mapPlaceholder.setAttribute('aria-hidden', 'true');
+    container.before(mapPlaceholder);
+    fullscreenDialog.append(container);
+    updateFullscreenButton(true);
+    fullscreenDialog.showModal();
+    document.body.classList.add('modal-open');
+    fitButton.focus({ preventScroll: true });
+    refreshSize();
+  }
 
   function updateSummary() {
     const selected = activeBranch === 'all' ? mapBranches : [branchById.get(activeBranch)];
@@ -238,11 +309,16 @@ export function initDeliveryMap(container, branches) {
   function handleClick(event) {
     const filter = event.target.closest('[data-map-branch]');
     if (filter && container.contains(filter)) selectBranch(filter.dataset.mapBranch);
-    else if (event.target.closest('.delivery-map-fit')) fitCoverage();
+    else if (event.target.closest('.delivery-map-fit')) {
+      if (fullscreenDialog?.open) closeFullscreen();
+      else openFullscreen();
+    }
     else if (event.target.closest('.delivery-map-retry')) loadMap();
   }
 
   container.addEventListener('click', handleClick);
+  window.addEventListener('hashchange', closeForNavigation);
+  window.addEventListener('popstate', closeForNavigation);
   updateSummary();
   if ('IntersectionObserver' in window) {
     visibilityObserver = new IntersectionObserver((entries) => {
@@ -256,10 +332,16 @@ export function initDeliveryMap(container, branches) {
 
   const cleanup = () => {
     destroyed = true;
+    closeFullscreen(false);
+    fullscreenDialog?.removeEventListener('close', handleDialogClose);
+    fullscreenDialog?.removeEventListener('cancel', handleDialogCancel);
+    fullscreenDialog?.remove();
     abortController.abort();
     visibilityObserver?.disconnect();
     resizeObserver?.disconnect();
     window.removeEventListener('resize', refreshSize);
+    window.removeEventListener('hashchange', closeForNavigation);
+    window.removeEventListener('popstate', closeForNavigation);
     container.removeEventListener('click', handleClick);
     map?.remove();
     mountedMaps.delete(container);

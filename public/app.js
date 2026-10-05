@@ -6,7 +6,7 @@ import { loadRuianAddresses } from './ruian-addresses.js?v=coverage-20261005';
 import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js?v=coverage-20261005';
 import { createOrdering } from './ordering.js?v=half40-pricing-1';
 import { showCartFeedback } from './cart-feedback.js?v=half-pizza-1';
-import { initDeliveryMap, setDeliveryMapBranch } from './delivery-map.js?v=auto-pan-4';
+import { initDeliveryMap, setDeliveryMapBranch } from './delivery-map.js?v=fullscreen-1';
 import { initDeliveryAddressChecker } from './delivery-address-checker.js?v=compact-2';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);

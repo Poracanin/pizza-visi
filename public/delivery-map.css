@@ -102,3 +102,12 @@
   .delivery-map-footer{padding-inline:12px}
 }
 @media(prefers-reduced-motion:reduce){.delivery-map-loading-mark{animation:none}.delivery-map-filter{transition:none}}
+
+/* The native modal keeps focus on the map and covers fixed page controls too. */
+dialog.delivery-map-dialog{position:fixed;inset:0;width:100%;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;border-radius:0;background:#faf8f3;overflow:hidden;box-shadow:none}
+dialog.delivery-map-dialog[open]{animation:none}
+.delivery-map-dialog .delivery-coverage-map{display:flex;flex-direction:column;width:100%;height:100%;min-height:0;border:0;border-radius:0;box-shadow:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+.delivery-map-dialog .delivery-map-toolbar,.delivery-map-dialog .delivery-map-footer{flex:none;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.delivery-map-dialog .delivery-map-stage{flex:1;min-height:0}
+.delivery-map-dialog .delivery-map-canvas{height:100%}
+.delivery-map-dialog .delivery-map-fit svg{width:22px;height:22px}
