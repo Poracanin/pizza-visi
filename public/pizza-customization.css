@@ -90,3 +90,21 @@
   #product-page .product-config-pizza{grid-template-columns:minmax(0,1fr);gap:14px}
   #product-page .pizza-base-options button{min-height:38px;padding-block:6px}
 }
+
+/* The second-half picker replaces the base control in the same grid slot. */
+#product-page .product-config .half-choice{min-width:0;width:100%;margin:0}
+#product-page .half-choice-label{font:500 11px/1.4 var(--body);color:var(--muted);letter-spacing:.5px;margin:0 0 7px}
+#product-page .product-config .half-choice-trigger{height:58px;min-height:58px;padding:8px 10px;gap:10px;background:#08080980;border-color:var(--line)}
+#product-page .product-config .half-choice-trigger:hover{background:#ffffff0b;border-color:#ff486580}
+#product-page .product-config .half-choice-trigger>img{width:40px;height:40px}
+#product-page .product-config .half-choice-copy>strong{font-size:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#product-page .product-config .half-choice-action{gap:5px}
+#product-page .product-config .half-choice-action>b{font-size:11px}
+#product-page .product-config .half-choice-action>span{font-size:10px;gap:4px}
+#product-page .product-config .half-choice-action .icon{width:13px;height:13px}
+@media(max-width:600px){
+  #product-page .product-config .half-choice-trigger{height:48px;min-height:48px;padding:6px 10px}
+  #product-page .product-config .half-choice-trigger>img{width:32px;height:32px}
+  #product-page .product-config .half-choice-copy>strong{font-size:20px}
+  #product-page .product-config .half-choice-action{gap:3px}
+}
