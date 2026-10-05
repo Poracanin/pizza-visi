@@ -1,4 +1,4 @@
-/* Extra toppings follow the active half; ingredient removal covers the whole pizza. */
+/* Each half has its own toppings list; ingredient removal covers the whole pizza. */
 #product-page .product-page-back{min-height:44px;padding:10px 15px;border:1px solid #ff526b;border-radius:10px;background:#b91432;color:#fff;font:600 12px/1.2 var(--body);box-shadow:0 3px 12px #d9153820}
 #product-page .product-page-back:hover{background:#d91538;border-color:#ff8194;color:#fff}
 #product-page .product-page-back .icon{width:18px;height:18px}
@@ -46,15 +46,7 @@
 #product-page .product-summary-back{display:flex;align-items:center;gap:7px;flex:none;min-height:38px;padding:8px 12px;border:1px solid #ff526b;border-radius:8px;background:#b91432;color:#fff;font:600 12px/1.2 var(--body)}
 #product-page .product-summary-back:hover{background:#d91538;border-color:#ff8194}
 #product-page .product-summary-back .icon{width:17px;height:17px}
-#product-page .product-scroll-summary .half-tabs{border-top:1px solid #ffffff19;gap:5px;margin:6px 0 0;padding:4px 0 0}
-#product-page .product-scroll-summary .half-tabs button{min-height:34px;padding:4px 8px;gap:7px;border-color:transparent;border-radius:5px}
-#product-page .product-scroll-summary .half-tabs button[aria-pressed=true]{border-color:#ff486540;background:#d9153817}
-#product-page .product-scroll-summary .half-tabs button>span{display:flex;align-items:baseline;gap:8px;font-size:10px;white-space:nowrap}
-#product-page .product-scroll-summary .half-tabs small{font-size:11px;margin:0;max-width:250px}
-#product-page .product-scroll-summary .pizza-disc{width:15px;height:15px}
-#product-page .product-scroll-summary .half-tabs b{font-size:10px}
-#product-page.has-compact-halves #half-tabs>.half-tabs{visibility:hidden}
-#product-page.has-product-summary :is(input,button,summary,textarea){scroll-margin-top:calc(var(--site-header-height) + 120px);scroll-margin-bottom:100px}
+#product-page.has-product-summary :is(input,button,summary,textarea){scroll-margin-top:calc(var(--site-header-height) + 80px);scroll-margin-bottom:100px}
 @media(max-width:900px){
   #product-page .product-scroll-summary{padding-inline:20px}
 }
@@ -65,9 +57,6 @@
   #product-page .product-summary-identity{min-height:44px;gap:10px}
   #product-page .product-summary-identity .product-page-photo{width:44px;height:44px}
   #product-page .product-summary-identity strong{font-size:21px}
-  #product-page .product-scroll-summary .half-tabs button>span{display:block;font-size:9px}
-  #product-page .product-scroll-summary .half-tabs small{font-size:11px;max-width:30vw;margin-top:2px}
-  #product-page .product-scroll-summary .half-tabs button{min-height:36px}
   #product-page .pizza-base-options button{gap:8px;padding-inline:10px;font-size:12px}
   #product-page .removal-options{grid-template-columns:1fr}
 }
@@ -78,3 +67,10 @@
 @media(prefers-reduced-motion:reduce){
   #product-page .pizza-base-options button,#product-page .ingredient-removal summary .icon{transition:none}
 }
+
+/* Keep both halves visible as independent lists, without a shared selection tab. */
+#product-page .half-toppings + .half-toppings{margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+#product-page .half-toppings h3{display:flex;align-items:center;gap:10px;margin-bottom:12px;color:#ff8194;font:500 14px/1.35 var(--body);letter-spacing:0}
+#product-page .half-toppings h3>span{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;min-width:0}
+#product-page .half-toppings h3 small{font:400 13px/1.4 var(--body);color:var(--text);overflow-wrap:anywhere}
+#product-page .half-toppings .pizza-disc{width:20px;height:20px}
