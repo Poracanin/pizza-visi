@@ -1,4 +1,4 @@
-import { loadRuianAddresses, resolveAddress, searchAddresses } from './ruian-addresses.js?v=coverage-20261005';
+import { loadRuianAddresses, resolveAddress, searchAddresses } from './ruian-addresses.js?v=coverage-20261005-v2';
 import { bindAddressSuggestionEvents } from './address-suggestion-events.js?v=2';
 
 const mountedCheckers = new WeakMap();

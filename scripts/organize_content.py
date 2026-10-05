@@ -123,7 +123,7 @@ def main():
     delivery_page = page_by_url[BASE + 'rozvoz/']
     org_schema = next(n for data in home['structured_data'] for n in data.get('@graph', []) if n.get('@type') == 'Organization')
     branches = [
-        {'id': 'rudna', 'name': 'Rudná (u Prahy)', 'address': 'Riegerova 527/50, Rudná (u Prahy)', 'phone': '+420 606 918 942', 'phone_uri': 'tel:+420606918942', 'delivery_areas': ['Rudná (u Prahy)', 'Nučice', 'Chrášťany', 'Drahelčice', 'Úhonice', 'Tachlovice', 'Jinočany', 'Zbuzany', 'Vysoký Újezd', 'Praha-Zličín', 'Praha-Třebonice']},
+        {'id': 'rudna', 'name': 'Rudná (u Prahy)', 'address': 'Riegerova 527/50, Rudná (u Prahy)', 'phone': '+420 606 918 942', 'phone_uri': 'tel:+420606918942', 'delivery_areas': ['Rudná (u Prahy)', 'Nučice', 'Chrášťany', 'Drahelčice', 'Úhonice', 'Tachlovice', 'Jinočany', 'Zbuzany', 'Vysoký Újezd (bez Kozolup)', 'Kuchař', 'Dobříč', 'Mezouň', 'Loděnice', 'Praha-Zličín', 'Praha-Třebonice']},
         {'id': 'hostivice', 'name': 'Hostivice', 'address': 'Husovo náměstí 60, Hostivice', 'phone': '+420 606 518 565', 'phone_uri': 'tel:+420606518565', 'delivery_areas': ['Hostivice', 'Praha – Zličín', 'Praha – Řepy', 'Praha – Ruzyně', 'Jeneč', 'Hostouň', 'Dobrovíz', 'Kněževes', 'Středokluky', 'Svárov', 'Chýně', 'Červený Újezd', 'Praha – Sobín']},
         {'id': 'beroun', 'name': 'Beroun', 'address': 'Pivovarská 105/11, Beroun', 'phone': '+420 737 857 493', 'phone_uri': 'tel:+420737857493', 'delivery_areas': ['Beroun', 'Králův dvůr', 'Vraž', 'Hýskov', 'Tetín', 'Popovice', 'Trubín']},
     ]

@@ -69,6 +69,25 @@ class ExportRuianTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "checksum mismatch"):
             exporter.build_payload(manifest, self.coverage)
 
+    def test_added_rudna_municipalities_are_complete_and_kozolupy_excluded(self):
+        counts = {"539180": 143, "531537": 269, "531464": 639}
+        for code, expected_count in counts.items():
+            source = next(s for s in self.manifest["source_files"] if s["municipality_code"] == code)
+            rows = list(exporter.read_source(source, ROOT))
+            self.assertEqual(len(rows), expected_count)
+            for row in rows:
+                self.assertEqual(self.records[row["Kód ADM"]][2], 1)
+        source = next(s for s in self.manifest["source_files"] if s["municipality_code"] == "531961")
+        counts = {"71960": 0, "76945": 0, "188441": 0}
+        for row in exporter.read_source(source, ROOT):
+            part = row["Kód části obce"]
+            counts[part] += 1
+            if part == "71960":
+                self.assertNotIn(row["Kód ADM"], self.records, "Kozolupy must not inherit parent coverage")
+            else:
+                self.assertEqual(self.records[row["Kód ADM"]][2], 1)
+        self.assertEqual(counts, {"71960": 103, "76945": 101, "188441": 682})
+
     def test_incomplete_source_and_wrong_district_fail_closed(self):
         manifest = copy.deepcopy(self.manifest)
         manifest["source_files"][0]["source_row_count"] -= 1

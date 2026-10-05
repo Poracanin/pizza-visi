@@ -1,4 +1,4 @@
-import { resolveAddress } from './ruian-addresses.js?v=coverage-20261005';
+import { resolveAddress } from './ruian-addresses.js?v=coverage-20261005-v2';
 
 export const DELIVERY_PREFERENCE_KEY = 'pizza-visi-delivery-preference-v1';
 export const STORAGE_CONSENT_KEY = 'pizza-visi-storage-consent-v1';

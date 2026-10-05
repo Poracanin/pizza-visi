@@ -51,6 +51,38 @@
       "local_path": "RUIAN-delivery-data/sources/20260831_OB_531243_ADR.csv.zip"
     },
     {
+      "url": "https://vdp.cuzk.gov.cz/vymenny_format/csv/20260831_OB_531464_ADR.csv.zip",
+      "resolved_url": "https://vdp.cuzk.gov.cz/vymenny_format/csv/20260831_OB_531464_ADR.csv.zip",
+      "downloaded_at": "2026-10-05T10:47:31.117833+00:00",
+      "last_modified": "Tue, 01 Sep 2026 00:49:00 GMT",
+      "data_date": "2026-08-31",
+      "sha256": "41d63a570a0f91c228bdf6eaf36c42023ddbef801aae4a70cb4488e045ed4736",
+      "csv_member": "20260831_OB_531464_ADR.csv",
+      "csv_sha256": "7837548c7397be1ccb760bf4bddd411391ee63ce030540437140b75caf0d7fac",
+      "source_row_count": 639,
+      "municipality_code": "531464",
+      "municipality_name": "Loděnice",
+      "csv_encoding": "Windows-1250",
+      "csv_delimiter": ";",
+      "local_path": "RUIAN-delivery-data/sources/20260831_OB_531464_ADR.csv.zip"
+    },
+    {
+      "url": "https://vdp.cuzk.gov.cz/vymenny_format/csv/20260831_OB_531537_ADR.csv.zip",
+      "resolved_url": "https://vdp.cuzk.gov.cz/vymenny_format/csv/20260831_OB_531537_ADR.csv.zip",
+      "downloaded_at": "2026-09-30T19:29:17.766883+00:00",
+      "last_modified": "Tue, 01 Sep 2026 01:52:51 GMT",
+      "data_date": "2026-08-31",
+      "sha256": "1a660485e519a108f40e7d1868c69450a7efdca90b3e82183feefa3c19f2b4fe",
+      "csv_member": "20260831_OB_531537_ADR.csv",
+      "csv_sha256": "7c019b358843ae274454b61e29dd2c9cff75a67ac3047527e060260ab3c1d20b",
+      "source_row_count": 269,
+      "municipality_code": "531537",
+      "municipality_name": "Mezouň",
+      "csv_encoding": "Windows-1250",
+      "csv_delimiter": ";",
+      "local_path": "RUIAN-data-20260930-213506/zdrojove/20260831_OB_531537_ADR.csv.zip"
+    },
+    {
       "url": "https://vdp.cuzk.gov.cz/vymenny_format/csv/20260831_OB_531618_ADR.csv.zip",
       "resolved_url": "https://vdp.cuzk.gov.cz/vymenny_format/csv/20260831_OB_531618_ADR.csv.zip",
       "downloaded_at": "2026-09-30T19:29:16.030396+00:00",
@@ -241,6 +273,22 @@
       "csv_encoding": "Windows-1250",
       "csv_delimiter": ";",
       "local_path": "RUIAN-data-20260930-213506/zdrojove/20260831_OB_539171_ADR.csv.zip"
+    },
+    {
+      "url": "https://vdp.cuzk.gov.cz/vymenny_format/csv/20260831_OB_539180_ADR.csv.zip",
+      "resolved_url": "https://vdp.cuzk.gov.cz/vymenny_format/csv/20260831_OB_539180_ADR.csv.zip",
+      "downloaded_at": "2026-09-30T19:29:15.934375+00:00",
+      "last_modified": "Tue, 01 Sep 2026 01:53:05 GMT",
+      "data_date": "2026-08-31",
+      "sha256": "d4a152fd4dbbe151833f35194ad42cdc9f80e5d53fe12909ff52b83e0a296f23",
+      "csv_member": "20260831_OB_539180_ADR.csv",
+      "csv_sha256": "58597b523909c08dfa7805a49c00a1cfada039b63691ba7027f845bca2be7906",
+      "source_row_count": 143,
+      "municipality_code": "539180",
+      "municipality_name": "Dobříč",
+      "csv_encoding": "Windows-1250",
+      "csv_delimiter": ";",
+      "local_path": "RUIAN-data-20260930-213506/zdrojove/20260831_OB_539180_ADR.csv.zip"
     },
     {
       "url": "https://vdp.cuzk.gov.cz/vymenny_format/csv/20260831_OB_539244_ADR.csv.zip",
@@ -449,8 +497,9 @@
     "note": "Produktová metadata uvádějí CC BY 4.0; starší text rights v Atom kanálech uvádí žádné podmínky neplatí. Balíček zachovává atribuci a vychází z produktových metadat."
   },
   "notes": [
-    "All address CSV files use the official 2026-08-31 snapshot. Existing municipal ZIP archives are reused without changes; the six Beroun area sources are stored alongside this manifest.",
+    "All address CSV files use the official 2026-08-31 snapshot. Existing municipal ZIP archives are reused without changes; the seven Beroun area sources are stored alongside this manifest.",
     "Reference code lists retain their actual original download and Last-Modified times. No snapshot date is inferred for them.",
-    "Popovice is part 72966 of Králův Dvůr municipality 533203, not a separate Beroun-district municipality."
+    "Popovice is part 72966 of Králův Dvůr municipality 533203, not a separate Beroun-district municipality.",
+    "Rudná delivery extended to Dobříč, Mezouň and Loděnice on 2026-10-05; Vysoký Újezd restricted to parts 188441 and 76945, excluding Kozolupy part71960."
   ]
 }

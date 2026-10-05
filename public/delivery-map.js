@@ -248,7 +248,7 @@ export function initDeliveryMap(container, branches) {
     try {
       const [, response] = await Promise.all([
         import('./assets/vendor/leaflet/leaflet.js'),
-        fetch(new URL('./data/delivery-areas.geojson', import.meta.url), { signal: abortController.signal })
+        fetch(new URL('./data/delivery-areas.geojson?v=coverage-20261005-v2', import.meta.url), { signal: abortController.signal })
       ]);
       if (!response.ok) throw new Error('Delivery areas unavailable');
       const collection = await response.json();

@@ -1,4 +1,4 @@
-import { loadRuianAddresses, searchAddresses, resolveAddress } from './ruian-addresses.js?v=coverage-20261005';
+import { loadRuianAddresses, searchAddresses, resolveAddress } from './ruian-addresses.js?v=coverage-20261005-v2';
 
 const escape = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
 const paths = {

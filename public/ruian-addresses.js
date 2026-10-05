@@ -39,7 +39,7 @@ function indexFor(data) {
 export async function loadRuianAddresses() {
   if (!pendingData) {
     pendingData = (async () => {
-      const response = await fetch(new URL('./data/ruian-addresses.json?v=coverage-20261005', import.meta.url));
+      const response = await fetch(new URL('./data/ruian-addresses.json?v=coverage-20261005-v2', import.meta.url));
       if (!response.ok) throw new Error('Adresář se nepodařilo načíst. Zkus to prosím znovu.');
       const data = await response.json();
       indexFor(data);

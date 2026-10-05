@@ -34,7 +34,7 @@ test('Search accepts diacritics, reordered words, prefixes, house numbers and co
 
 test('Every requested delivery locality resolves to the serving branch', () => {
   const localities = {
-    rudna: ['Rudná', 'Nučice', 'Chrášťany', 'Drahelčice', 'Úhonice', 'Tachlovice', 'Jinočany', 'Zbuzany', 'Vysoký Újezd', 'Praha Zličín', 'Praha Třebonice'],
+    rudna: ['Rudná', 'Nučice', 'Chrášťany', 'Drahelčice', 'Úhonice', 'Tachlovice', 'Jinočany', 'Zbuzany', 'Vysoký Újezd', 'Kuchař', 'Dobříč', 'Mezouň', 'Loděnice', 'Praha Zličín', 'Praha Třebonice'],
     hostivice: ['Hostivice', 'Praha Zličín', 'Praha Řepy', 'Praha Ruzyně', 'Jeneč', 'Hostouň', 'Dobrovíz', 'Kněževes', 'Středokluky', 'Svárov', 'Chýně', 'Červený Újezd', 'Praha Sobín'],
     beroun: ['Beroun', 'Králův Dvůr', 'Vráž', 'Hýskov', 'Tetín', 'Popovice Králův Dvůr', 'Trubín'],
   };
@@ -61,13 +61,25 @@ test('Only Zličín overlaps and unlisted polygon localities are excluded', () =
     if (inPart(row[1], 'Třebonice')) assert.deepEqual(address.branchIds, ['rudna']);
     if (['Řepy', 'Ruzyně', 'Sobín'].some(part => inPart(row[1], part))) assert.deepEqual(address.branchIds, ['hostivice']);
   }
-  for (const excluded of ['Dobříč', 'Mezouň', 'Lužce', 'Běloky', 'Ptice', 'Tuchoměřice']) {
+  for (const excluded of ['Lužce', 'Běloky', 'Ptice', 'Tuchoměřice']) {
     assert.ok(data.records.every(row => !row[1].endsWith(` ${excluded}`)), excluded);
   }
   for (const part of ['Stodůlky', 'Břevnov']) {
     assert.ok(data.records.every(row => !inPart(row[1], part)), part);
   }
   assert.equal(data.source.license, 'CC-BY-4.0');
+});
+
+test('Kozolupy cannot be suggested or resolved through the Vysoký Újezd parent municipality', () => {
+  assert.deepEqual(searchAddresses(data, 'Kozolupy'), []);
+  assert.deepEqual(searchAddresses(data, 'Kozolupy Vysoký Újezd'), []);
+  assert.equal(resolveAddress(data, '1589458'), null);
+  assert.ok(data.records.every(row => !row[1].includes('Kozolupy')));
+  for (const place of ['Dobříč', 'Mezouň', 'Loděnice', 'Kuchař', 'Vysoký Újezd']) {
+    const found = searchAddresses(data, place, 20);
+    assert.ok(found.length, place);
+    assert.ok(found.every(address => address.branchIds.length === 1 && address.branchIds[0] === 'rudna'), place);
+  }
 });
 
 test('Malformed projections cannot become canonical address data', () => {

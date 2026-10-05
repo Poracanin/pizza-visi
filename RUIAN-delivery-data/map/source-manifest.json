@@ -11,14 +11,14 @@
   "sources": [
     {
       "local_path": "RUIAN-delivery-data/map/municipalities.geojson",
-      "url": "https://ags.cuzk.gov.cz/arcgis/rest/services/RUIAN/MapServer/12/query?where=kod+IN+%28531057%2C531146%2C531243%2C531618%2C531723%2C531821%2C531839%2C531944%2C531961%2C532215%2C532347%2C532991%2C533106%2C533203%2C539171%2C539244%2C539295%2C539309%2C539317%2C539350%2C539384%2C539708%2C539872%2C599433%29&outFields=kod%2Cnazev%2Cokres&returnGeometry=true&outSR=4326&geometryPrecision=6&maxAllowableOffset=0.00005&orderByFields=kod&f=geojson",
-      "downloaded_at": "2026-10-05T08:30:31.758015+00:00",
+      "url": "https://ags.cuzk.gov.cz/arcgis/rest/services/RUIAN/MapServer/12/query?where=kod+IN+%28531057%2C531146%2C531243%2C531464%2C531537%2C531618%2C531723%2C531821%2C531839%2C531944%2C532215%2C532347%2C532991%2C533106%2C533203%2C539171%2C539180%2C539244%2C539295%2C539309%2C539317%2C539350%2C539384%2C539708%2C539872%2C599433%29&outFields=kod%2Cnazev%2Cokres&returnGeometry=true&outSR=4326&geometryPrecision=6&maxAllowableOffset=0.00005&orderByFields=kod&f=geojson",
+      "downloaded_at": "2026-10-05T10:48:06.868039+00:00",
       "last_modified": null,
-      "sha256": "a55d3bc045c450ac14373968a19abc0da659a1f5d49282318497473e0a88ace1",
+      "sha256": "0b2b50b0286885455a0b1a8227097f1bdd6596095188910d601455991f96ccb4",
       "layer": 12,
-      "feature_count": 24,
+      "feature_count": 26,
       "query": {
-        "where": "kod IN (531057,531146,531243,531618,531723,531821,531839,531944,531961,532215,532347,532991,533106,533203,539171,539244,539295,539309,539317,539350,539384,539708,539872,599433)",
+        "where": "kod IN (531057,531146,531243,531464,531537,531618,531723,531821,531839,531944,532215,532347,532991,533106,533203,539171,539180,539244,539295,539309,539317,539350,539384,539708,539872,599433)",
         "outFields": "kod,nazev,okres",
         "returnGeometry": "true",
         "outSR": "4326",
@@ -29,15 +29,15 @@
       }
     },
     {
-      "local_path": "RUIAN-delivery-data/map/prague-cadastres.geojson",
-      "url": "https://ags.cuzk.gov.cz/arcgis/rest/services/RUIAN/MapServer/7/query?where=obec%3D554782+AND+nazev+IN+%28%27Zli%C4%8D%C3%ADn%27%2C%27T%C5%99ebonice%27%2C%27%C5%98epy%27%2C%27Ruzyn%C4%9B%27%2C%27Sob%C3%ADn%27%29&outFields=kod%2Cnazev%2Cobec&returnGeometry=true&outSR=4326&geometryPrecision=6&maxAllowableOffset=0.00005&orderByFields=kod&f=geojson",
-      "downloaded_at": "2026-10-05T08:30:32.271531+00:00",
+      "local_path": "RUIAN-delivery-data/map/cadastres.geojson",
+      "url": "https://ags.cuzk.gov.cz/arcgis/rest/services/RUIAN/MapServer/7/query?where=kod+IN+%28676942%2C729701%2C729710%2C770353%2C788449%2C793256%2C793264%29&outFields=kod%2Cnazev%2Cobec&returnGeometry=true&outSR=4326&geometryPrecision=6&maxAllowableOffset=0.00005&orderByFields=kod&f=geojson",
+      "downloaded_at": "2026-10-05T10:48:07.093765+00:00",
       "last_modified": null,
-      "sha256": "062b2ee6055be6044daecf428a0f261ce19d2cd86e3a8e650ec82226866f4c4d",
+      "sha256": "56fbacf9f8545328602489e9403a6e42119068d73569277a1e4b8416bddade71",
       "layer": 7,
-      "feature_count": 5,
+      "feature_count": 7,
       "query": {
-        "where": "obec=554782 AND nazev IN ('Zličín','Třebonice','Řepy','Ruzyně','Sobín')",
+        "where": "kod IN (676942,729701,729710,770353,788449,793256,793264)",
         "outFields": "kod,nazev,obec",
         "returnGeometry": "true",
         "outSR": "4326",
@@ -56,42 +56,55 @@
       "sha256": "14a99286361247a6f3e414a036e756942f47d2c3ab57064ad112daca833cec6b"
     },
     {
-      "local_path": "RUIAN-delivery-data/map/prague-parts.geojson",
-      "url": "https://ags.cuzk.gov.cz/arcgis/rest/services/RUIAN/MapServer/11/query?where=kod+IN+%28400351%2C490211%2C400483%2C400394%2C193259%29&outFields=kod%2Cnazev%2Cobec&returnGeometry=true&outSR=4326&f=geojson",
-      "downloaded_at": "2026-10-05T08:31:26.449602+00:00",
-      "sha256": "1da67cbe61186bef9b83cff0644af1b0ed6343998bb98d9a2ce886e4ad71095f"
-    }
-  ],
-  "prague_part_cadastre_mapping": [
-    {
-      "part_code": "400351",
-      "cadastral_code": "793264",
-      "name": "Zličín",
-      "municipality_code": "554782"
+      "local_path": "RUIAN-delivery-data/map/municipality-parts.geojson",
+      "url": "https://ags.cuzk.gov.cz/arcgis/rest/services/RUIAN/MapServer/11/query?where=kod+IN+%28188441%2C193259%2C400351%2C400394%2C400483%2C490211%2C76945%29&outFields=kod%2Cnazev%2Cobec&returnGeometry=true&outSR=4326&orderByFields=kod&f=geojson",
+      "downloaded_at": "2026-10-05T10:48:07.251210+00:00",
+      "last_modified": null,
+      "sha256": "51ccb0292a65b6fd1d78fdf6d2f0ed02c71a6cd9b63a602edf7e5552bf160457",
+      "layer": 11,
+      "feature_count": 7,
+      "query": {
+        "where": "kod IN (188441,193259,400351,400394,400483,490211,76945)",
+        "outFields": "kod,nazev,obec",
+        "returnGeometry": "true",
+        "outSR": "4326",
+        "orderByFields": "kod",
+        "f": "geojson"
+      }
     },
     {
-      "part_code": "490211",
-      "cadastral_code": "770353",
-      "name": "Třebonice",
-      "municipality_code": "554782"
+      "local_path": "RUIAN-delivery-data/map/part-parents.geojson",
+      "url": "https://ags.cuzk.gov.cz/arcgis/rest/services/RUIAN/MapServer/12/query?where=kod+IN+%28531961%2C554782%29&outFields=kod%2Cnazev%2Cokres&returnGeometry=false&outSR=4326&orderByFields=kod&f=geojson",
+      "downloaded_at": "2026-10-05T10:48:07.390046+00:00",
+      "last_modified": null,
+      "sha256": "be39fd290994a82395c8ea9f95a1611ba2e62056c5d82d72cc6408e7bb6a093c",
+      "layer": 12,
+      "feature_count": 2,
+      "query": {
+        "where": "kod IN (531961,554782)",
+        "outFields": "kod,nazev,okres",
+        "returnGeometry": "false",
+        "outSR": "4326",
+        "orderByFields": "kod",
+        "f": "geojson"
+      }
     },
     {
-      "part_code": "400483",
-      "cadastral_code": "729701",
-      "name": "Řepy",
-      "municipality_code": "554782"
-    },
-    {
-      "part_code": "400394",
-      "cadastral_code": "729710",
-      "name": "Ruzyně",
-      "municipality_code": "554782"
-    },
-    {
-      "part_code": "193259",
-      "cadastral_code": "793256",
-      "name": "Sobín",
-      "municipality_code": "554782"
+      "local_path": "RUIAN-delivery-data/map/excluded-parts.geojson",
+      "url": "https://ags.cuzk.gov.cz/arcgis/rest/services/RUIAN/MapServer/11/query?where=kod%3D71960&outFields=kod%2Cnazev%2Cobec&returnGeometry=true&outSR=4326&orderByFields=kod&f=geojson",
+      "downloaded_at": "2026-10-05T10:48:07.692850+00:00",
+      "last_modified": null,
+      "sha256": "f2d7a9b2a71758f86ff8a4c20bda957aa6ff9e367e6f222197f4028c152cbafb",
+      "layer": 11,
+      "feature_count": 1,
+      "query": {
+        "where": "kod=71960",
+        "outFields": "kod,nazev,obec",
+        "returnGeometry": "true",
+        "outSR": "4326",
+        "orderByFields": "kod",
+        "f": "geojson"
+      }
     }
   ],
   "license": {
@@ -99,6 +112,64 @@
     "url": "https://creativecommons.org/licenses/by/4.0/",
     "provider_terms_url": "https://cuzk.gov.cz/Uvod/Produkty-a-sluzby/Otevrena-data/Otevrena-data-zakladni-informace.aspx"
   },
-  "geography_note": "Obce jsou zobrazeny jejich hranicemi. Pražské části obce mají v RÚIAN definiční bod, nikoli hranice; pro orientační mapu používáme stejnojmenná katastrální území pod obcí Praha. Nejde o prostorové pravidlo způsobilosti adresy k rozvozu.",
-  "geography_reference_url": "https://isui.cuzk.gov.cz/help/topics/idh-topic1800.htm"
+  "geography_note": "Obce jsou zobrazeny jejich hranicemi. Části obce mají v RÚIAN definiční bod, nikoli hranice; pro orientační mapu používáme explicitně ověřená katastrální území pod stejnou obcí (Vysoký Újezd odpovídá katastru Vysoký Újezd u Berouna). Kozolupy nejsou zahrnuty. Nejde o prostorové pravidlo způsobilosti adresy k rozvozu.",
+  "geography_reference_url": "https://isui.cuzk.gov.cz/help/topics/idh-topic1800.htm",
+  "part_cadastre_mapping": [
+    {
+      "part_code": "400351",
+      "cadastral_code": "793264",
+      "name": "Zličín",
+      "municipality_code": "554782",
+      "cadastral_name": "Zličín",
+      "municipality_name": "Praha"
+    },
+    {
+      "part_code": "490211",
+      "cadastral_code": "770353",
+      "name": "Třebonice",
+      "municipality_code": "554782",
+      "cadastral_name": "Třebonice",
+      "municipality_name": "Praha"
+    },
+    {
+      "part_code": "400483",
+      "cadastral_code": "729701",
+      "name": "Řepy",
+      "municipality_code": "554782",
+      "cadastral_name": "Řepy",
+      "municipality_name": "Praha"
+    },
+    {
+      "part_code": "400394",
+      "cadastral_code": "729710",
+      "name": "Ruzyně",
+      "municipality_code": "554782",
+      "cadastral_name": "Ruzyně",
+      "municipality_name": "Praha"
+    },
+    {
+      "part_code": "193259",
+      "cadastral_code": "793256",
+      "name": "Sobín",
+      "municipality_code": "554782",
+      "cadastral_name": "Sobín",
+      "municipality_name": "Praha"
+    },
+    {
+      "part_code": "188441",
+      "cadastral_code": "788449",
+      "name": "Vysoký Újezd",
+      "cadastral_name": "Vysoký Újezd u Berouna",
+      "municipality_code": "531961",
+      "municipality_name": "Vysoký Újezd"
+    },
+    {
+      "part_code": "76945",
+      "cadastral_code": "676942",
+      "name": "Kuchař",
+      "cadastral_name": "Kuchař",
+      "municipality_code": "531961",
+      "municipality_name": "Vysoký Újezd"
+    }
+  ]
 }

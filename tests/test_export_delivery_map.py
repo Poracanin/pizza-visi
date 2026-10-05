@@ -31,9 +31,9 @@ class ExportDeliveryMapTests(unittest.TestCase):
             self.assertLess(output.stat().st_size, 400_000)
 
     def test_all_localities_and_shared_zlicin_without_all_of_prague(self):
-        self.assertEqual(len(self.features), 29)
+        self.assertEqual(len(self.features), 33)
         self.assertEqual(sum(f["properties"]["territoryType"] == "municipality"
-                             for f in self.features.values()), 24)
+                             for f in self.features.values()), 26)
         self.assertNotIn("municipality-554782", self.features)
         self.assertNotIn("part-72966", self.features)  # Popovice within Králův Dvůr.
         expected_parts = {
@@ -51,12 +51,28 @@ class ExportDeliveryMapTests(unittest.TestCase):
             self.assertEqual(props["territoryType"], "cadastral")
         counts = {branch: sum(branch in f["properties"]["branchIds"]
                               for f in self.features.values()) for branch in exporter.BRANCHES}
-        self.assertEqual(counts, {"rudna": 11, "hostivice": 13, "beroun": 6})
+        self.assertEqual(counts, {"rudna": 15, "hostivice": 13, "beroun": 6})
 
-    def test_multipart_municipality_is_preserved(self):
-        shape = self.features["municipality-531961"]["geometry"]
-        self.assertEqual(shape["type"], "MultiPolygon")
-        self.assertGreater(len(shape["coordinates"]), 1)
+    def test_added_municipalities_belong_to_rudna(self):
+        for code, name in [("539180", "Dobříč"), ("531537", "Mezouň"), ("531464", "Loděnice")]:
+            props = self.features[f"municipality-{code}"]["properties"]
+            self.assertEqual(props["name"], name)
+            self.assertEqual(props["branchIds"], ["rudna"])
+
+    def test_vysoky_ujezd_and_kuchar_remain_covered_but_kozolupy_do_not(self):
+        self.assertNotIn("municipality-531961", self.features)
+        self.assertNotIn("part-71960", self.features)
+        for code, name, cadastre in [("188441", "Vysoký Újezd", "788449"), ("76945", "Kuchař", "676942")]:
+            props = self.features[f"part-{code}"]["properties"]
+            self.assertEqual(props["name"], name)
+            self.assertEqual(props["cadastralCode"], cadastre)
+            self.assertEqual(props["branchIds"], ["rudna"])
+        excluded_source = next(source for source in self.manifest["reference_sources"]
+                               if source["local_path"].endswith("/excluded-parts.geojson"))
+        kozolupy = exporter.source_features(excluded_source, ROOT)["71960"]
+        self.assertEqual(kozolupy["properties"], {"kod": 71960, "nazev": "Kozolupy", "obec": 531961})
+        point = kozolupy["geometry"]["coordinates"]
+        self.assertFalse(any(exporter.contains_point(f["geometry"], point) for f in self.features.values()))
         for feature in self.features.values():
             exporter.validate_geometry(feature["geometry"])
 
@@ -75,11 +91,30 @@ class ExportDeliveryMapTests(unittest.TestCase):
         coverage["branches"][0]["municipalities"].pop()
         cases.append((self.manifest, coverage, "match configured"))
         manifest = copy.deepcopy(self.manifest)
-        manifest["prague_part_cadastre_mapping"][0]["cadastral_code"] = "729701"
+        manifest["part_cadastre_mapping"][0]["cadastral_code"] = "729701"
         cases.append((manifest, self.coverage, "match archived"))
+        manifest = copy.deepcopy(self.manifest)
+        manifest["part_cadastre_mapping"][-2]["cadastral_name"] = "Vysoký Újezd"
+        cases.append((manifest, self.coverage, "name or parent mismatch"))
+        manifest = copy.deepcopy(self.manifest)
+        manifest["part_cadastre_mapping"][-1]["municipality_name"] = "Praha"
+        cases.append((manifest, self.coverage, "name or parent mismatch"))
         for manifest, coverage, expected in cases:
             with self.subTest(expected=expected), self.assertRaisesRegex(ValueError, expected):
                 exporter.build_payload(manifest, coverage)
+
+    def test_definition_point_outside_cadastre_is_rejected(self):
+        original = exporter.source_features
+
+        def moved_part(source, root):
+            features = original(source, root)
+            if source["local_path"].endswith("/municipality-parts.geojson"):
+                features["188441"]["geometry"]["coordinates"] = [14.194305931701765, 49.97355435936786]
+            return features
+
+        with patch.object(exporter, "source_features", side_effect=moved_part):
+            with self.assertRaisesRegex(ValueError, "definition point lies outside"):
+                exporter.build_payload(self.manifest, self.coverage)
 
     def test_bad_geometry_is_rejected(self):
         for geometry in [

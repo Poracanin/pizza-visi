@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Build the delivery map offline from archived official ČÚZK boundaries.
 
-The address database remains authoritative for delivery eligibility. Prague
-municipality parts have only definition points in RÚIAN, so their same-name
-cadastral territories are used for an explicitly approximate overview map.
+The address database remains authoritative for delivery eligibility. Municipality
+parts have only definition points in RÚIAN, so explicitly verified cadastral
+territories are used for an approximate overview map.
 """
 
 import argparse
@@ -68,6 +68,21 @@ def validate_geometry(geometry):
                 raise ValueError("Degenerate boundary ring")
 
 
+def contains_point(geometry, point):
+    """Match a part's official definition point to its proposed cadastral area."""
+    def in_ring(ring):
+        x, y = point
+        inside = False
+        for (ax, ay), (bx, by) in zip(ring, ring[1:]):
+            if (ay > y) != (by > y) and x < (bx - ax) * (y - ay) / (by - ay) + ax:
+                inside = not inside
+        return inside
+
+    polygons = [geometry["coordinates"]] if geometry["type"] == "Polygon" else geometry["coordinates"]
+    return any(in_ring(polygon[0]) and not any(in_ring(hole) for hole in polygon[1:])
+               for polygon in polygons)
+
+
 def build_payload(manifest, coverage, root=ROOT):
     if manifest.get("manifest_version") != 1 or coverage.get("version") != 1:
         raise ValueError("Unsupported map manifest or coverage version")
@@ -82,22 +97,32 @@ def build_payload(manifest, coverage, root=ROOT):
     municipalities = source_features(layers[12], root)
     cadastres = source_features(layers[7], root)
     references = {Path(s["local_path"]).name: s for s in manifest["reference_sources"]}
-    parts = source_features(references["prague-parts.geojson"], root)
+    parts = source_features(references["municipality-parts.geojson"], root)
+    parents = source_features(references["part-parents.geojson"], root)
     if read_source(references["part-layer.json"], root).get("geometryType") != "esriGeometryPoint":
-        raise ValueError("Prague part geography changed; review cadastral approximation")
-    mappings = manifest["prague_part_cadastre_mapping"]
+        raise ValueError("Municipality part geography changed; review cadastral approximation")
+    mappings = manifest["part_cadastre_mapping"]
     mapping_by_part = {mapping["part_code"]: mapping for mapping in mappings}
     if (len(mapping_by_part) != len(mappings) or set(mapping_by_part) != set(parts)
-            or {m["cadastral_code"] for m in mappings} != set(cadastres)):
+            or {m["cadastral_code"] for m in mappings} != set(cadastres)
+            or {m["municipality_code"] for m in mappings} != set(parents)):
         raise ValueError("Part/cadastre mappings must match archived source identities exactly")
     for mapping in mappings:
         part = parts[mapping["part_code"]]["properties"]
-        cadastre = cadastres[mapping["cadastral_code"]]["properties"]
-        if (mapping["municipality_code"] != "554782"
-                or str(part["obec"]) != mapping["municipality_code"]
+        cadastre_feature = cadastres[mapping["cadastral_code"]]
+        cadastre = cadastre_feature["properties"]
+        parent = parents[mapping["municipality_code"]]["properties"]
+        if (str(part["obec"]) != mapping["municipality_code"]
                 or str(cadastre["obec"]) != mapping["municipality_code"]
-                or part["nazev"] != mapping["name"] or cadastre["nazev"] != mapping["name"]):
-            raise ValueError("Prague part/cadastre name or parent mismatch")
+                or part["nazev"] != mapping["name"]
+                or cadastre["nazev"] != mapping["cadastral_name"]
+                or parent["nazev"] != mapping["municipality_name"]):
+            raise ValueError("Part/cadastre name or parent mismatch")
+        validate_geometry(cadastre_feature["geometry"])
+        point = parts[mapping["part_code"]]["geometry"]
+        if (point["type"] != "Point"
+                or not contains_point(cadastre_feature["geometry"], point["coordinates"])):
+            raise ValueError("Part definition point lies outside mapped cadastre")
 
     selected = {}
     used_municipalities, used_parts = set(), set()
@@ -125,11 +150,12 @@ def build_payload(manifest, coverage, root=ROOT):
             mapping = mapping_by_part.get(code)
             if (not mapping or mapping["name"] != place["name"]
                     or mapping["municipality_code"] != place["municipalityCode"]
-                    or place["municipalityName"] != "Praha"):
+                    or mapping["municipality_name"] != place["municipalityName"]):
                 raise ValueError(f"Unsupported or mismatched part in coverage: {code}")
             used_parts.add(code)
             cadastre_code = mapping["cadastral_code"]
-            add_feature(selected, f"part-{code}", f"Praha – {place['name']}", code,
+            name = f"Praha – {place['name']}" if place["municipalityCode"] == "554782" else place["name"]
+            add_feature(selected, f"part-{code}", name, code,
                         branch_id, "cadastral", cadastres[cadastre_code]["geometry"], cadastre_code)
     if used_municipalities != set(municipalities) or used_parts != set(parts):
         raise ValueError("Boundary sources must match configured delivery localities exactly")

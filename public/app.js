@@ -2,12 +2,12 @@ import { createOpeningStatus, updateOrderControls } from './opening-status.js?v=
 import { createHeroCarousel } from './hero-carousel.js?v=2';
 import { itemPrice, matchesItem, validBranch } from './menu-utils.js';
 import { createPrivacyBanner } from './privacy-banner.js';
-import { loadRuianAddresses } from './ruian-addresses.js?v=coverage-20261005';
-import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js?v=coverage-20261005';
-import { createOrdering } from './ordering.js?v=half40-pricing-1';
+import { loadRuianAddresses } from './ruian-addresses.js?v=coverage-20261005-v2';
+import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js?v=coverage-20261005-v2';
+import { createOrdering } from './ordering.js?v=coverage-20261005-v2';
 import { showCartFeedback } from './cart-feedback.js?v=half-pizza-1';
-import { initDeliveryMap, setDeliveryMapBranch } from './delivery-map.js?v=fullscreen-1';
-import { initDeliveryAddressChecker } from './delivery-address-checker.js?v=compact-2';
+import { initDeliveryMap, setDeliveryMapBranch } from './delivery-map.js?v=coverage-20261005-v2';
+import { initDeliveryAddressChecker } from './delivery-address-checker.js?v=coverage-20261005-v2';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -241,7 +241,7 @@ $$('dialog').forEach(dialog => {
 
 async function init() {
   try {
-    const response = await fetch('./data/site.json?v=delivery-20261005');
+    const response = await fetch('./data/site.json?v=delivery-20261005-v2');
     if (!response.ok) throw new Error('Menu unavailable');
     state.data = await response.json();
     createHeroCarousel({ branches: state.data.branches, icon, escape });

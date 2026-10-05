@@ -450,7 +450,7 @@ window.addEventListener('storage', event => {
 });
 async function init() {
   try {
-    const responses = await Promise.all([fetch('../data/site.json?v=delivery-20261005'), fetch('./seed.json')]);
+    const responses = await Promise.all([fetch('../data/site.json?v=delivery-20261005-v2'), fetch('./seed.json')]);
     if (responses.some(r => !r.ok)) throw new Error('Nepodařilo se načíst menu nebo receptury.');
     [site, seed] = await Promise.all(responses.map(r => r.json()));
     await locked(async () => {

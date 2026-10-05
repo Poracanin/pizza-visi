@@ -1,7 +1,7 @@
 import { storeOpeningStatus, closedOrderingMessage } from './opening-hours.js?v=1';
 import { STORAGE_KEY, createState, restoreState, orderId } from './admin/model.js?v=half40-pricing-1';
 import { getItem, normalizeLine, unitPrice, cartTotals, lineName } from './cart-model.js?v=half40-pricing-1';
-import { loadRuianAddresses, resolveAddress } from './ruian-addresses.js?v=coverage-20261005';
+import { loadRuianAddresses, resolveAddress } from './ruian-addresses.js?v=coverage-20261005-v2';
 import { customizationFields, hasRecipeChanges } from './pizza-customization.js?v=combined-removals-1';
 
 const reject = message => { throw new Error(message); };
