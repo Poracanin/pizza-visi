@@ -12,6 +12,10 @@
 .pizza-menu-card{cursor:pointer}
 .pizza-menu-card .pizza-size-note{color:#a9a4a0;font:400 11px/1.4 var(--body);white-space:nowrap}
 .pizza-menu-card .pizza-card-price small{font:400 11px/1.4 var(--body);color:#bcb6b0;margin-right:4px}
+.pizza-grid:not(.menu-list) .pizza-card-copy{text-align:center}
+.pizza-grid:not(.menu-list) .pizza-card-heading{justify-content:center}
+.pizza-grid:not(.menu-list) .spicy-tag{margin-left:0}
+.pizza-grid:not(.menu-list) .pizza-card-bottom{justify-content:center;column-gap:14px}
 .menu-tools{display:flex;align-items:center;gap:12px;flex:1 1 400px;max-width:445px;margin-left:auto}
 .menu-tools .menu-search{flex:1;min-width:0;max-width:none;margin-left:0}
 .menu-view-toggle{display:flex;flex:none;gap:2px;padding:3px;border:1px solid #221e1833;border-radius:5px;background:#ffffff70}
