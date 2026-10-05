@@ -19,8 +19,14 @@
 .hero-slide-copy .button .icon{width:19px;height:19px}
 .hero-slide-branch .hero-slide-shade{background:linear-gradient(90deg,#101011eb,#10101180 46%,#10101105 85%),linear-gradient(0deg,#101011b5,transparent 40%)}
 .hero-slide-branch .hero-slide-photo{object-position:center 56%}
-.hero-carousel-footer{position:absolute;bottom:4px;left:0;right:0;z-index:2;display:flex;align-items:center;justify-content:center;height:32px}
+.hero-carousel-footer{position:absolute;bottom:4px;left:0;right:0;z-index:2;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:32px}
 .hero-carousel-controls{display:flex;align-items:center;justify-content:center}
+.hero-carousel-footer>.hero-carousel-controls{grid-column:2}
+.hero-platforms{grid-column:3;justify-self:end;display:flex;align-items:center;gap:12px;padding:7px 10px;border-radius:5px;background:#faf8f3f2;box-shadow:0 2px 12px #0002}
+.hero-platforms img{display:block;flex:none;height:auto;object-fit:contain}
+.hero-platform-wolt{width:40px}
+.hero-platform-bolt{width:62px}
+.hero-platform-foodora{width:66px}
 .hero-slide-dots{display:flex;align-items:center}
 .hero-slide-dots button{display:grid;place-items:center;min-width:28px;min-height:32px;padding:4px}
 .hero-slide-dots button::after{content:'';display:block;width:6px;height:6px;border-radius:50%;background:#ffffff75;box-shadow:0 1px 5px #0006;transition:background .25s,transform .25s}
@@ -30,6 +36,11 @@
 /* Keyboard and screen-reader users can still pause the automatic motion. */
 .hero-rotation:focus-visible{clip-path:none;clip:auto;width:auto;height:auto;overflow:visible;white-space:normal;bottom:36px;padding:9px 12px;background:#111112;color:#fff;font:12px var(--body);border-radius:4px}
 @media(max-width:700px){
+  .hero-carousel-footer{display:flex;justify-content:space-between;gap:8px}
+  .hero-platforms{gap:7px;padding:6px 8px}
+  .hero-platform-wolt{width:32px}
+  .hero-platform-bolt{width:46px}
+  .hero-platform-foodora{width:46px}
   .hero-slides{height:268px}
   .hero-slide-inner{padding-block:18px 46px}
   .hero-slide-copy{max-width:88%}

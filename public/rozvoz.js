@@ -1,7 +1,7 @@
 import {demoQrSvg} from './courier-qr.js?v=1';
 import {hasSampleMap, clearSampleMaps, mountSampleMaps} from './courier-maps.js?v=1';
-import {STORAGE_KEY, restoreState, createState} from './admin/model.js?v=half40-pricing-1';
-import {PREVIEW_KEY, ISSUE_REASONS, createCourierPreview, upgradeCourierPreviewAddresses, validateCourierState, courierOrders, courierHistory, deliveryStatus, takeOrder, finishDelivery, setDeliveryIssue, courierPaymentQuote, collectDemoPayment, courierPaymentTotals} from './courier-model.js?v=half40-pricing-1';
+import {STORAGE_KEY, restoreState, createState} from './admin/model.js?v=cart-extras-20261005';
+import {PREVIEW_KEY, ISSUE_REASONS, createCourierPreview, upgradeCourierPreviewAddresses, validateCourierState, courierOrders, courierHistory, deliveryStatus, takeOrder, finishDelivery, setDeliveryIssue, courierPaymentQuote, collectDemoPayment, courierPaymentTotals} from './courier-model.js?v=cart-extras-20261005';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

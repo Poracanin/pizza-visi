@@ -34,6 +34,23 @@ test('A retry returns the same order while changed payload cannot reuse its requ
  assert.throws(()=>createStorefrontOrder(first.state,request,addresses,now),/jinými údaji/);
 });
 
+test('Standalone sauces keep quantity, catalog prices and pizza-only packaging through checkout and POS reload',()=>{
+ const request=input();
+ request.cart=[{itemId:'1-margherita',size:30,quantity:1,extras:[]}];
+ for(const sauce of data.categories.find(category=>category.id==='omacky').items){
+  request.cart.push({itemId:sauce.id,size:null,quantity:2,extras:[]});
+ }
+ const result=createStorefrontOrder(initial(),request,addresses,now);
+ assert.equal(result.order.subtotal,360);
+ assert.equal(result.order.packaging,16);
+ assert.equal(result.order.total,421);
+ assert.equal(result.order.lines.length,4);
+ assert.ok(result.order.lines.slice(1).every(line=>line.size===null&&line.quantity===2&&line.unitPrice===35));
+ assert.deepEqual(restoreState(JSON.stringify(result.state),data,seed).orders[0],result.order);
+ const pizzaOnly=createStorefrontOrder(initial(),{...input(),cart:request.cart.slice(0,1)},addresses,now);
+ assert.deepEqual(requirements(result.state,result.order,seed,now),requirements(pizzaOnly.state,pizzaOnly.order,seed,now));
+});
+
 test('Beroun delivery retains its canonical address and branch through the POS roundtrip',()=>{
  const canonical=searchAddresses(addresses,'Beroun Pivovarska 105').find(address=>address.branchIds.includes('beroun'));
  assert.ok(canonical);

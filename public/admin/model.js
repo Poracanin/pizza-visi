@@ -21,7 +21,7 @@ const clone = value => structuredClone(value);
 const integer = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
 const fail = message => { throw new Error(message); };
 export const pizzas = site => site.categories.find(c => c.id === 'pizzy').items;
-export const products = site => site.categories.filter(c => ['pizzy', 'napoje', 'vino-prosecco'].includes(c.id)).flatMap(c => c.items.map(i => ({...i, category: c.id})));
+export const products = site => site.categories.filter(c => ['pizzy', 'napoje', 'vino-prosecco', 'omacky'].includes(c.id)).flatMap(c => c.items.map(i => ({...i, category: c.id})));
 export const pizzaName = item => item.name.replace(/^\d+\.\s*/, '');
 export function validateRecipe(recipe, seed) {
   if (!recipe || typeof recipe !== 'object' || Array.isArray(recipe)) fail('Receptura není platná.');
@@ -75,7 +75,7 @@ export function requirements(state, order, seed, now = new Date().toISOString())
   if (order.inventoryIncomplete || order.lines.some(hasRecipeChanges)) fail('Pro pizzu 40 cm, přísady nebo změnu surovin není nastavená receptura. Nejdřív doplňte recepturu a ověřte sklad; potom lze zahájit přípravu.');
   const amounts = {};
   for (const line of order.lines) {
-    if (line.size === null) continue; // Drinks are sold by piece; this stock module covers pizza ingredients.
+    if (line.size === null) continue; // Drinks and sauces are sold by piece; this stock module covers pizza ingredients.
     const parts = line.halves || [{ itemId: line.pizzaId }];
     for (const part of parts) {
       const recipe = state.recipes[part.itemId]?.[line.size];

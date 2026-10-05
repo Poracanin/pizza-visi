@@ -1,4 +1,4 @@
-import {createState, addOrder, pizzas, transitionOrder} from './admin/model.js?v=half40-pricing-1';
+import {createState, addOrder, pizzas, transitionOrder} from './admin/model.js?v=cart-extras-20261005';
 import {COURIERS, deliveryAssignment, deliveryPlan, saveDeliveryPlan, platformCourier} from './admin/delivery.js?v=bb45e9a7';
 
 export const PREVIEW_KEY = 'pizza-visi-courier-preview-v1';

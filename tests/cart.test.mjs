@@ -24,6 +24,22 @@ test('Prázdný košík nemá poplatek a nápoje nedostávají krabici na pizzu'
   assert.equal(cartTotals(data, drinks, 'pickup').total, 150);
   assert.equal(cartTotals(data, drinks, 'delivery').packaging, 0);
 });
+test('Omáčky z košíku jsou samostatné kusy, sloučí se a nepřidávají krabici', () => {
+  let cart = [line({ extras: ['chilli-50g'] })];
+  const sauces = data.categories.find(category => category.id === 'omacky').items;
+  for (const sauce of sauces) {
+    const added = normalizeLine(data, { itemId: sauce.id, quantity: 1 });
+    assert.equal(added.size, null);
+    assert.deepEqual(added.extras, []);
+    assert.equal(unitPrice(data, added), sauce.price_czk);
+    cart = mergeLine(mergeLine(cart, added), added);
+  }
+  assert.equal(cart.length, 4);
+  assert.equal(cart[0].quantity, 1);
+  assert.ok(cart.slice(1).every(sauce => sauce.quantity === 2));
+  assert.deepEqual(cartTotals(data, cart), { subtotal: 395, packaging: 16, delivery: 45, total: 456, quantity: 7 });
+  assert.deepEqual(restoreCart(data, serializeCart(cart)), cart);
+});
 test('Stejné konfigurace se sloučí, různé velikosti, přílohy a poznámky zůstanou oddělené', () => {
   let cart = mergeLine([], line({ extras: ['mozzarella', 'sunka'] }));
   cart = mergeLine(cart, line({ extras: ['sunka', 'mozzarella'], quantity: 2 }));

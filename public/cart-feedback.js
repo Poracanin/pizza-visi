@@ -23,6 +23,7 @@ export function showCartFeedback({ name, image, secondImage, size, quantity = 1,
   if (supportsPopover && element.matches(':popover-open')) element.hidePopover();
   const photo = document.createElement('div');
   photo.className = `cart-feedback-photo${size ? ' is-pizza' : ''}`;
+  if (!image && !secondImage) photo.classList.add('is-icon');
   if (image) {
     const img = document.createElement('img');
     img.src = `./${image}`;

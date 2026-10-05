@@ -1,5 +1,5 @@
 import { storeOpeningStatus, closedOrderingMessage } from './opening-hours.js?v=1';
-import { STORAGE_KEY, createState, restoreState, orderId } from './admin/model.js?v=half40-pricing-1';
+import { STORAGE_KEY, createState, restoreState, orderId } from './admin/model.js?v=cart-extras-20261005';
 import { getItem, normalizeLine, unitPrice, cartTotals, lineName } from './cart-model.js?v=half40-pricing-1';
 import { loadRuianAddresses, resolveAddress } from './ruian-addresses.js?v=coverage-20261005-v2';
 import { customizationFields, hasRecipeChanges } from './pizza-customization.js?v=combined-removals-1';
@@ -34,7 +34,7 @@ export function createStorefrontOrder(state, input, addressCatalog, now = new Da
   if (!Array.isArray(cart) || !cart.length || cart.length > 100) reject('Košík je prázdný nebo obsahuje příliš mnoho položek.');
   const normalized = cart.map(line => {
     const item = getItem(data, line?.itemId);
-    if (!item || !['pizzy', 'napoje', 'vino-prosecco'].includes(item.categoryId)) reject('Suroviny navíc přidávej přímo k vybrané pizze.');
+    if (!item || !['pizzy', 'napoje', 'vino-prosecco', 'omacky'].includes(item.categoryId)) reject('Suroviny navíc přidávej přímo k vybrané pizze.');
     if (!Number.isSafeInteger(line.quantity) || line.quantity < 1 || line.quantity > 20) reject('Zkontroluj počet kusů v košíku.');
     if (item.categoryId === 'pizzy' && ![30, 40].includes(line.size)) reject('Vyber velikost 30 nebo 40 cm.');
     if (line.halves !== undefined && line.size !== 40) reject('Pizzu půl na půl připravujeme pouze ve velikosti 40 cm.');

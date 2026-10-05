@@ -1,6 +1,6 @@
 import { storeOpeningStatus, countdownText, closedOrderingMessage } from './opening-hours.js?v=1';
 
-export const ORDER_ACTIONS = '[data-quick-add], [data-add-cart], [data-quick-drink], [data-checkout], .checkout-submit, [data-quantity][data-delta="1"]';
+export const ORDER_ACTIONS = '[data-quick-add], [data-add-cart], [data-quick-drink], [data-quick-sauce], [data-checkout], .checkout-submit, [data-quantity][data-delta="1"]';
 export function updateOrderControls(status, submitting = false) {
   document.body.classList.toggle('ordering-closed', !status.isOpen);
   document.querySelectorAll(ORDER_ACTIONS).forEach(button => {

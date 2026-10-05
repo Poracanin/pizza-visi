@@ -13,6 +13,9 @@
 .cart-feedback-photo.is-pizza{background:transparent;border-radius:50%}
 .cart-feedback-check{position:absolute;right:-4px;bottom:-3px;display:grid;place-items:center;width:22px;height:22px;border:2px solid #19191b;border-radius:50%;background:#299653;color:#fff}
 .cart-feedback-check svg{width:14px;height:14px}
+.cart-feedback-photo.is-icon{display:grid;place-items:center;background:transparent}
+.cart-feedback-photo.is-icon .cart-feedback-check{position:static;width:42px;height:42px;border:0}
+.cart-feedback-photo.is-icon .cart-feedback-check svg{width:24px;height:24px}
 .cart-feedback-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
 .cart-feedback-copy strong{font:400 24px/1.08 var(--display,sans-serif);letter-spacing:.3px;text-transform:uppercase}
 .cart-feedback-copy>span{font-size:12px;line-height:1.4;color:#d1cdc7;overflow-wrap:anywhere}

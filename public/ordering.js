@@ -1,10 +1,10 @@
 import { storeOpeningStatus, closedOrderingMessage } from './opening-hours.js?v=1';
-import { ORDER_ACTIONS, updateOrderControls } from './opening-status.js?v=1';
+import { ORDER_ACTIONS, updateOrderControls } from './opening-status.js?v=cart-extras-20261005';
 import { itemPrice, normalizeSearch } from './menu-utils.js';
 import { MAX_QUANTITY, getItem, normalizeLine, mergeLine, unitPrice, addonPrice, cartTotals, restoreCart, serializeCart, basePrice, lineName, lineDetails, cloneLine } from './cart-model.js?v=half40-pricing-1';
 import { PRODUCT_CATEGORIES, productHash, parseProductRoute, editSnapshot, findEditingLine } from './product-route.js?v=half40-pricing-1';
 import { loadRuianAddresses, searchAddresses, resolveAddress } from './ruian-addresses.js?v=coverage-20261005-v2';
-import { submitLocalOrder } from './storefront-orders.js?v=coverage-20261005-v2';
+import { submitLocalOrder } from './storefront-orders.js?v=cart-extras-20261005';
 import { mountPickupMap } from './pickup-map.js';
 import { bindAddressSuggestionEvents } from './address-suggestion-events.js?v=2';
 import { PIZZA_BASES, recipeBase, removableIngredients, customizationFields, removalChoices, setIngredientRemoval } from './pizza-customization.js?v=combined-removals-1';
@@ -221,7 +221,7 @@ export function createOrdering(context) {
   function quickAdd(id, size = 30) {
     if (submitting || !canOrder()) return;
     const item = getItem(data, id);
-    if (!item || !PRODUCT_CATEGORIES.includes(item.categoryId)) { toast('Přísady vyber u konkrétní pizzy.'); return; }
+    if (!item || ![...PRODUCT_CATEGORIES, 'omacky'].includes(item.categoryId)) { toast('Přísady vyber u konkrétní pizzy.'); return; }
     const line = normalizeLine(data, { itemId: id, size, quantity: 1 });
     if (!line) return;
     cart = mergeLine(cart, line);
@@ -328,12 +328,12 @@ export function createOrdering(context) {
     const item = getItem(data, draft.itemId);
     const pizza = item.categoryId === 'pizzy';
     document.title = `${draft.halves ? 'Pizza půl na půl' : name(item)} – upravit | Pizza Visi`;
-    const note = `<label class="customize-note">Poznámka k ${pizza ? 'pizze' : 'položce'} <span>nepovinné</span><textarea id="product-note" rows="2" maxlength="180" placeholder="${pizza ? 'Např. prosím rozkrájet…' : 'Něco nám chceš vzkázat?'}">${esc(draft.note)}</textarea></label>`;
+    const note = `<label class="customize-note">Poznámka k ${pizza ? 'pizze' : 'položce'} <span>nepovinné</span><textarea id="product-note" rows="2" maxlength="180" placeholder="${pizza ? 'Např. prosím dobře propéct…' : 'Něco nám chceš vzkázat?'}">${esc(draft.note)}</textarea></label>`;
     $('#product-content', productPage).innerHTML = `<div class="product-page-shell">
       ${pizza ? `<div class="product-scroll-summary" hidden><div class="product-summary-identity">${productPhoto(draft)}<div class="product-summary-copy"><strong>${draft.halves ? 'Půl na půl' : esc(name(item))}</strong><small><span data-summary-size>${draft.size} cm</span>${draft.halves ? ` · ${esc(lineName(data, draft))}` : ''}</small></div><button type="button" class="product-back product-summary-back" data-product-back aria-label="Zpět na menu">${icon('back')}<span>Zpět</span></button></div></div>` : ''}
       <div class="product-page-intro">${productPhoto(draft)}<div class="product-intro-copy product-page-heading"><p class="eyebrow">${pizza ? 'PIZZA PŘESNĚ PODLE TEBE' : 'NĚCO DOBRÉHO NAVÍC'}</p><div class="product-title-row"><h1 id="product-title">${draft.halves ? 'PŮL NA PŮL' : esc(name(item))}</h1><button class="product-back product-page-back" data-product-back aria-label="Zpět na menu">${icon('back')}<span>Zpět</span></button></div></div><p class="product-description">${draft.halves ? esc(lineName(data, draft)) : esc(item.description || '')}</p></div>
       <div class="product-config ${pizza ? `product-config-pizza${draft.size === 30 ? ' product-config-whole-only' : ''}` : ''}">${item.prices.length ? `<fieldset class="customize-size"><legend>Velikost pizzy</legend><div class="product-sizes">${[30,40].map(size => `<button type="button" data-option-size="${size}" aria-pressed="${draft.size === size}"><i class="size-disc size-disc-${size}" aria-hidden="true"></i><span class="size-label">${size}<small>cm</small></span><span data-base-size="${size}">${money(productBasePrice(size))}</span></button>`).join('')}</div>${draft.size === 30 ? '<p class="half-size-note">Půl na půl připravujeme jen ve velikosti 40 cm.</p>' : ''}</fieldset>${pizzaModeOptions()}` : `<p class="product-single-price">${money(itemPrice(item))}</p>`}${pizza ? (draft.halves ? halfChoices() : `<div id="base-options">${baseOptions()}</div>`) : ''}${draft.halves ? '<p class="half-price-note">Cena podle dražší pizzy. Suroviny navíc pro každou půlku za cenu pro 30 cm. Okraje a omáčka jsou k celé pizze.</p>' : ''}</div>
-      <div class="product-page-body ${pizza ? '' : 'product-page-simple'}">${pizza ? `<section class="product-page-extras" aria-labelledby="product-extras-title"><h2 id="product-extras-title">Suroviny navíc</h2><div id="topping-options">${toppingOptions()}</div><div id="removal-options">${removalOptions()}</div></section><aside class="product-page-aside"><section aria-labelledby="product-crust-title"><h2 id="product-crust-title">Něco do okrajů</h2><div class="addon-grid addon-grid-single">${addonOptions('chutne-okraje')}</div></section><section aria-labelledby="product-sauce-title"><h2 id="product-sauce-title">Omáčka k pizze</h2><div class="addon-grid addon-grid-single">${addonOptions('omacky')}</div></section>${note}</aside>` : note}</div>
+      <div class="product-page-body ${pizza ? '' : 'product-page-simple'}">${pizza ? `<section class="product-page-extras" aria-labelledby="product-extras-title"><h2 id="product-extras-title">Suroviny navíc</h2><div id="topping-options">${toppingOptions()}</div></section><aside class="product-page-aside"><section aria-labelledby="product-crust-title"><h2 id="product-crust-title">Něco do okrajů</h2><div class="addon-grid addon-grid-single">${addonOptions('chutne-okraje')}</div></section><section aria-labelledby="product-sauce-title"><h2 id="product-sauce-title">Omáčka k pizze</h2><div class="addon-grid addon-grid-single">${addonOptions('omacky')}</div></section><div id="removal-options">${removalOptions()}</div>${note}</aside>` : note}</div>
       <p class="customize-fine">${pizza ? 'Krabici připočítáme v košíku podle velikosti pizzy. ' : ''}Informace o alergenech ti sdělí pobočka.</p><div class="product-page-purchase customize-footer"><div id="product-quantity">${stepper(draft.quantity, 'draft', lineName(data, draft))}</div><button class="button" data-add-cart><span>${productSession.snapshot ? 'Uložit úpravy' : 'Přidat do košíku'}</span><strong id="product-total" aria-live="polite">${money(unitPrice(data, draft) * draft.quantity)}</strong>${icon('arrow')}</button></div></div>`;
     if (pizza) syncRemovalChoices();
     syncProductSummary();
@@ -376,7 +376,7 @@ export function createOrdering(context) {
   }
   function cartLine(line, index) {
     const label = esc(lineName(data, line));
-    return `<article class="cart-line">${productPhoto(line, 'cart-line-image')}<div class="cart-line-copy"><div class="cart-line-title"><h3>${label}</h3><button class="cart-remove" data-remove-line="${index}" aria-label="Odebrat ${label}">${icon('close')}</button></div><div class="cart-line-meta"><span>${line.size ? `${line.size} cm` : '1 porce / balení'}</span><button class="cart-edit" data-edit-line="${index}" aria-label="Upravit ${label}">Upravit</button></div>${lineDetails(data, line).map(detail => `<p>${esc(detail)}</p>`).join('')}${line.note ? `<p class="cart-line-note">${esc(line.note)}</p>` : ''}<div class="cart-line-purchase"><strong>${money(unitPrice(data, line) * line.quantity)}</strong>${stepper(line.quantity, String(index), lineName(data, line))}</div></div></article>`;
+    return `<article class="cart-line">${productPhoto(line, 'cart-line-image')}<div class="cart-line-copy"><div class="cart-line-title"><h3>${label}</h3><button class="cart-remove" data-remove-line="${index}" aria-label="Odebrat ${label}">${icon('close')}</button></div><div class="cart-line-meta"><span>${line.size ? `${line.size} cm` : '1 porce / balení'}</span>${PRODUCT_CATEGORIES.includes(getItem(data, line.itemId).categoryId) ? `<button class="cart-edit" data-edit-line="${index}" aria-label="Upravit ${label}">Upravit</button>` : ''}</div>${lineDetails(data, line).map(detail => `<p>${esc(detail)}</p>`).join('')}${line.note ? `<p class="cart-line-note">${esc(line.note)}</p>` : ''}<div class="cart-line-purchase"><strong>${money(unitPrice(data, line) * line.quantity)}</strong>${stepper(line.quantity, String(index), lineName(data, line))}</div></div></article>`;
   }
   function openCart() {
     if (submitting) return;
@@ -392,12 +392,28 @@ export function createOrdering(context) {
     const ordered = [...featured.map(id => drinks.find(item => item.id === id)).filter(Boolean), ...drinks.filter(item => !featured.includes(item.id))];
     return ordered.map(item => `<button class="cart-upsell-card" data-quick-drink="${esc(item.id)}" aria-label="Přidat ${esc(name(item))} za ${money(itemPrice(item))}">${item.image ? `<figure class="cart-upsell-photo"><img src="./${esc(item.image)}" alt="" loading="lazy"></figure>` : icon('bag')}<span>${esc(name(item))}</span><strong>${money(itemPrice(item))}<span class="cart-upsell-add" aria-hidden="true">${icon('plus')}</span></strong></button>`).join('');
   }
+  function sauceUpsell() {
+    const sauces = data.categories.find(category => category.id === 'omacky')?.items || [];
+    if (!sauces.length) return '';
+    return `<section class="cart-sauces" aria-labelledby="cart-sauces-title"><h3 id="cart-sauces-title">JEŠTĚ NĚCO NAVÍC?</h3><div class="cart-sauces-grid">${sauces.map(item => `<button type="button" class="cart-sauce-card" data-quick-sauce="${esc(item.id)}" aria-label="Přidat ${esc(name(item))} za ${money(itemPrice(item))}"><span class="cart-sauce-name">${esc(name(item))}</span><strong>${money(itemPrice(item))}</strong><span class="cart-sauce-add" aria-hidden="true">${icon('plus')}</span></button>`).join('')}</div></section>`;
+  }
+  function quickCartAdd(target, attribute) {
+    const id = target.getAttribute(attribute);
+    const previousTop = target.getBoundingClientRect().top;
+    quickAdd(id);
+    const button = $(`[${attribute}="${CSS.escape(id)}"]`, cartDialog);
+    if (!button) return;
+    button.focus({ preventScroll: true });
+    // Keep the pressed offer in the same place when its new cart line adds height above it.
+    const scroller = $('.cart-scroll', cartDialog);
+    if (scroller) scroller.scrollTop += button.getBoundingClientRect().top - previousTop;
+  }
   function renderCart() {
     const scrollTop = $('.cart-scroll', cartDialog)?.scrollTop || 0;
     const drinkScrollLeft = $('.cart-upsell-grid', cartDialog)?.scrollLeft || 0;
     const branch = getBranch();
     const total = totals();
-    $('#cart-content').innerHTML = `<div class="cart-shell"><header class="cart-heading"><h2 id="cart-title" tabindex="-1">TVŮJ <em>KOŠÍK</em> <span>${total.quantity}</span></h2>${closeButton('Zavřít košík')}</header>${!cart.length ? `<div class="cart-scroll empty-cart">${icon('cart')}<h3>ZATÍM ANI KOUSEK</h3><p>Vyber si pizzu, přidej něco navíc<br>a udělej si hezký den.</p><button class="button" data-continue-menu>Vybrat si pizzu ${icon('arrow')}</button>${receipt ? `<button class="small-text-button last-receipt" data-last-receipt>Poslední objednávka ${icon('external')}</button>` : ''}</div>` : `<div class="cart-scroll"><div class="cart-body"><div class="cart-branch"><span>${icon('pin')} ${branch ? `Pizza Visi ${esc(branch.name)}` : 'Pobočku určíme v objednávce'}</span></div><p class="cart-next-step-note">Doručení nebo vyzvednutí vybereš v dalším kroku.</p><div class="cart-lines">${cart.map(cartLine).join('')}</div><section class="cart-upsell" aria-labelledby="cart-drinks-title"><div class="cart-upsell-heading"><h3 id="cart-drinks-title">JEŠTĚ NĚCO NA ZAPITÍ?</h3><div class="cart-upsell-nav"><button data-drinks-scroll="-1" aria-label="Předchozí nápoje">${icon('back')}</button><button data-drinks-scroll="1" aria-label="Další nápoje">${icon('arrow')}</button></div></div><div class="cart-upsell-grid">${upsellCards()}</div></section></div></div><footer class="cart-footer">${summaryRows(total)}<p class="ordering-closed-notice" data-closed-notice hidden></p><button class="button cart-checkout" data-checkout>Pokračovat k objednávce ${icon('arrow')}</button><button class="cart-continue" data-close-dialog>Ještě něco přihodím</button></footer>`}</div>`;
+    $('#cart-content').innerHTML = `<div class="cart-shell"><header class="cart-heading"><h2 id="cart-title" tabindex="-1">TVŮJ <em>KOŠÍK</em> <span>${total.quantity}</span></h2>${closeButton('Zavřít košík')}</header>${!cart.length ? `<div class="cart-scroll empty-cart">${icon('cart')}<h3>ZATÍM ANI KOUSEK</h3><p>Vyber si pizzu, přidej něco navíc<br>a udělej si hezký den.</p><button class="button" data-continue-menu>Vybrat si pizzu ${icon('arrow')}</button>${receipt ? `<button class="small-text-button last-receipt" data-last-receipt>Poslední objednávka ${icon('external')}</button>` : ''}</div>` : `<div class="cart-scroll"><div class="cart-body"><div class="cart-branch"><span>${icon('pin')} ${branch ? `Pizza Visi ${esc(branch.name)}` : 'Pobočku určíme v objednávce'}</span></div><p class="cart-next-step-note">Doručení nebo vyzvednutí vybereš v dalším kroku.</p><div class="cart-lines">${cart.map(cartLine).join('')}</div><section class="cart-upsell" aria-labelledby="cart-drinks-title"><div class="cart-upsell-heading"><h3 id="cart-drinks-title">JEŠTĚ NĚCO NA ZAPITÍ?</h3><div class="cart-upsell-nav"><button data-drinks-scroll="-1" aria-label="Předchozí nápoje">${icon('back')}</button><button data-drinks-scroll="1" aria-label="Další nápoje">${icon('arrow')}</button></div></div><div class="cart-upsell-grid">${upsellCards()}</div></section>${sauceUpsell()}</div></div><footer class="cart-footer">${summaryRows(total)}<p class="ordering-closed-notice" data-closed-notice hidden></p><button class="button cart-checkout" data-checkout>Pokračovat k objednávce ${icon('arrow')}</button><button class="cart-continue" data-close-dialog>Ještě něco přihodím</button></footer>`}</div>`;
     $('.cart-scroll', cartDialog).scrollTop = scrollTop;
     const drinks = $('.cart-upsell-grid', cartDialog);
     if (drinks) drinks.scrollLeft = drinkScrollLeft;
@@ -629,10 +645,8 @@ export function createOrdering(context) {
       const drinks = $('.cart-upsell-grid', cartDialog);
       drinks.scrollBy({ left: Number(target.dataset.drinksScroll) * drinks.clientWidth * .85, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     }
-    if (target.dataset.quickDrink) {
-      quickAdd(target.dataset.quickDrink);
-      $(`[data-quick-drink="${target.dataset.quickDrink}"]`, cartDialog)?.focus({ preventScroll: true });
-    }
+    if (target.dataset.quickDrink) quickCartAdd(target, 'data-quick-drink');
+    if (target.dataset.quickSauce) quickCartAdd(target, 'data-quick-sauce');
     if (target.dataset.pickupBranch && fulfillment === 'pickup') {
       captureCustomer();
       ++deliverySelectionVersion;

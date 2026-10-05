@@ -1,11 +1,11 @@
-import { createOpeningStatus, updateOrderControls } from './opening-status.js?v=1';
+import { createOpeningStatus, updateOrderControls } from './opening-status.js?v=cart-extras-20261005';
 import { createHeroCarousel } from './hero-carousel.js?v=2';
 import { itemPrice, matchesItem, validBranch } from './menu-utils.js';
 import { createPrivacyBanner } from './privacy-banner.js';
 import { loadRuianAddresses } from './ruian-addresses.js?v=coverage-20261005-v2';
 import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js?v=coverage-20261005-v2';
-import { createOrdering } from './ordering.js?v=coverage-20261005-v2';
-import { showCartFeedback } from './cart-feedback.js?v=half-pizza-1';
+import { createOrdering } from './ordering.js?v=cart-extras-20261005';
+import { showCartFeedback } from './cart-feedback.js?v=cart-extras-20261005';
 import { initDeliveryMap, setDeliveryMapBranch } from './delivery-map.js?v=coverage-20261005-v2';
 import { initDeliveryAddressChecker } from './delivery-address-checker.js?v=coverage-20261005-v2';
 
