@@ -1,9 +1,10 @@
+import { createOpeningStatus, updateOrderControls } from './opening-status.js?v=1';
 import { createHeroCarousel } from './hero-carousel.js?v=2';
 import { itemPrice, matchesItem, validBranch } from './menu-utils.js';
 import { createPrivacyBanner } from './privacy-banner.js';
 import { loadRuianAddresses } from './ruian-addresses.js';
 import { DELIVERY_PREFERENCE_KEY, STORAGE_CONSENT_KEY, parseRememberedSelection, canonicalSelection, serializeRememberedSelection, parseStorageConsent } from './delivery-preferences.js';
-import { createOrdering } from './ordering.js?v=config-layout-2';
+import { createOrdering } from './ordering.js?v=opening-hours-1';
 import { showCartFeedback } from './cart-feedback.js?v=half-pizza-1';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -14,6 +15,7 @@ const money = value => `${new Intl.NumberFormat('cs-CZ', { maximumFractionDigits
 const cleanName = item => item.name.replace(/^\d+\.\s*/, '').replace(/\s*🌶️?/gu, '').trim();
 const state = { data: null, branch: null, category: 'pizza', filter: 'all', menuView: 'tiles' };
 let ordering;
+let openingStatus;
 let privacyBanner;
 let storageConsent = null;
 let selection = { fulfillment: 'delivery', branchId: null, addressId: null, address: '', remember: false };
@@ -90,6 +92,7 @@ function selectBranch(id) {
   if ((state.branch?.id || null) === (id || null)) return;
   state.branch = validBranch(state.data.branches, id) || null;
   renderBranches();
+  openingStatus?.refresh();
 }
 
 function categoryItems() {
@@ -119,6 +122,7 @@ function renderMenu() {
     return `<article class="beverage-card" data-menu-product="${item.id}"><button class="beverage-photo" data-product="${item.id}" aria-label="Prohlédnout ${escape(cleanName(item))}">${item.image ? `<img src="./${escape(item.image)}" alt="${escape(cleanName(item))}" width="300" height="300" loading="lazy">` : icon('bag')}</button><div class="beverage-copy"><span class="beverage-category">${state.category === 'wine' ? 'Víno & prosecco' : 'Nápoje'}</span><h3>${escape(cleanName(item))}</h3><div class="beverage-bottom"><strong>${money(productPrice)}</strong><button class="beverage-add" data-quick-add="${item.id}" aria-label="Přidat ${escape(cleanName(item))} do košíku">${icon('plus', 'icon-small')} Přidat do košíku</button></div></div></article>`;
   }).join('') : `<div class="empty-menu">${icon('search')}<h3>TAHLE CHUŤ TU ZATÍM NENÍ</h3><p>Zkus jiný filtr.</p><button class="button button-outline" data-reset-filters>Zobrazit celou nabídku</button></div>`;
   $('#menu-results').textContent = `Nalezeno ${items.length} položek. Zobrazení: ${state.menuView === 'rows' ? 'řádky' : 'dlaždice'}.`;
+  ordering?.syncAvailability();
   $('#menu-note').textContent = { pizza: 'Každou pizzu pečeme ve velikosti 30 nebo 40 cm.', drinks: 'Něco na osvěžení k tvé oblíbené pizze.', wine: 'Víno a prosecco z nabídky vinařství Valdo.' }[state.category];
 }
 
@@ -226,6 +230,7 @@ async function init() {
     state.data = await response.json();
     createHeroCarousel({ branches: state.data.branches, icon, escape });
     storageConsent = parseStorageConsent(storageRead(STORAGE_CONSENT_KEY));
+    openingStatus = createOpeningStatus({ data: state.data, getBranchId: () => state.branch?.id, onChange: status => ordering ? ordering.syncAvailability() : updateOrderControls(status) });
     ordering = createOrdering({
       data: state.data, openDialog, toast, showCartFeedback, getBranch: () => state.branch,
       setBranch: selectBranch, onDeliveryChange,

@@ -8,7 +8,7 @@ import { createState, restoreState, requirements, STORAGE_KEY } from '../public/
 const data = JSON.parse(await readFile(new URL('../public/data/site.json', import.meta.url)));
 const seed = JSON.parse(await readFile(new URL('../public/admin/seed.json', import.meta.url)));
 const [margherita, ham] = data.categories.find(c => c.id === 'pizzy').items;
-const now = '2026-10-04T10:00:00.000Z';
+const now = '2026-10-05T10:00:00.000Z';
 const pizza = overrides => normalizeLine(data, { itemId: margherita.id, size: 30, quantity: 1, extras: [], halves: [{ itemId: margherita.id, extras: ['mozzarella'] }, { itemId: ham.id, extras: ['sunka', 'mozzarella'] }], ...overrides });
 const request = line => ({ data, cart: [line], fulfillment: 'pickup', branchId: 'rudna', addressId: null, customer: { name: 'Test půlek', phone: '777111222', payment: 'cash' }, idempotencyKey: 'half-pizza-test-request' });
 
@@ -66,7 +66,7 @@ test('Half order saves to local administration with independent extra names and 
   const line = pizza({ size: 40, extras: ['mozzarellove-okraje'], quantity: 2, note: 'Rozkrájet' });
   const values = new Map();
   const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
-  const result = await submitLocalOrder(request(line), { storage, locks: null, loadSeed: async () => seed });
+  const result = await submitLocalOrder(request(line), { storage, locks: null, now: () => now, loadSeed: async () => seed });
   assert.equal(result.total, cartTotals(data, [line], 'pickup').total);
   const state = restoreState(values.get(STORAGE_KEY), data, seed);
   const order = state.orders[0];
@@ -75,7 +75,7 @@ test('Half order saves to local administration with independent extra names and 
   assert.equal(order.lines[0].note, 'Rozkrájet');
   assert.equal(order.inventoryIncomplete, true);
   assert.throws(() => requirements(state, order, seed, now), /receptura/);
-  const again = await submitLocalOrder(request(line), { storage, locks: null, loadSeed: async () => seed });
+  const again = await submitLocalOrder(request(line), { storage, locks: null, now: () => now, loadSeed: async () => seed });
   assert.equal(again.orderId, result.orderId);
 });
 

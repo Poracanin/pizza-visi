@@ -7,7 +7,7 @@ import { resolveAddress } from '../public/ruian-addresses.js';
 
 const json = async path => JSON.parse(await readFile(new URL(path, import.meta.url)));
 const [data, seed, addresses] = await Promise.all([json('../public/data/site.json'), json('../public/admin/seed.json'), json('../public/data/ruian-addresses.json')]);
-const now = '2026-10-04T10:00:00Z';
+const now = '2026-10-05T10:00:00Z';
 const address = resolveAddress(addresses, '6348416');
 const input = () => ({data, branchId:'rudna', fulfillment:'delivery', addressId:address.id, idempotencyKey:'test-order-request-0001', customer:{name:'Test zákazník',phone:'777 123 456',email:'test@example.com',note:'Zavolat u dveří',payment:'cash',address:address.label},cart:[{itemId:'1-margherita',size:40,quantity:2,extras:['mozzarella','mozzarellove-okraje','cesnekova-50g'],note:'Prosím rozkrájet'}]});
 const initial = () => createState(data, seed, now);
@@ -44,7 +44,7 @@ test('Arbitrary or edited addresses, uncovered branches, fake online payments an
 
 test('Persistence must succeed before checkout can receive a success result',async()=>{
  const values=new Map(),storage={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value)};
- const deps={storage,locks:null,loadSeed:async()=>seed,loadAddresses:async()=>addresses};
+ const deps={storage,locks:null,now:()=>now,loadSeed:async()=>seed,loadAddresses:async()=>addresses};
  const request=input(),result=await submitLocalOrder(request,deps),again=await submitLocalOrder(request,deps);
  assert.equal(result.orderId,again.orderId);assert.equal(result.total,851);assert.equal(JSON.parse(values.get(STORAGE_KEY)).orders.length,1);
  const broken={getItem:()=>null,setItem:()=>{throw new Error('Quota exceeded')}};

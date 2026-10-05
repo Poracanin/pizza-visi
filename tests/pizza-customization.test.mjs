@@ -9,6 +9,7 @@ import { editSnapshot, findEditingLine } from '../public/product-route.js';
 const data = JSON.parse(await readFile(new URL('../public/data/site.json', import.meta.url)));
 const seed = JSON.parse(await readFile(new URL('../public/admin/seed.json', import.meta.url)));
 const [margherita, ham, , mushroom] = data.categories.find(c => c.id === 'pizzy').items;
+const now = '2026-10-05T10:00:00.000Z';
 const whole = options => normalizeLine(data, { itemId: margherita.id, size: 40, quantity: 1, extras: [], ...options });
 const half = options => whole({ halves: [{ itemId: margherita.id, extras: [], base: 'cream', removedIngredients: ['oregano'] }, { itemId: ham.id, extras: ['mozzarella'], removedIngredients: ['šunka – prosciutto cotto'] }], ...options });
 const request = line => ({ data, cart: [line], fulfillment: 'pickup', branchId: 'rudna', customer: { name: 'Test úpravy', phone: '777111222', payment: 'cash' }, idempotencyKey: 'recipe-options-test-request' });
@@ -51,7 +52,7 @@ test('One combined list removes shared ingredients from both halves and unique i
   assert.equal(setIngredientRemoval(line, lookup, 'salám pepperoni', true), false);
   assert.equal(unitPrice(data, line), 240);
   assert.deepEqual(restoreCart(data, serializeCart([line])), [line]);
-  const { state, order } = createStorefrontOrder(createState(data, seed), request(line));
+  const { state, order } = createStorefrontOrder(createState(data, seed), request(line), null, now);
   assert.deepEqual(restoreState(JSON.stringify(state), data, seed).orders[0].lines[0].halves.map(part => part.removedIngredients), line.halves.map(part => part.removedIngredients));
   assert.equal(order.total, 263);
   setIngredientRemoval(line, lookup, 'mozzarella', false);
@@ -118,7 +119,7 @@ test('Local order retains recipe changes after reload and duplicate submission w
   const values = new Map();
   const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
   const line = half();
-  const result = await submitLocalOrder(request(line), { storage, locks: null, loadSeed: async () => seed });
+  const result = await submitLocalOrder(request(line), { storage, locks: null, now: () => now, loadSeed: async () => seed });
   const state = restoreState(values.get(STORAGE_KEY), data, seed);
   const order = state.orders[0];
   assert.equal(order.configurationVersion, 3);
@@ -126,16 +127,16 @@ test('Local order retains recipe changes after reload and duplicate submission w
   assert.equal(result.total, order.total);
   assert.equal(order.lines[0].halves[0].base, 'cream');
   assert.deepEqual(order.lines[0].halves[1].removedIngredients, ['šunka – prosciutto cotto']);
-  assert.equal((await submitLocalOrder(request(line), { storage, locks: null, loadSeed: async () => seed })).orderId, result.orderId);
+  assert.equal((await submitLocalOrder(request(line), { storage, locks: null, now: () => now, loadSeed: async () => seed })).orderId, result.orderId);
   const changed = half(); delete changed.halves[0].base;
-  assert.throws(() => createStorefrontOrder(state, request(changed)), /jinými údaji/);
+  assert.throws(() => createStorefrontOrder(state, request(changed), null, now), /jinými údaji/);
   const corrupted = structuredClone(state); corrupted.orders[0].lines[0].halves[0].base = 'fake';
   assert.throws(() => restoreState(JSON.stringify(corrupted), data, seed), /Základ/);
 });
 
 test('Modified recipes never consume the original stock recipe, including tampered inventory flags', () => {
   for (const line of [whole({ size: 30, base: 'cream' }), whole({ size: 30, removedIngredients: ['mozzarella'] }), half({ size: 30 })]) {
-    const { state, order } = createStorefrontOrder(createState(data, seed), request(line));
+    const { state, order } = createStorefrontOrder(createState(data, seed), request(line), null, now);
     assert.equal(order.inventoryIncomplete, true);
     assert.equal(hasRecipeChanges(order.lines[0]), true);
     order.inventoryIncomplete = false;

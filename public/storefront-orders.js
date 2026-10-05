@@ -1,3 +1,4 @@
+import { storeOpeningStatus, closedOrderingMessage } from './opening-hours.js?v=1';
 import { STORAGE_KEY, createState, restoreState, orderId } from './admin/model.js?v=combined-removals-1';
 import { getItem, normalizeLine, unitPrice, cartTotals, lineName } from './cart-model.js?v=combined-removals-1';
 import { loadRuianAddresses, resolveAddress } from './ruian-addresses.js';
@@ -49,6 +50,8 @@ export function createStorefrontOrder(state, input, addressCatalog, now = new Da
     if (previous.webRequest.fingerprint !== fingerprint) reject('Tato objednávka už byla uložená s jinými údaji. Vytvoř novou objednávku.');
     return { state, order: previous, duplicate: true };
   }
+  const availability = storeOpeningStatus(data, now, branchId);
+  if (!availability.isOpen) reject(closedOrderingMessage(availability));
   const total = cartTotals(data, normalized, fulfillment);
   const next = structuredClone(state);
   const lines = normalized.map(line => {
@@ -82,7 +85,7 @@ export async function submitLocalOrder(input, dependencies = {}) {
   const save = () => {
     const raw = storage.getItem(STORAGE_KEY);
     const state = raw === null ? createState(input.data, seed) : restoreState(raw, input.data, seed);
-    const result = createStorefrontOrder(state, input, addresses);
+    const result = createStorefrontOrder(state, input, addresses, (dependencies.now || (() => new Date().toISOString()))());
     if (!result.duplicate) storage.setItem(STORAGE_KEY, JSON.stringify(result.state));
     const saved = restoreState(storage.getItem(STORAGE_KEY), input.data, seed).orders.find(order => order.webRequest?.key === input.idempotencyKey);
     if (!saved || saved.id !== result.order.id) reject('Uložení objednávky se nepodařilo potvrdit. Košík zůstává zachovaný.');

@@ -1,0 +1,20 @@
+.opening-status{display:flex;align-items:center;justify-content:center;gap:9px;min-height:30px;padding:5px 16px;border-top:1px solid #ffffff12;background:#16231d;color:#ecf2ec;font:400 12px/1.4 var(--body);text-align:center}
+.opening-status::before{content:'';width:6px;height:6px;border-radius:50%;background:#79cda0;flex:none}
+.opening-status strong{font-weight:600;white-space:nowrap}
+.opening-status [data-opening-detail]{color:#c4d5ca;font-variant-numeric:tabular-nums}
+.opening-status [data-opening-detail]::before{content:'·';padding-right:9px}
+.opening-status[data-state=closing]{background:#30251a}
+.opening-status[data-state=closing]::before{background:#f2b46b}
+.opening-status[data-state=closing] [data-opening-detail]{color:#ffd39d}
+.opening-status:is([data-state=closed],[data-state=opening]){background:#252123}
+.opening-status:is([data-state=closed],[data-state=opening])::before{background:#ef899a}
+.opening-status:is([data-state=closed],[data-state=opening]) [data-opening-detail]{color:#e1ccd0}
+body button[data-hours-blocked],body button[data-hours-blocked]:hover{background:#555!important;border-color:#696969!important;color:#d8d8d8!important;box-shadow:none!important;cursor:not-allowed;transform:none!important;opacity:.8}
+body button[data-hours-blocked] strong,body button[data-hours-blocked] .cart-upsell-add{color:#dedede!important}
+body button[data-hours-blocked] .cart-upsell-add{background:#666!important}
+.ordering-closed-notice{font:400 12px/1.5 var(--body);color:#e6bcc4;margin:8px 0 12px}
+.ordering-closed-notice[hidden]{display:none}
+@media(max-width:600px){
+  .opening-status{gap:7px;font-size:10px;min-height:29px;padding:6px 12px}
+  .opening-status [data-opening-detail]::before{padding-right:7px}
+}

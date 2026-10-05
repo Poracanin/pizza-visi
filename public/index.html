@@ -27,9 +27,10 @@
   <link rel="stylesheet" href="./hero-carousel.css?v=2">
   <link rel="stylesheet" href="./menu-controls.css?v=1">
   <link rel="stylesheet" href="./compact-header.css?v=1">
-  <script type="module" src="./app.js?v=config-layout-2"></script>
+  <script type="module" src="./app.js?v=opening-hours-1"></script>
   <link rel="stylesheet" href="./pizza-composite.css?v=1">
   <link rel="stylesheet" href="./cart-compact.css?v=webp-1">
+  <link rel="stylesheet" href="./opening-status.css?v=1">
 </head>
 <body>
   <a class="skip-link" href="#menu">Přejít na jídelní lístek</a>
@@ -111,6 +112,8 @@
       <nav class="desktop-nav" aria-label="Hlavní navigace"><a href="#menu">Naše menu</a><a href="#pribeh">O nás</a><a href="#rozvoz">Rozvoz</a><a href="#pobocky">Pobočky</a></nav>
       <div class="header-actions"><button class="cart-trigger" data-open-cart aria-label="Otevřít košík, 0 položek"><svg class="icon"><use href="#i-cart"/></svg><span class="cart-trigger-label">Košík</span><span id="cart-count" class="cart-count">0</span></button></div>
     </div>
+    <div class="opening-status" id="opening-status" aria-label="Aktuální otevírací doba"><strong data-opening-label>Otevírací doba</strong><span data-opening-detail>Po–So 11:00–21:00</span></div>
+    <span class="sr-only" id="opening-announcement" role="status" aria-live="polite"></span>
   </header>
 
   <main id="storefront">
